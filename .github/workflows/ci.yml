@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke:
+    name: Knowledge base smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps (skip torch / sentence-transformers)
+        run: |
+          # CI 只跑规则路 + KB schema，不下载 SBERT 模型
+          python -m pip install --upgrade pip
+          pip install scikit-learn numpy
+
+      - name: Run smoke tests
+        run: python demo/tests/test_smoke.py
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: ruff check demo/ --select=E,F,W --ignore=E501,W291,W293
