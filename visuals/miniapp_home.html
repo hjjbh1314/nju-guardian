@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>南大数智安全官 · 小程序首页 mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  .phone-frame { width: 390px; height: 844px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+  .news-scroll::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body class="bg-slate-100 min-h-screen p-8">
+
+<div class="max-w-5xl mx-auto mb-6 text-center">
+  <h1 class="text-2xl font-bold text-slate-800">南大数智安全官 · 小程序首页 mockup</h1>
+  <p class="text-slate-500 mt-2 text-sm">截图建议：F11 全屏 → ⌘+⇧+4 框选手机 → 自动保存到桌面</p>
+</div>
+
+<div class="flex justify-center">
+  <!-- iPhone-style frame -->
+  <div class="phone-frame relative bg-black rounded-[44px] p-2 shadow-2xl">
+    <!-- Screen -->
+    <div class="bg-white rounded-[36px] h-full overflow-hidden flex flex-col relative">
+
+      <!-- Status bar -->
+      <div class="flex justify-between items-center px-7 pt-3 pb-1 text-[12px] font-semibold text-slate-900">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+          <i data-lucide="signal" class="w-3.5 h-3.5"></i>
+          <i data-lucide="wifi" class="w-3.5 h-3.5"></i>
+          <i data-lucide="battery-full" class="w-4 h-4"></i>
+        </div>
+      </div>
+
+      <!-- Mini-program nav (WeChat style) -->
+      <div class="flex items-center justify-between px-4 py-2 border-b border-slate-100">
+        <div class="flex items-center gap-1.5 text-slate-500 text-[12px]">
+          <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+          <span>•</span>
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </div>
+        <div class="text-[13px] font-medium text-slate-900">南大数智安全官</div>
+        <i data-lucide="more-horizontal" class="w-4 h-4 text-slate-500"></i>
+      </div>
+
+      <!-- Scrollable content -->
+      <div class="scroll-area flex-1 overflow-y-auto">
+
+        <!-- Hero header (NJU purple) -->
+        <div class="bg-gradient-to-br from-[#7B287D] via-[#5B1F5D] to-[#2563EB] px-5 pt-5 pb-5 text-white relative overflow-hidden">
+          <div class="absolute -right-8 -bottom-8 opacity-10">
+            <i data-lucide="shield" class="w-40 h-40"></i>
+          </div>
+          <div class="flex items-center gap-2.5 mb-3">
+            <div class="w-9 h-9 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
+              <i data-lucide="shield-check" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="font-bold text-lg leading-tight">数智安全官</div>
+              <div class="text-[11px] opacity-80">NJU Guardian · 校园反诈 AI</div>
+            </div>
+            <div class="ml-auto bg-white/15 rounded-full px-2.5 py-1 text-[10px] backdrop-blur">
+              知识库 v0.1 · 15 类
+            </div>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/15">
+            <div class="text-[11px] opacity-80">📊 本周南大反诈数据</div>
+            <div class="flex items-end gap-3 mt-1.5">
+              <div>
+                <div class="text-2xl font-bold">142</div>
+                <div class="text-[10px] opacity-70">检测请求</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-yellow-300">23</div>
+                <div class="text-[10px] opacity-70">高风险预警</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-green-300">7</div>
+                <div class="text-[10px] opacity-70">挽损案例</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Three function cards (clean break below hero) -->
+        <div class="px-4 mt-4 space-y-3">
+
+          <!-- Card 1: 文本检测 -->
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border border-blue-200/50 shadow-sm flex items-center gap-3 active:scale-95 transition">
+            <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow">
+              <i data-lucide="message-square-text" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-slate-800">文本检测</div>
+              <div class="text-[12px] text-slate-500 mt-0.5">粘贴可疑短信、聊天、链接</div>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+          </div>
+
+          <!-- Card 2: 截图识别 -->
+          <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-4 border border-orange-200/50 shadow-sm flex items-center gap-3 active:scale-95 transition">
+            <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow">
+              <i data-lucide="image" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-slate-800">截图识别</div>
+              <div class="text-[12px] text-slate-500 mt-0.5">上传转账、聊天、二维码截图</div>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+          </div>
+
+          <!-- Card 3: 链接核验 -->
+          <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-4 border border-green-200/50 shadow-sm flex items-center gap-3 active:scale-95 transition">
+            <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow">
+              <i data-lucide="link-2" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+              <div class="font-semibold text-slate-800">链接核验</div>
+              <div class="text-[12px] text-slate-500 mt-0.5">输入 URL 或电话号码查询</div>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+          </div>
+
+        </div>
+
+        <!-- Today's news -->
+        <div class="px-4 mt-5">
+          <div class="flex items-center justify-between mb-2">
+            <div class="font-semibold text-slate-800 text-[15px] flex items-center gap-1.5">
+              <i data-lucide="newspaper" class="w-4 h-4 text-[#7B287D]"></i>
+              <span>今日校园反诈快讯</span>
+            </div>
+            <a class="text-[11px] text-slate-400 flex items-center gap-0.5">
+              更多 <i data-lucide="chevron-right" class="w-3 h-3"></i>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+
+            <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm">
+              <div class="flex items-center gap-1 mb-1.5">
+                <span class="bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded">新</span>
+                <span class="text-[10px] text-slate-400">5/6</span>
+              </div>
+              <div class="text-[12px] text-slate-700 leading-snug font-medium">
+                注销校园贷新变种：以"政审"为由要求多平台借款
+              </div>
+              <div class="text-[10px] text-slate-400 mt-1.5">来源 · 南大保卫处</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm">
+              <div class="flex items-center gap-1 mb-1.5">
+                <span class="bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded">关注</span>
+                <span class="text-[10px] text-slate-400">5/5</span>
+              </div>
+              <div class="text-[12px] text-slate-700 leading-snug font-medium">
+                毕业季冒充导师催交培训费高发，本周 3 起预警
+              </div>
+              <div class="text-[10px] text-slate-400 mt-1.5">来源 · 用户回流</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm">
+              <div class="flex items-center gap-1 mb-1.5">
+                <span class="bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded">挽损</span>
+                <span class="text-[10px] text-slate-400">5/3</span>
+              </div>
+              <div class="text-[12px] text-slate-700 leading-snug font-medium">
+                匡亚明学院学生避损 1.2 万——刷单 APP 及时识破
+              </div>
+              <div class="text-[10px] text-slate-400 mt-1.5">来源 · 南大保卫处</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm">
+              <div class="flex items-center gap-1 mb-1.5">
+                <span class="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded">指南</span>
+                <span class="text-[10px] text-slate-400">5/1</span>
+              </div>
+              <div class="text-[12px] text-slate-700 leading-snug font-medium">
+                新生防诈手册更新：6 类新生场景一图速览
+              </div>
+              <div class="text-[10px] text-slate-400 mt-1.5">来源 · 学工部</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Quick stats grid -->
+        <div class="px-4 mt-5">
+          <div class="font-semibold text-slate-800 text-[15px] mb-2 flex items-center gap-1.5">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-[#7B287D]"></i>
+            <span>高发类型 · 校园 Top 5</span>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 p-3 space-y-2.5">
+            <div class="flex items-center gap-2 text-[12px]">
+              <span class="text-slate-400 w-4 font-mono">1</span>
+              <span class="flex-1 text-slate-700">兼职刷单</span>
+              <div class="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-red-500 h-full" style="width:90%"></div>
+              </div>
+              <span class="text-slate-500 font-medium w-8 text-right">38%</span>
+            </div>
+            <div class="flex items-center gap-2 text-[12px]">
+              <span class="text-slate-400 w-4 font-mono">2</span>
+              <span class="flex-1 text-slate-700">冒充辅导员</span>
+              <div class="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-orange-500 h-full" style="width:62%"></div>
+              </div>
+              <span class="text-slate-500 font-medium w-8 text-right">21%</span>
+            </div>
+            <div class="flex items-center gap-2 text-[12px]">
+              <span class="text-slate-400 w-4 font-mono">3</span>
+              <span class="flex-1 text-slate-700">注销校园贷</span>
+              <div class="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-yellow-500 h-full" style="width:45%"></div>
+              </div>
+              <span class="text-slate-500 font-medium w-8 text-right">15%</span>
+            </div>
+            <div class="flex items-center gap-2 text-[12px]">
+              <span class="text-slate-400 w-4 font-mono">4</span>
+              <span class="flex-1 text-slate-700">钓鱼短信</span>
+              <div class="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-blue-500 h-full" style="width:36%"></div>
+              </div>
+              <span class="text-slate-500 font-medium w-8 text-right">12%</span>
+            </div>
+            <div class="flex items-center gap-2 text-[12px]">
+              <span class="text-slate-400 w-4 font-mono">5</span>
+              <span class="flex-1 text-slate-700">虚假二手</span>
+              <div class="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-purple-500 h-full" style="width:24%"></div>
+              </div>
+              <span class="text-slate-500 font-medium w-8 text-right">8%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergency contacts -->
+        <div class="px-4 mt-5 mb-4">
+          <div class="bg-gradient-to-r from-[#7B287D] to-[#5B1F5D] rounded-2xl p-4 text-white">
+            <div class="font-semibold text-[14px] mb-2.5 flex items-center gap-1.5">
+              <i data-lucide="phone-call" class="w-4 h-4"></i>
+              <span>紧急联系</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="bg-white/10 rounded-lg p-2 backdrop-blur">
+                <div class="text-[10px] opacity-80">南大保卫处</div>
+                <div class="font-mono font-bold text-[13px] mt-0.5">81686110</div>
+              </div>
+              <div class="bg-white/10 rounded-lg p-2 backdrop-blur">
+                <div class="text-[10px] opacity-80">反诈劝阻</div>
+                <div class="font-mono font-bold text-[13px] mt-0.5">96110</div>
+              </div>
+              <div class="bg-white/10 rounded-lg p-2 backdrop-blur">
+                <div class="text-[10px] opacity-80">涉诈短信</div>
+                <div class="font-mono font-bold text-[13px] mt-0.5">12381</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center text-[10px] text-slate-400 pb-4">
+          数据来源：国家反诈中心 · 南大保卫处 · 高校公开通报
+        </div>
+
+      </div>
+
+      <!-- Bottom tab bar -->
+      <div class="bg-white border-t border-slate-200 grid grid-cols-4 py-2 px-2">
+        <div class="flex flex-col items-center gap-0.5 text-[#7B287D]">
+          <i data-lucide="home" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium">首页</span>
+        </div>
+        <div class="flex flex-col items-center gap-0.5 text-slate-400">
+          <i data-lucide="library" class="w-5 h-5"></i>
+          <span class="text-[10px]">案例库</span>
+        </div>
+        <div class="flex flex-col items-center gap-0.5 text-slate-400">
+          <i data-lucide="alert-octagon" class="w-5 h-5"></i>
+          <span class="text-[10px]">举报</span>
+        </div>
+        <div class="flex flex-col items-center gap-0.5 text-slate-400">
+          <i data-lucide="user" class="w-5 h-5"></i>
+          <span class="text-[10px]">我的</span>
+        </div>
+      </div>
+
+      <!-- Home indicator -->
+      <div class="flex justify-center pb-1.5 pt-1">
+        <div class="w-32 h-1 bg-black rounded-full"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-3xl mx-auto mt-8 p-4 bg-white rounded-lg shadow text-sm text-slate-600">
+  <h3 class="font-semibold text-slate-800 mb-2">📷 截图说明</h3>
+  <ul class="space-y-1 ml-4 list-disc">
+    <li>这是一张高保真小程序首页 mockup，<b>包含真实可滚动的数据展示</b></li>
+    <li>路演演示时可直接打开此 HTML，向评委展示页面内的可交互区</li>
+    <li>截图：⌘+⇧+4 → 框选手机外框 → 自动保存为 PNG</li>
+    <li>插入位置建议：申报书第五节"补充材料"</li>
+  </ul>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

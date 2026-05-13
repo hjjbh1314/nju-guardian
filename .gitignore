@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.ruff_cache/
+.pytest_cache/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+ENV/
+
+# 嵌入缓存（首次启动会自动生成）
+demo/.embeddings_cache/
+demo/*.npz
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# 临时材料
+*.tmp
+*.bak
+~*.docx
+*.docx
+*.pdf
+
+# 大文件 / 二进制（如有需要请用 git-lfs）
+*.zip
+*.tar.gz
+*.mp4
+*.mov
+
+# 申报书 / 过程文件默认不上传：包含学号、手机号、邮箱或版权材料
+申报书初稿_*.docx
+申报书初稿_*.md
+申报书初稿_*.html
+申报书_*.md
+Demo方案_*.md
+视觉设计_*.md
+
+# Claude Code 工作产物
+.claude/
+.cursor/

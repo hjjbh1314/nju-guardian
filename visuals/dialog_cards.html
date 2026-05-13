@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>南大数智安全官 · 对话样例卡片</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  .card { width: 390px; height: 844px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  @media print { .no-print { display: none } .card { break-inside: avoid; page-break-inside: avoid; } }
+</style>
+</head>
+<body class="bg-slate-100 min-h-screen p-8">
+
+<div class="no-print max-w-6xl mx-auto mb-6 text-center">
+  <h1 class="text-2xl font-bold text-slate-800">南大数智安全官 · 对话样例卡片</h1>
+  <p class="text-slate-500 mt-2 text-sm">截图建议：F11 全屏 → 用 macOS ⌘+⇧+4 框选每张卡片 → 文件自动保存到桌面。每张卡片 390×844，等同 iPhone 14 Pro 设计稿尺寸。</p>
+</div>
+
+<div class="flex gap-6 justify-center flex-wrap">
+
+  <!-- ============================================================
+       Card 1: KB-008 冒充辅导员
+       ============================================================ -->
+  <div class="card bg-[#FAFAF9] rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+    <!-- Banner -->
+    <div class="bg-gradient-to-r from-[#7B287D] to-[#2563EB] px-5 pt-6 pb-4 text-white">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shield-check" class="w-5 h-5"></i>
+        <span class="font-semibold tracking-wide">南大数智安全官</span>
+        <span class="ml-auto text-xs opacity-80">NJU Guardian</span>
+      </div>
+      <div class="text-xs opacity-80 mt-1">校园场景化反诈 AI Agent · Demo</div>
+    </div>
+
+    <!-- Chat scroll -->
+    <div class="scroll-area flex-1 overflow-y-auto px-4 py-4 space-y-3">
+
+      <!-- User bubble -->
+      <div class="flex">
+        <div class="max-w-[85%] bg-slate-200 text-slate-800 rounded-2xl rounded-tl-sm px-4 py-2.5 text-[15px] leading-relaxed">
+          辅导员让我代收班费，要我先转 800 给他他周一返我，靠谱吗？
+        </div>
+      </div>
+
+      <!-- AI bubble -->
+      <div class="flex">
+        <div class="max-w-[92%] bg-white border border-blue-100 rounded-2xl rounded-tl-sm px-4 py-3.5 shadow-sm">
+
+          <!-- Risk label -->
+          <div class="flex items-center gap-2 mb-2.5">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+            <span class="text-red-600 font-bold text-base">高风险</span>
+            <span class="text-slate-500 text-xs">置信度 92%</span>
+          </div>
+
+          <div class="text-slate-500 text-xs mb-3">
+            匹配类型：<span class="font-medium text-slate-700">冒充熟人 / 老师诈骗</span>
+            <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded text-[10px] font-mono">KB-008</span>
+          </div>
+
+          <!-- Why -->
+          <div class="mb-3">
+            <div class="text-slate-700 font-semibold text-sm mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-red-500"></i>为什么是诈骗
+            </div>
+            <ul class="text-[13px] text-slate-600 space-y-1 ml-1">
+              <li class="flex gap-1.5"><span>•</span><span>权威服从效应：冒充"辅导员"调动学生对权威的服从倾向</span></li>
+              <li class="flex gap-1.5"><span>•</span><span>"周一返你"制造短期互惠预期，降低核实意愿</span></li>
+              <li class="flex gap-1.5"><span>•</span><span>制造时间紧迫感削弱判断力</span></li>
+            </ul>
+          </div>
+
+          <!-- 八个凡是 quote -->
+          <div class="bg-amber-50 border-l-4 border-amber-500 px-3 py-2 mb-3 text-[12px] text-amber-900 leading-relaxed">
+            <span class="font-semibold">国家反诈八个凡是：</span>凡是自称"领导"主动加 QQ/微信，先嘘寒问暖再要求转账的，都是诈骗。
+          </div>
+
+          <!-- Actions -->
+          <div class="mb-2">
+            <div class="text-slate-700 font-semibold text-sm mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="list-checks" class="w-3.5 h-3.5 text-blue-600"></i>三步行动建议
+            </div>
+            <ol class="text-[13px] text-slate-700 space-y-1 ml-1">
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">1</span><span>立即停止操作，不要回复</span></li>
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">2</span><span>通过电话或当面与辅导员核实身份</span></li>
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">3</span><span>已转账立即拨打 96110 或 南大保卫处 81686110</span></li>
+            </ol>
+          </div>
+
+          <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">
+            相似案例：<span class="font-mono">KB-008</span> · <span class="font-mono">KB-012</span> · <span class="font-mono">KB-021</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="bg-[#7B287D] text-white text-[11px] px-4 py-2 text-center">
+      📞 紧急：南大保卫处 81686110 · 96110 反诈 · 12381 涉诈短信
+    </div>
+  </div>
+
+  <!-- ============================================================
+       Card 2: KB-001 兼职刷单
+       ============================================================ -->
+  <div class="card bg-[#FAFAF9] rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+    <div class="bg-gradient-to-r from-[#7B287D] to-[#2563EB] px-5 pt-6 pb-4 text-white">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shield-check" class="w-5 h-5"></i>
+        <span class="font-semibold tracking-wide">南大数智安全官</span>
+        <span class="ml-auto text-xs opacity-80">NJU Guardian</span>
+      </div>
+      <div class="text-xs opacity-80 mt-1">校园场景化反诈 AI Agent · Demo</div>
+    </div>
+
+    <div class="scroll-area flex-1 overflow-y-auto px-4 py-4 space-y-3">
+      <div class="flex">
+        <div class="max-w-[85%] bg-slate-200 text-slate-800 rounded-2xl rounded-tl-sm px-4 py-2.5 text-[15px] leading-relaxed">
+          看到一个微信群说免费送礼品+点赞返佣金，要我下载一个 APP 做任务，靠谱吗？
+        </div>
+      </div>
+
+      <div class="flex">
+        <div class="max-w-[92%] bg-white border border-blue-100 rounded-2xl rounded-tl-sm px-4 py-3.5 shadow-sm">
+          <div class="flex items-center gap-2 mb-2.5">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+            <span class="text-red-600 font-bold text-base">高风险</span>
+            <span class="text-slate-500 text-xs">置信度 96%</span>
+          </div>
+
+          <div class="text-slate-500 text-xs mb-3">
+            匹配类型：<span class="font-medium text-slate-700">刷单返利诈骗</span>
+            <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded text-[10px] font-mono">KB-001</span>
+            <span class="ml-1 px-1.5 py-0.5 bg-red-50 text-red-700 rounded text-[10px]">十大类案 · 第一</span>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-slate-700 font-semibold text-sm mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="git-branch" class="w-3.5 h-3.5 text-orange-500"></i>作案三步
+            </div>
+            <div class="text-[13px] text-slate-600 space-y-1 ml-1">
+              <div>① 前期引流：免费礼品 + 拉群</div>
+              <div>② 小额返利：完成 5 单真实返佣建立信任</div>
+              <div>③ 实施诈骗：要求充值升级 / 制造卡单</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-slate-700 font-semibold text-sm mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-red-500"></i>为什么针对学生
+            </div>
+            <ul class="text-[13px] text-slate-600 space-y-1 ml-1">
+              <li class="flex gap-1.5"><span>•</span><span>学生时间灵活、对"轻松赚钱"敏感</span></li>
+              <li class="flex gap-1.5"><span>•</span><span>对"先小赚 → 后大投"无防御经验（损失厌恶反向利用）</span></li>
+            </ul>
+          </div>
+
+          <div class="bg-red-50 border-l-4 border-red-500 px-3 py-2 mb-3 text-[12px] text-red-900 leading-relaxed">
+            <span class="font-semibold">绝对红线：</span>所有要求垫付资金做任务的兼职刷单都是诈骗。<span class="opacity-80">公安部明确：刷单本身违法。</span>
+          </div>
+
+          <div>
+            <div class="text-slate-700 font-semibold text-sm mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="list-checks" class="w-3.5 h-3.5 text-blue-600"></i>三步行动建议
+            </div>
+            <ol class="text-[13px] text-slate-700 space-y-1 ml-1">
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">1</span><span>立即退群，不下载任何"任务 APP"</span></li>
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">2</span><span>已下载 → 卸载并检查可疑授权</span></li>
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">3</span><span>已转账立即拨打 96110 + 派出所报案</span></li>
+            </ol>
+          </div>
+
+          <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">
+            相似案例：<span class="font-mono">KB-001</span> · <span class="font-mono">KB-003</span> · <span class="font-mono">KB-007</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#7B287D] text-white text-[11px] px-4 py-2 text-center">
+      📞 紧急：南大保卫处 81686110 · 96110 反诈 · 12381 涉诈短信
+    </div>
+  </div>
+
+  <!-- ============================================================
+       Card 3: KB-013 钓鱼链接
+       ============================================================ -->
+  <div class="card bg-[#FAFAF9] rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+    <div class="bg-gradient-to-r from-[#7B287D] to-[#2563EB] px-5 pt-6 pb-4 text-white">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shield-check" class="w-5 h-5"></i>
+        <span class="font-semibold tracking-wide">南大数智安全官</span>
+        <span class="ml-auto text-xs opacity-80">NJU Guardian</span>
+      </div>
+      <div class="text-xs opacity-80 mt-1">校园场景化反诈 AI Agent · Demo</div>
+    </div>
+
+    <div class="scroll-area flex-1 overflow-y-auto px-4 py-4 space-y-3">
+      <!-- SMS-style screenshot mock -->
+      <div class="flex">
+        <div class="max-w-[85%] bg-slate-200 rounded-2xl rounded-tl-sm overflow-hidden">
+          <div class="text-[11px] text-slate-500 px-3 pt-2">用户上传截图：</div>
+          <div class="bg-white m-2 rounded-lg p-3 border border-slate-300 text-[12px] text-slate-700 leading-relaxed">
+            <div class="text-[10px] text-slate-400 mb-1">10657-XXXX-XXX 今天 09:47</div>
+            <div>【京东客服】您订单 #2026050601 异常，</div>
+            <div>请点击 <span class="text-blue-600 underline break-all">http://jd-fix.xyz/order/93f2a</span> 处理售后</div>
+            <div>退订回 T</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex">
+        <div class="max-w-[92%] bg-white border border-blue-100 rounded-2xl rounded-tl-sm px-4 py-3.5 shadow-sm">
+          <div class="flex items-center gap-2 mb-2.5">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse"></span>
+            <span class="text-yellow-600 font-bold text-base">中高风险</span>
+            <span class="text-slate-500 text-xs">置信度 85%</span>
+          </div>
+
+          <div class="text-slate-500 text-xs mb-3">
+            匹配类型：<span class="font-medium text-slate-700">钓鱼链接 + 冒充电商客服</span>
+            <span class="ml-1 px-1.5 py-0.5 bg-slate-100 rounded text-[10px] font-mono">KB-013 · KB-004</span>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-slate-700 font-semibold text-sm mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="search" class="w-3.5 h-3.5 text-blue-500"></i>多模态分析
+            </div>
+            <ul class="text-[13px] text-slate-600 space-y-1 ml-1">
+              <li class="flex gap-1.5"><span class="text-green-600">✓</span><span>OCR 提取链接：<span class="font-mono text-[11px] text-slate-700">jd-fix.xyz</span></span></li>
+              <li class="flex gap-1.5"><span class="text-red-600">✗</span><span>非京东官方域名（应为 jd.com / jd.jr.com.cn）</span></li>
+              <li class="flex gap-1.5"><span class="text-red-600">✗</span><span><span class="font-mono">.xyz</span> 域名属钓鱼高发后缀</span></li>
+              <li class="flex gap-1.5"><span class="text-red-600">✗</span><span>发送号 10657 非 95 段官方号段</span></li>
+            </ul>
+          </div>
+
+          <div class="bg-amber-50 border-l-4 border-amber-500 px-3 py-2 mb-3 text-[12px] text-amber-900 leading-relaxed">
+            <span class="font-semibold">国家反诈八个凡是：</span>凡是发送不明链接让你输入银行卡 / 验证码 / 密码的，都是诈骗。
+          </div>
+
+          <div>
+            <div class="text-slate-700 font-semibold text-sm mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="list-checks" class="w-3.5 h-3.5 text-blue-600"></i>三步行动建议
+            </div>
+            <ol class="text-[13px] text-slate-700 space-y-1 ml-1">
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">1</span><span>不要点击短信中的任何链接</span></li>
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">2</span><span>自行打开京东 APP 查询订单状态</span></li>
+              <li class="flex gap-2"><span class="bg-blue-100 text-blue-700 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0">3</span><span>转发至 12381 涉诈短信预警</span></li>
+            </ol>
+          </div>
+
+          <div class="text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-100">
+            相似案例：<span class="font-mono">KB-013</span> · <span class="font-mono">KB-004</span> · <span class="font-mono">KB-014</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#7B287D] text-white text-[11px] px-4 py-2 text-center">
+      📞 紧急：南大保卫处 81686110 · 96110 反诈 · 12381 涉诈短信
+    </div>
+  </div>
+
+</div>
+
+<div class="no-print max-w-6xl mx-auto mt-8 p-4 bg-white rounded-lg shadow text-sm text-slate-600">
+  <h3 class="font-semibold text-slate-800 mb-2">📷 如何截图保存</h3>
+  <ul class="space-y-1 ml-4 list-disc">
+    <li><b>macOS</b>：⌘+⇧+4 → 拖框选中卡片 → 桌面自动保存为 PNG</li>
+    <li><b>整页保存</b>：浏览器 ⌘+P → 目的地选"另存为 PDF" → 横版 → 保存</li>
+    <li><b>提交建议</b>：路演 PPT 用三张独立 PNG；docx 第五节"补充材料"用整页 PDF</li>
+  </ul>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>
