@@ -1,0 +1,6 @@
+# 采集/结构化的生成物不入库；保留示范样本
+raw/*.json
+!raw/sample_*.json
+candidates/*.json
+!candidates/demo_expected.json
+to_fill_*.csv

@@ -1,0 +1,26 @@
+{
+  "_comment": "公开来源注册表。团队往这里加可公开访问的反诈案例页面/RSS。重点：学生/校园类。每条都要能长期检索、来源可核验（见 CONTRIBUTING 铁律）。type: html=正文抽取 / rss=订阅源。tag 进 case 的 source 字段前缀。",
+  "sources": [
+    {
+      "tag": "中国政府网·反诈",
+      "type": "html",
+      "url": "https://www.gov.cn/",
+      "enabled": false,
+      "note": "占位示例。请替换为具体的反诈案例文章 URL，而非首页。"
+    },
+    {
+      "tag": "国家反诈中心·公开提示",
+      "type": "html",
+      "url": "REPLACE_WITH_REAL_ARTICLE_URL",
+      "enabled": false,
+      "note": "团队补：国家反诈中心公开发布的校园诈骗提示文章 URL"
+    },
+    {
+      "tag": "高校保卫处·公开推文",
+      "type": "html",
+      "url": "REPLACE_WITH_REAL_ARTICLE_URL",
+      "enabled": false,
+      "note": "团队补：南大/兄弟高校保卫处官网或已公开推文（须确认公开可访问）"
+    }
+  ]
+}

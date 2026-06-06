@@ -34,6 +34,55 @@ OpenClaw 应用创新大赛参赛项目 · 用「关键词 + 正则」 ⊕「BGE
 
 参赛项目公开摘要见 [docs/application_summary.md](docs/application_summary.md)。
 
+## 📊 案例库一览
+
+<div align="center">
+
+![案例库统计](assets/kb_stats.svg)
+
+</div>
+
+> 此图由 [`tools/gen_stats_svg.py`](tools/gen_stats_svg.py) **从 `knowledge_base.json` 自动生成**——案例库扩充后重跑一次即更新。我们交付的不是一份静态案例集，而是一套带格式治理、可自动采集、**会自己长大**的反诈知识系统（采集→结构化→校验→去重→人工审核，见 [`ingest/`](ingest/)）。
+
+## 📱 现场扫码体验（H5）
+
+<table>
+<tr>
+<td width="42%" align="center">
+<img src="assets/qr_app.png" width="190"><br>
+<sub>扫码即用 · 手机浏览器打开</sub>
+</td>
+<td width="58%">
+
+一个**纯前端、零服务器**的移动端 H5：把可疑短信/聊天粘进去，浏览器**本地**跑关键词+正则检测，立即给出风险卡片——**不上传任何输入内容**，现场不依赖网络连演示者电脑。
+
+- 在线地址：`https://hjjbh1314.github.io/nju-guardian/`（启用 Pages 后生效）
+- 本地体验：直接双击 [`web/index.html`](web/index.html)
+- 检测逻辑与 Python 版规则路**一致**（实测 12/12 命中对齐）
+- 数据由 [`tools/build_web.py`](tools/build_web.py) 从知识库编译，**单一真相源**
+
+> 这一步回应评委建议：可做成 H5 / 小程序 / 接入校园 App，让同学随手就能查。当前为 H5，小程序为后续路线。
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+<img src="assets/h5_preview.png" width="280"><br>
+<sub>检测结果卡片：风险评级 + 命中高亮 + 为什么可疑 + 三步建议 + 八个凡是 + 公开来源</sub>
+</div>
+
+## 📈 检测效果（量化）
+
+在 30 条**口语化**校园诈骗样本（[`demo/tests/eval_set.json`](demo/tests/eval_set.json)）上实测：
+
+| 模式 | Top-1 准确率 | Top-3 召回率 |
+|---|---:|---:|
+| 规则路（关键词+正则） | 70% | 80% |
+| **双路融合（+ BGE-zh 向量）** | **87%** | **100%** |
+
+向量召回补回了规则路漏掉的 6 条"语义变体"（换个说法的杀猪盘 / AI 换脸 / 二次清退…）——这正是做双路融合而非只堆关键词的原因。复现：`python demo/tests/eval.py [--vector]`，详见 [docs/eval_results.md](docs/eval_results.md)。
+
 ## 🖼 演示
 
 > 完整流程见 [demo/录屏脚本_30s.md](demo/录屏脚本_30s.md)。在 [`visuals/`](visuals/) 目录里有静态 mockup（HTML 直接打开）。
