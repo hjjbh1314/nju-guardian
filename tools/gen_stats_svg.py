@@ -32,11 +32,11 @@ RISK_LABEL = {
     "low": "低危 low",
 }
 RISK_COLOR = {
-    "high": "#e5484d",
-    "medium-high": "#f5a623",
-    "medium": "#f7ce46",
-    "low-medium": "#8bbf56",
-    "low": "#46a758",
+    "high": "#C0392B",
+    "medium-high": "#C0892E",
+    "medium": "#D4A24E",
+    "low-medium": "#6E8B5E",
+    "low": "#6E8B5E",
 }
 
 
@@ -76,9 +76,9 @@ def build_svg(s: dict) -> str:
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
         f'viewBox="0 0 {W} {H}" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif">'
     )
-    parts.append(f'<rect width="{W}" height="{H}" rx="14" fill="#ffffff" stroke="#e6e6ea"/>')
+    parts.append(f'<rect width="{W}" height="{H}" rx="14" fill="#F5F0E6" stroke="#E3DCCB"/>')
     # 标题
-    parts.append(f'<text x="{pad}" y="42" font-size="22" font-weight="700" fill="#1a1a2e">'
+    parts.append(f'<text x="{pad}" y="42" font-size="22" font-weight="700" fill="#1A1714">'
                  f'🛡 南大数智安全官 · 案例库概览</text>')
     parts.append(f'<text x="{pad}" y="64" font-size="12" fill="#8a8a9a">'
                  f'v{esc(s["version"])} · 更新 {esc(s["updated"])} · 自动生成自 knowledge_base.json</text>')
@@ -89,14 +89,14 @@ def build_svg(s: dict) -> str:
     for i, (label, val) in enumerate(cards):
         cx = pad + i * (cw + 14)
         parts.append(f'<rect x="{cx:.0f}" y="80" width="{cw:.0f}" height="66" rx="10" '
-                     f'fill="#f6f6fb" stroke="#ececf3"/>')
+                     f'fill="#EFE8DA" stroke="#E3DCCB"/>')
         parts.append(f'<text x="{cx + cw/2:.0f}" y="118" font-size="30" font-weight="800" '
-                     f'fill="#5b2a86" text-anchor="middle">{esc(str(val))}</text>')
+                     f'fill="#C0392B" text-anchor="middle">{esc(str(val))}</text>')
         parts.append(f'<text x="{cx + cw/2:.0f}" y="137" font-size="12" fill="#6a6a7a" '
                      f'text-anchor="middle">{esc(label)}</text>')
 
     # 风险分布横条
-    parts.append(f'<text x="{pad}" y="182" font-size="14" font-weight="700" fill="#1a1a2e">'
+    parts.append(f'<text x="{pad}" y="182" font-size="14" font-weight="700" fill="#1A1714">'
                  f'风险等级分布</text>')
     y = 198
     row_h = 30
@@ -107,12 +107,12 @@ def build_svg(s: dict) -> str:
         w = bar_w_max * n / total
         parts.append(f'<text x="{pad}" y="{y+15}" font-size="12" fill="#4a4a5a">'
                      f'{esc(RISK_LABEL[rl])}</text>')
-        parts.append(f'<rect x="{bar_x}" y="{y}" width="{bar_w_max}" height="20" rx="5" fill="#f0f0f5"/>')
+        parts.append(f'<rect x="{bar_x}" y="{y}" width="{bar_w_max}" height="20" rx="5" fill="#E3DCCB"/>')
         if w > 0:
             parts.append(f'<rect x="{bar_x}" y="{y}" width="{w:.1f}" height="20" rx="5" '
                          f'fill="{RISK_COLOR[rl]}"/>')
         parts.append(f'<text x="{bar_x + max(w,0) + 8:.0f}" y="{y+15}" font-size="12" '
-                     f'font-weight="700" fill="#1a1a2e">{n}</text>')
+                     f'font-weight="700" fill="#1A1714">{n}</text>')
         y += row_h
 
     parts.append('</svg>')
