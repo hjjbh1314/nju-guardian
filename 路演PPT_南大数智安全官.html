@@ -252,38 +252,39 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 6 技术内核 双路引擎 -->
-<section class="slide" data-note="技术内核是一套双路召回融合引擎。第一路关键词加正则，毫秒级、完全可解释，强命中直接定为高危；第二路用 BGE 中文句向量做语义召回，专门覆盖『换个说法』的变体——同一个共享屏幕骗局，换十种说法它都能认出来。两路并行召回后加权融合排序：综合分等于规则强度加 2.5 倍语义相似度，再用阈值门控决定是否进入结果。工程上还做了两件事：知识库做哈希缓存、改库才增量重建向量索引；模型或网络缺失时自动降级 TF-IDF，保证永不空转。所以我们不是简单的关键词匹配。">
+<section class="slide" data-note="技术内核是分层研判架构。底座是端侧的三路融合引擎，毫秒级、可离线：第一路关键词加正则，可解释、强命中即定高危；第二路 BGE 中文向量做语义召回，覆盖『换个说法』的变体；第三路是我们这次新增的行为红旗——从输入里抽取转账、索要验证码、诱导共享屏幕、冒充身份等通用诈骗行为，每个对应反诈八个凡是。它的价值是泛化：哪怕案例库里没有这种骗局，只要行为像诈骗，就能预警。三路加权融合：综合分等于规则强度加 2.5 倍语义相似度，再叠加行为红旗权重，阈值门控召回，缺模型自动降级 TF-IDF。难例再升级到上层的 LLM Agent——目前接 DeepSeek，多轮追问、调用案例库工具、给出处置方案。简单情形端侧秒判，复杂情形才上大模型，这是我们刻意的分层设计，而不是无脑调大模型。">
   <div class="stagger">
     <span class="kicker">05 — 技术内核</span>
-    <h2 style="font-size:46px;margin:14px 0 22px">双路召回融合引擎，<span class="vm">规则 ⊕ 语义</span></h2>
-    <div class="pipe" style="font-size:17px">
+    <h2 style="font-size:42px;margin:12px 0 16px">分层研判：<span class="vm">三路引擎 ＋ LLM Agent</span></h2>
+    <div class="pipe" style="font-size:16px">
       <span class="step">用户输入</span><span class="arr">→</span>
-      <span class="step">双路并行召回</span><span class="arr">→</span>
-      <span class="step">加权融合排序</span><span class="arr">→</span>
-      <span class="step vm">风险研判卡片</span>
+      <span class="step">三路并行召回</span><span class="arr">→</span>
+      <span class="step">加权融合 + 校准</span><span class="arr">→</span>
+      <span class="step">研判卡片</span><span class="arr">→</span>
+      <span class="step vm">难例升级 LLM Agent</span>
     </div>
-    <hr class="hair" style="margin:24px 0 20px">
+    <hr class="hair" style="margin:20px 0 16px">
     <div style="display:flex;gap:0;align-items:stretch">
-      <div style="flex:1;padding-right:40px">
-        <p class="serif" style="font-size:21px;color:var(--ochre);font-weight:700">规则路 · 关键词 + 正则</p>
-        <ul class="mini">
-          <li>毫秒级、零依赖、完全可解释</li>
-          <li>强命中直接定级高危</li>
-          <li>正则经 CI 校验，杜绝误编译</li>
+      <div style="flex:1.25;padding-right:38px">
+        <p class="serif" style="font-size:19px;font-weight:700">① 端侧三路引擎 <span style="font-size:13px;color:var(--ink-soft);font-weight:400">· 毫秒 / 离线 / 可解释</span></p>
+        <ul class="mini" style="font-size:14px">
+          <li><b style="color:var(--ochre)">规则路</b>　关键词 + 正则，强命中即定高危</li>
+          <li><b style="color:var(--vermilion)">语义路</b>　BGE-zh 向量，覆盖「换个说法」变体</li>
+          <li><b style="color:var(--vm)">行为红旗</b>　抽八个凡是要素（转账/验证码/共享屏幕/冒充…）——<b style="color:var(--ink)">库中无此类型也能预警</b></li>
         </ul>
       </div>
       <div class="hair-v"></div>
-      <div style="flex:1;padding-left:40px">
-        <p class="serif" style="font-size:21px;color:var(--vermilion);font-weight:700">语义路 · BGE-zh 向量召回</p>
-        <ul class="mini">
-          <li>BAAI/bge-small-zh-v1.5 中文句向量</li>
-          <li>覆盖「换个说法」的诈骗变体</li>
-          <li>知识库哈希缓存，改库才增量重建</li>
+      <div style="flex:1;padding-left:38px">
+        <p class="serif" style="font-size:19px;font-weight:700">② LLM Agent <span style="font-size:13px;color:var(--ink-soft);font-weight:400">· 难例升级（DeepSeek）</span></p>
+        <ul class="mini" style="font-size:14px">
+          <li>多轮追问关键细节</li>
+          <li>调用案例库工具查证</li>
+          <li>给出按优先级的处置方案</li>
         </ul>
       </div>
     </div>
-    <hr class="hair" style="margin:22px 0 14px">
-    <p class="serif" style="font-size:17px;color:var(--ink-soft)">综合分 ＝ 规则强度 <span class="vm">＋ 2.5 ×</span> 语义相似度　·　阈值门控召回　·　模型/网络缺失自动降级 TF-IDF，永不空转</p>
+    <hr class="hair" style="margin:18px 0 12px">
+    <p class="serif" style="font-size:15px;color:var(--ink-soft)">综合分 ＝ 规则 <span class="vm">＋ 2.5×</span> 语义 <span class="vm">＋</span> 行为红旗加权　·　阈值门控　·　缺模型自动降级 TF-IDF　·　简单端侧秒判、复杂才上大模型</p>
   </div>
 </section>
 
