@@ -38,10 +38,10 @@ def main() -> int:
     qr = segno.make(args.url, error="h")  # 高纠错，便于打印/中心嵌 logo
 
     svg = out / "qr_app.svg"
-    qr.save(str(svg), kind="svg", scale=8, border=2, dark="#5B1F5D")
+    qr.save(str(svg), kind="svg", scale=8, border=2, dark="#1A1714")
     png = out / "qr_app.png"
     try:
-        qr.save(str(png), kind="png", scale=10, border=2, dark="#5B1F5D")
+        qr.save(str(png), kind="png", scale=10, border=2, dark="#1A1714")
         png_msg = f" + {png.name}"
     except Exception as e:  # pillow 缺失等
         png_msg = f"（PNG 跳过：{e}）"

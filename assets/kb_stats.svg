@@ -1,31 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="760" height="328" viewBox="0 0 760 328" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif">
-<rect width="760" height="328" rx="14" fill="#ffffff" stroke="#e6e6ea"/>
-<text x="32" y="42" font-size="22" font-weight="700" fill="#1a1a2e">🛡 南大数智安全官 · 案例库概览</text>
+<rect width="760" height="328" rx="14" fill="#F5F0E6" stroke="#E3DCCB"/>
+<text x="32" y="42" font-size="22" font-weight="700" fill="#1A1714">🛡 南大数智安全官 · 案例库概览</text>
 <text x="32" y="64" font-size="12" fill="#8a8a9a">v0.2.0 · 更新 2026-05-07 · 自动生成自 knowledge_base.json</text>
-<rect x="32" y="80" width="223" height="66" rx="10" fill="#f6f6fb" stroke="#ececf3"/>
-<text x="143" y="118" font-size="30" font-weight="800" fill="#5b2a86" text-anchor="middle">50</text>
+<rect x="32" y="80" width="223" height="66" rx="10" fill="#EFE8DA" stroke="#E3DCCB"/>
+<text x="143" y="118" font-size="30" font-weight="800" fill="#C0392B" text-anchor="middle">50</text>
 <text x="143" y="137" font-size="12" fill="#6a6a7a" text-anchor="middle">案例类型</text>
-<rect x="269" y="80" width="223" height="66" rx="10" fill="#f6f6fb" stroke="#ececf3"/>
-<text x="380" y="118" font-size="30" font-weight="800" fill="#5b2a86" text-anchor="middle">50</text>
+<rect x="269" y="80" width="223" height="66" rx="10" fill="#EFE8DA" stroke="#E3DCCB"/>
+<text x="380" y="118" font-size="30" font-weight="800" fill="#C0392B" text-anchor="middle">50</text>
 <text x="380" y="137" font-size="12" fill="#6a6a7a" text-anchor="middle">案例总数</text>
-<rect x="505" y="80" width="223" height="66" rx="10" fill="#f6f6fb" stroke="#ececf3"/>
-<text x="617" y="118" font-size="30" font-weight="800" fill="#5b2a86" text-anchor="middle">7/8</text>
+<rect x="505" y="80" width="223" height="66" rx="10" fill="#EFE8DA" stroke="#E3DCCB"/>
+<text x="617" y="118" font-size="30" font-weight="800" fill="#C0392B" text-anchor="middle">7/8</text>
 <text x="617" y="137" font-size="12" fill="#6a6a7a" text-anchor="middle">八个凡是覆盖</text>
-<text x="32" y="182" font-size="14" font-weight="700" fill="#1a1a2e">风险等级分布</text>
+<text x="32" y="182" font-size="14" font-weight="700" fill="#1A1714">风险等级分布</text>
 <text x="32" y="213" font-size="12" fill="#4a4a5a">高危 high</text>
-<rect x="210" y="198" width="470" height="20" rx="5" fill="#f0f0f5"/>
-<rect x="210" y="198" width="225.6" height="20" rx="5" fill="#e5484d"/>
-<text x="444" y="213" font-size="12" font-weight="700" fill="#1a1a2e">24</text>
+<rect x="210" y="198" width="470" height="20" rx="5" fill="#E3DCCB"/>
+<rect x="210" y="198" width="225.6" height="20" rx="5" fill="#C0392B"/>
+<text x="444" y="213" font-size="12" font-weight="700" fill="#1A1714">24</text>
 <text x="32" y="243" font-size="12" fill="#4a4a5a">中高 medium-high</text>
-<rect x="210" y="228" width="470" height="20" rx="5" fill="#f0f0f5"/>
-<rect x="210" y="228" width="150.4" height="20" rx="5" fill="#f5a623"/>
-<text x="368" y="243" font-size="12" font-weight="700" fill="#1a1a2e">16</text>
+<rect x="210" y="228" width="470" height="20" rx="5" fill="#E3DCCB"/>
+<rect x="210" y="228" width="150.4" height="20" rx="5" fill="#C0892E"/>
+<text x="368" y="243" font-size="12" font-weight="700" fill="#1A1714">16</text>
 <text x="32" y="273" font-size="12" fill="#4a4a5a">中危 medium</text>
-<rect x="210" y="258" width="470" height="20" rx="5" fill="#f0f0f5"/>
-<rect x="210" y="258" width="65.8" height="20" rx="5" fill="#f7ce46"/>
-<text x="284" y="273" font-size="12" font-weight="700" fill="#1a1a2e">7</text>
+<rect x="210" y="258" width="470" height="20" rx="5" fill="#E3DCCB"/>
+<rect x="210" y="258" width="65.8" height="20" rx="5" fill="#D4A24E"/>
+<text x="284" y="273" font-size="12" font-weight="700" fill="#1A1714">7</text>
 <text x="32" y="303" font-size="12" fill="#4a4a5a">中低 low-medium</text>
-<rect x="210" y="288" width="470" height="20" rx="5" fill="#f0f0f5"/>
-<rect x="210" y="288" width="28.2" height="20" rx="5" fill="#8bbf56"/>
-<text x="246" y="303" font-size="12" font-weight="700" fill="#1a1a2e">3</text>
+<rect x="210" y="288" width="470" height="20" rx="5" fill="#E3DCCB"/>
+<rect x="210" y="288" width="28.2" height="20" rx="5" fill="#6E8B5E"/>
+<text x="246" y="303" font-size="12" font-weight="700" fill="#1A1714">3</text>
 </svg>

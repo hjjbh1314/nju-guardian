@@ -103,6 +103,12 @@ ul.flow li span{grid-column:2;grid-row:2;font-family:var(--sans);font-weight:300
 .pipe .arr{color:var(--ochre);font-size:18px}
 .pipe .human{color:var(--vermilion)}
 
+ul.mini{list-style:none;margin:10px 0 0;padding:0;font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+ul.mini li{margin:7px 0;padding-left:15px;position:relative}
+ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height:4px;background:var(--ochre);border-radius:50%}
+.kbgrid{column-count:5;column-gap:26px;max-width:1110px}
+.kbi{display:block;font-size:13.5px;color:var(--ink);padding:5.5px 0 5.5px 14px;position:relative;break-inside:avoid;line-height:1.25}
+.kbi::before{content:"";position:absolute;left:0;top:11px;width:4px;height:4px;background:var(--vermilion);border-radius:50%}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;height:100%}
 .shot{border-radius:6px;box-shadow:0 20px 50px -22px rgba(26,23,20,.5);max-width:100%;max-height:520px}
 .qr{width:230px;image-rendering:pixelated}
@@ -246,25 +252,38 @@ ul.flow li span{grid-column:2;grid-row:2;font-family:var(--sans);font-weight:300
 </section>
 
 <!-- 6 技术内核 双路引擎 -->
-<section class="slide" data-note="技术内核是<b>双路召回引擎</b>。第一路是关键词加正则，快、可解释；第二路是 BGE 中文向量做<b>语义召回</b>，专门对付'换个说法'的诈骗变体。两路融合打分，既准又稳。这就是为什么我们不只是堆关键词。">
+<section class="slide" data-note="技术内核是一套双路召回融合引擎。第一路关键词加正则，毫秒级、完全可解释，强命中直接定为高危；第二路用 BGE 中文句向量做语义召回，专门覆盖『换个说法』的变体——同一个共享屏幕骗局，换十种说法它都能认出来。两路并行召回后加权融合排序：综合分等于规则强度加 2.5 倍语义相似度，再用阈值门控决定是否进入结果。工程上还做了两件事：知识库做哈希缓存、改库才增量重建向量索引；模型或网络缺失时自动降级 TF-IDF，保证永不空转。所以我们不是简单的关键词匹配。">
   <div class="stagger">
     <span class="kicker">05 — 技术内核</span>
-    <h2 style="font-size:50px;margin:16px 0 34px">双路召回，<span class="vm">规则 ⊕ 语义</span></h2>
+    <h2 style="font-size:46px;margin:14px 0 22px">双路召回融合引擎，<span class="vm">规则 ⊕ 语义</span></h2>
+    <div class="pipe" style="font-size:17px">
+      <span class="step">用户输入</span><span class="arr">→</span>
+      <span class="step">双路并行召回</span><span class="arr">→</span>
+      <span class="step">加权融合排序</span><span class="arr">→</span>
+      <span class="step vm">风险研判卡片</span>
+    </div>
+    <hr class="hair" style="margin:24px 0 20px">
     <div style="display:flex;gap:0;align-items:stretch">
       <div style="flex:1;padding-right:40px">
-        <p class="fig" style="font-size:30px;color:var(--ochre)">规则路</p>
-        <p class="serif" style="font-size:22px;margin:8px 0 10px">关键词 + 正则</p>
-        <p class="body" style="font-size:15px">命中快、完全可解释；强命中即高风险。</p>
+        <p class="serif" style="font-size:21px;color:var(--ochre);font-weight:700">规则路 · 关键词 + 正则</p>
+        <ul class="mini">
+          <li>毫秒级、零依赖、完全可解释</li>
+          <li>强命中直接定级高危</li>
+          <li>正则经 CI 校验，杜绝误编译</li>
+        </ul>
       </div>
       <div class="hair-v"></div>
       <div style="flex:1;padding-left:40px">
-        <p class="fig" style="font-size:30px;color:var(--vermilion)">语义路</p>
-        <p class="serif" style="font-size:22px;margin:8px 0 10px">BGE-zh 向量召回</p>
-        <p class="body" style="font-size:15px">覆盖「换个说法」的诈骗变体，补规则之短。</p>
+        <p class="serif" style="font-size:21px;color:var(--vermilion);font-weight:700">语义路 · BGE-zh 向量召回</p>
+        <ul class="mini">
+          <li>BAAI/bge-small-zh-v1.5 中文句向量</li>
+          <li>覆盖「换个说法」的诈骗变体</li>
+          <li>知识库哈希缓存，改库才增量重建</li>
+        </ul>
       </div>
     </div>
-    <hr class="hair" style="margin:34px 0 18px">
-    <p class="serif" style="font-size:19px;color:var(--ink-soft)">综合分 ＝ 规则强度 <span class="vm">＋</span> 2.5 × 语义相似度 <span style="font-size:14px">（模型缺失自动降级 TF-IDF，永不空转）</span></p>
+    <hr class="hair" style="margin:22px 0 14px">
+    <p class="serif" style="font-size:17px;color:var(--ink-soft)">综合分 ＝ 规则强度 <span class="vm">＋ 2.5 ×</span> 语义相似度　·　阈值门控召回　·　模型/网络缺失自动降级 TF-IDF，永不空转</p>
   </div>
 </section>
 
@@ -292,10 +311,10 @@ ul.flow li span{grid-column:2;grid-row:2;font-family:var(--sans);font-weight:300
 </section>
 
 <!-- 8 会自己长大（核心进步） -->
-<section class="slide" data-note="重头戏——案例库怎么'自己长大'。一条<b>可审计的流水线</b>：从政府、央媒、高校保卫处的<b>公开来源</b>抓取，用 LLM 自动结构化成统一的 12 字段，过格式校验、自动去重，落到暂存区，最后<b>开 PR 由人工审核</b>合并。注意——<b>人工这一步是我们故意保留的</b>：可审计、不污染知识库，这是护城河，不是偷懒。">
+<section class="slide" data-note="重头戏——案例库怎么自己长大。一条可审计的流水线：从政府、央媒、高校保卫处的公开来源抓取，用 LLM 自动结构化成统一的 12 字段，过格式校验、自动去重，落到暂存区，最后开 PR 经人工审核合并。这条流水线里我们保留了人工审核这一关键环节：由人复核事实、核验公开来源，确保每条入库案例都可追溯、不污染知识库——这也是它区别于无脑爬取、能长期可信的原因。">
   <div class="stagger">
     <span class="kicker">07 — 核心进步</span>
-    <h2 style="font-size:46px;margin:14px 0 30px">一条<span class="vm">会自己长大</span>的流水线</h2>
+    <h2 style="font-size:46px;margin:14px 0 28px">一条<span class="vm">会自己长大</span>的流水线</h2>
     <div class="pipe" style="font-size:18px">
       <span class="step">公开来源</span><span class="arr">→</span>
       <span class="step">抓取</span><span class="arr">→</span>
@@ -305,8 +324,13 @@ ul.flow li span{grid-column:2;grid-row:2;font-family:var(--sans);font-weight:300
       <span class="step human">人工审核 PR</span><span class="arr">→</span>
       <span class="step">入库</span>
     </div>
-    <hr class="hair" style="margin:34px 0">
-    <p class="quote" style="font-size:26px;max-width:1000px">人工审核这一步，是<span class="vm">故意保留</span>的——<br>可审计、不污染，每条新案例都带可核验来源。</p>
+    <hr class="hair" style="margin:32px 0 22px">
+    <p class="quote" style="font-size:25px;max-width:1060px">关键的一道关是<span class="vm">人工审核</span>：</p>
+    <ul class="mini" style="font-size:16px;margin-top:14px;max-width:1000px">
+      <li>由人复核事实、核验公开来源后，案例方可入库</li>
+      <li>保证每条案例<b style="color:var(--ink);font-weight:700">可追溯、不污染</b>知识库</li>
+      <li>这正是它区别于无脑爬取、能长期可信的原因</li>
+    </ul>
   </div>
 </section>
 
@@ -325,15 +349,13 @@ ul.flow li span{grid-column:2;grid-row:2;font-family:var(--sans);font-weight:300
 
 <!-- 10 案例库一览 -->
 <section class="slide" data-note="这是当前案例库的全景，<b>这张图是从知识库自动生成的</b>——库一长大，图就更新。目前 50 类校园高发诈骗，覆盖国家反诈'八个凡是'，风险分级清晰。它不是一份死文档，是系统的实时切片。">
-  <div class="two">
-    <div class="stagger">
-      <span class="kicker">09 — 案例库一览</span>
-      <h2 style="font-size:42px;margin:16px 0 20px">自动生成的<span class="vm">实时切片</span></h2>
-      <p class="body" style="font-size:16px;max-width:420px">这张统计图由脚本从知识库自动生成——<b style="color:var(--ink)">库长大，图就更新</b>，不是手画的死图。</p>
-      <p class="body" style="font-size:15px;margin-top:12px">50 类校园高发诈骗 · 对齐反诈八个凡是 · 风险分级</p>
-    </div>
-    <div class="stagger" style="text-align:center">
-      <img class="shot" src="assets/kb_stats.svg" alt="案例库统计" style="max-height:420px;background:#fff;padding:8px;border-radius:10px">
+  <div class="stagger">
+    <span class="kicker">09 — 案例库</span>
+    <h2 style="font-size:44px;margin:14px 0 10px">已覆盖 <span class="vm">50 类</span>校园高发诈骗</h2>
+    <p class="body" style="font-size:14.5px;margin-bottom:18px">统一 12 字段结构化（关键词 / 正则 / 话术 / 手法 / 处置 / 公开来源）　·　对齐反诈八个凡是　·　高 / 中 / 低风险分级　·　随采集流水线持续增长</p>
+    <hr class="hair" style="margin:0 0 18px">
+    <div class="kbgrid">
+      <span class="kbi">刷单返利</span><span class="kbi">虚假投资理财</span><span class="kbi">虚假网贷</span><span class="kbi">冒充电商客服</span><span class="kbi">冒充公检法</span><span class="kbi">虚假征信</span><span class="kbi">虚假购物</span><span class="kbi">冒充熟人 / 老师</span><span class="kbi">网游虚假交易</span><span class="kbi">婚恋杀猪盘</span><span class="kbi">兼职押金陷阱</span><span class="kbi">奖助学金诈骗</span><span class="kbi">钓鱼链接 / 陌生 App</span><span class="kbi">校园贷美容贷</span><span class="kbi">虚假彩票赌博</span><span class="kbi">AI 换脸拟声</span><span class="kbi">论文学术诈骗</span><span class="kbi">留学中介诈骗</span><span class="kbi">实习内推诈骗</span><span class="kbi">兼职打字员</span><span class="kbi">二手交易</span><span class="kbi">教务系统钓鱼</span><span class="kbi">火车票退票</span><span class="kbi">校外租房中介</span><span class="kbi">ETC 认证</span><span class="kbi">银行积分兑换</span><span class="kbi">交通违章短信</span><span class="kbi">退订话费宽带</span><span class="kbi">共享屏幕</span><span class="kbi">出借银行卡</span><span class="kbi">征信修复</span><span class="kbi">验证码代收</span><span class="kbi">短视频私信引流</span><span class="kbi">数字货币元宇宙</span><span class="kbi">假冒反诈 App</span><span class="kbi">心理咨询陷阱</span><span class="kbi">算命塔罗</span><span class="kbi">公益慈善诈骗</span><span class="kbi">志愿者招募</span><span class="kbi">粉丝群打投</span><span class="kbi">股票投顾</span><span class="kbi">注销借呗花呗</span><span class="kbi">ATM 机异常</span><span class="kbi">收款码替换</span><span class="kbi">明星见面会</span><span class="kbi">限量球鞋盲盒</span><span class="kbi">健康码异常</span><span class="kbi">二次诈骗清退</span><span class="kbi">假冒招行支付宝</span><span class="kbi">AA 抢红包</span>
     </div>
   </div>
 </section>
@@ -360,7 +382,7 @@ ul.flow li span{grid-column:2;grid-row:2;font-family:var(--sans);font-weight:300
     <h2 style="font-size:46px;margin:14px 0 26px">反诈，<span class="vm">可信比花哨重要</span></h2>
     <div class="metrics">
       <div class="metric"><div class="n">50<span class="u">类</span></div><div class="l">公开来源案例</div><div class="s">CC BY 4.0</div></div>
-      <div class="metric"><div class="n">12<span class="u">段</span></div><div class="l">字段 Schema 治理</div><div class="s">CI 校验把关</div></div>
+      <div class="metric"><div class="n">12<span class="u">字段</span></div><div class="l">统一 Schema 治理</div><div class="s">CI 校验把关</div></div>
       <div class="metric"><div class="n">100<span class="u">%</span></div><div class="l">双路 Top-3 召回</div><div class="s">含回归闸门</div></div>
     </div>
     <hr class="hair" style="margin:32px 0 16px">
@@ -394,7 +416,7 @@ ul.flow li span{grid-column:2;grid-row:2;font-family:var(--sans);font-weight:300
 <section class="slide" data-note="路线图。当前是 H5，现场可扫码；下一步做<b>微信小程序</b>、争取<b>接入南大 App</b>，让同学随手就能查；采集流水线从手动触发走向<b>定期自动更新</b>。让它真正长在同学的手机里。">
   <div class="stagger">
     <span class="kicker">13 — 路线图</span>
-    <h2 style="font-size:46px;margin:14px 0 30px">长进<span class="vm">同学的手机里</span></h2>
+    <h2 style="font-size:46px;margin:14px 0 30px">装进<span class="vm">每位同学的手机里</span></h2>
     <ul class="flow" style="max-width:920px">
       <li><span class="i">今</span><b>H5 现场扫码</b><span>纯前端、零服务器、已可用</span></li>
       <li><span class="i">次</span><b>微信小程序 · 接入南大 App</b><span>内置为功能板块，随手可查</span></li>
