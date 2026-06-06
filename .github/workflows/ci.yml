@@ -26,6 +26,28 @@ jobs:
       - name: Run smoke tests
         run: python demo/tests/test_smoke.py
 
+      - name: Validate knowledge base format
+        # 纯标准库，无需额外依赖。任何案例不合规（ERROR）即 CI 失败。
+        run: python demo/validate_kb.py
+
+      - name: Check stats SVG is up to date
+        # 重新生成统计图，若与提交版本不一致说明改库后忘了更新图，CI 失败提醒。
+        run: |
+          python tools/gen_stats_svg.py
+          git diff --exit-code assets/kb_stats.svg \
+            || (echo "::error::案例库变了但 assets/kb_stats.svg 没更新，请跑 python tools/gen_stats_svg.py 并提交" && exit 1)
+
+      - name: Check H5 data bundle is up to date
+        # 重新打包 H5 的 kb.js，若与提交版本不一致说明改库后忘了重新 build。
+        run: |
+          python tools/build_web.py
+          git diff --exit-code web/kb.js \
+            || (echo "::error::案例库变了但 web/kb.js 没更新，请跑 python tools/build_web.py 并提交" && exit 1)
+
+      - name: Detection eval (rule path, regression gate)
+        # 规则路 Top-3 召回率回归闸门。当前 80%，阈值设 75% 留余量。
+        run: python demo/tests/eval.py --min-top3 0.75
+
   lint:
     name: Lint
     runs-on: ubuntu-latest

@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NJU Guardian 反诈案例 Schema",
+  "description": "demo/knowledge_base.json 中 cases[] 单条案例的统一录入规范。这是字段规则的【单一真相源】，validate_kb.py、CONTRIBUTING.md、人工录入模板都以此为准。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "type", "name", "risk_level",
+    "keywords", "patterns", "script_examples",
+    "steps", "why_scam", "advice", "emergency", "source"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^KB-\\d{3}$",
+      "description": "KB-NNN 格式，三位数字，全库唯一、递增不跳号"
+    },
+    "type": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 12,
+      "description": "类型短标签，5-10 字，如 'AI换脸拟声'"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 30,
+      "description": "完整案例名，10-20 字"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["high", "medium-high", "medium", "low-medium", "low"]
+    },
+    "keywords": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 14,
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 8,
+        "description": "禁止单字关键词（误命中率高）"
+      }
+    },
+    "patterns": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "description": "合法正则，须能被 re.compile 通过；建议先在 regex101 (PCRE) 测过"
+      }
+    },
+    "script_examples": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": { "type": "string", "minLength": 4 }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": { "type": "string", "minLength": 4 }
+    },
+    "why_scam": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": { "type": "string", "minLength": 6 }
+    },
+    "advice": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": {
+        "type": "string",
+        "minLength": 4,
+        "maxLength": 30,
+        "description": "行动建议，动词开头，≤25 字（留 30 为硬上限）"
+      }
+    },
+    "emergency": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "description": "至少一条须含可识别号码 96110/110/12381/12348 等"
+      }
+    },
+    "source": {
+      "type": "string",
+      "minLength": 4,
+      "description": "公开来源标注，格式 [机构/出版物]·[条目]，禁止 TBD / 内部材料 / 微信群截图 等不可核验来源"
+    }
+  }
+}

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>南大数智安全官 · 反诈速查</title>
+<style>
+  :root{
+    --brand:#7B287D; --brand2:#5B1F5D; --blue:#2563EB;
+    --high:#e5484d; --mid:#f5a623; --low:#46a758;
+    --ink:#1a1a2e; --sub:#6a6a7a; --line:#ececf3; --bg:#f6f6fb;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6}
+  .wrap{max-width:480px;margin:0 auto;min-height:100vh;background:#fff;display:flex;flex-direction:column}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:20px 18px 22px}
+  header h1{margin:0;font-size:20px;font-weight:800;letter-spacing:.5px}
+  header p{margin:4px 0 0;font-size:12px;opacity:.85}
+  .stat{display:flex;gap:8px;margin-top:14px}
+  .stat div{flex:1;background:rgba(255,255,255,.15);border-radius:10px;padding:8px;text-align:center}
+  .stat b{display:block;font-size:18px}
+  .stat span{font-size:10px;opacity:.85}
+  main{flex:1;padding:16px 18px 24px}
+  .lbl{font-size:13px;color:var(--sub);margin:0 0 6px}
+  textarea{width:100%;min-height:96px;border:1.5px solid var(--line);border-radius:12px;padding:12px;
+    font-size:15px;font-family:inherit;resize:vertical;outline:none}
+  textarea:focus{border-color:var(--brand)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 4px}
+  .chip{font-size:12px;background:#f0eaf3;color:var(--brand);border:none;border-radius:999px;
+    padding:6px 11px;cursor:pointer}
+  .chip:active{background:#e3d4ea}
+  .btn{width:100%;margin-top:14px;background:var(--brand);color:#fff;border:none;border-radius:12px;
+    padding:14px;font-size:16px;font-weight:700;cursor:pointer}
+  .btn:active{background:var(--brand2)}
+  #out{margin-top:18px}
+  .card{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px;
+    animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card .top{padding:12px 14px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .card .body{padding:12px 14px}
+  .card h3{margin:0 0 6px;font-size:15px}
+  .meta{font-size:12px;color:var(--sub);margin:0 0 10px}
+  .sec{margin:10px 0}
+  .sec b{font-size:13px}
+  .sec ul{margin:5px 0 0;padding-left:18px;font-size:13px}
+  .sec li{margin:2px 0}
+  .hl{background:#fff3b0;border-radius:3px;padding:0 2px;font-weight:700}
+  .ref{background:#f6f6fb;border-left:3px solid var(--brand);border-radius:6px;padding:8px 10px;
+    font-size:12.5px;margin:8px 0;color:#3a3a4a}
+  .src{font-size:11px;color:#9a9aaa;margin-top:8px}
+  .emg{background:#fff5f5;border:1px solid #ffd9d9;border-radius:10px;padding:11px 13px;font-size:13px;
+    color:#b3261e;margin-top:6px}
+  .emg b{color:#e5484d}
+  .none{text-align:center;color:var(--sub);padding:30px 10px}
+  .none .big{font-size:40px}
+  .report{display:block;width:100%;margin-top:12px;background:#fff;color:var(--brand);
+    border:1.5px dashed var(--brand);border-radius:12px;padding:11px;font-size:13.5px;
+    font-weight:700;text-align:center;text-decoration:none}
+  .report:active{background:#f6eef8}
+  /* 截图识诈 */
+  .ocr{display:flex;gap:8px;margin-top:10px}
+  .ocr-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    background:#f0eaf3;color:var(--brand);border:1px solid #e3d4ea;border-radius:11px;
+    padding:11px;font-size:13.5px;font-weight:600;cursor:pointer}
+  .ocr-btn.ghost{background:#fff;color:var(--sub);border-color:var(--line);flex:0 0 auto}
+  .ocr-btn:active{background:#e3d4ea}
+  #ocr-status{display:none;margin-top:8px;font-size:12.5px;color:var(--sub);
+    padding:8px 12px;background:#f7f7fb;border-radius:10px}
+  #ocr-status.on{display:block}
+  #ocr-status .sp{display:inline-block;width:12px;height:12px;border:2px solid #d9c7e2;
+    border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite;
+    vertical-align:-2px;margin-right:6px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  /* 实时风险条（边打字边出） */
+  #live{display:none;align-items:center;gap:8px;margin-top:10px;font-size:12.5px;color:var(--sub);
+    padding:8px 12px;background:#f7f7fb;border-radius:10px;transition:.2s}
+  #live.on{display:flex}
+  #live .dot{width:9px;height:9px;border-radius:50%;background:var(--low);flex:none;transition:.25s}
+  #live .bar{flex:1;height:5px;border-radius:3px;background:#e7e7ef;overflow:hidden}
+  #live .bar i{display:block;height:100%;width:0;background:var(--low);transition:width .25s,background .25s}
+  #live b{color:var(--ink)}
+  /* 战报图按钮 + 弹层 */
+  .share{display:block;width:100%;margin-top:10px;background:var(--brand2);color:#fff;border:none;
+    border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer}
+  #modal{display:none;position:fixed;inset:0;background:rgba(20,10,22,.82);z-index:50;
+    align-items:center;justify-content:center;padding:18px}
+  #modal.on{display:flex;flex-direction:column}
+  #modal img{max-width:100%;max-height:74vh;border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+  #modal .tip{color:#fff;font-size:13px;margin:14px 0 8px;text-align:center;opacity:.9}
+  #modal .mbtns{display:flex;gap:10px}
+  #modal a,#modal button{background:#fff;color:var(--brand2);border:none;border-radius:10px;
+    padding:11px 18px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}
+  #modal .close{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+  footer{padding:14px 18px;font-size:11px;color:#9a9aaa;border-top:1px solid var(--line);text-align:center}
+  .disc{font-size:11px;color:#9a9aaa;margin-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🛡 南大数智安全官</h1>
+    <p>把可疑短信 / 聊天 / 链接粘进来，立即识别校园诈骗</p>
+    <div class="stat">
+      <div><b id="s-cases">–</b><span>诈骗类型</span></div>
+      <div><b id="s-ver">–</b><span>知识库版本</span></div>
+      <div><b>96110</b><span>反诈专线</span></div>
+    </div>
+  </header>
+  <main>
+    <p class="lbl">粘贴可疑内容：</p>
+    <textarea id="inp" placeholder="例：辅导员让我先垫付800班费周一返我 / 视频里同学声音怪怪的让我转账 / 您的快递丢失点链接理赔…"></textarea>
+    <div class="chips" id="chips"></div>
+    <div class="ocr">
+      <label class="ocr-btn">📷 上传聊天截图识别<input type="file" id="ocr-file" accept="image/*" hidden></label>
+      <button class="ocr-btn ghost" id="ocr-sample">用演示样图</button>
+    </div>
+    <div id="ocr-status"></div>
+    <div id="live"><span class="dot"></span><span class="bar"><i></i></span><span id="live-txt"></span></div>
+    <button class="btn" id="go">🔍 立即检测</button>
+    <div id="out"></div>
+    <p class="disc">⚠️ 本页为<b>离线规则版</b>（关键词+正则，浏览器本地运行、不上传任何内容）。完整版在此之上叠加 <b>BGE-zh 语义向量召回</b>，覆盖"换个说法"的诈骗变体。</p>
+  </main>
+  <footer>
+    南大数智安全官 · OpenClaw 应用创新大赛 · 案例均含公开来源 · 紧急拨 96110 / 南大保卫处 81686110
+  </footer>
+</div>
+
+<div id="modal">
+  <img id="modal-img" alt="反诈战报">
+  <p class="tip">长按图片保存 / 转发到班群，提醒同学</p>
+  <div class="mbtns">
+    <a id="modal-dl" download="反诈战报.png">⬇️ 保存图片</a>
+    <button class="close" id="modal-close">关闭</button>
+  </div>
+</div>
+
+<script src="kb.js"></script>
+<script>
+const EIGHT = [
+  "凡是要求垫付资金做任务的兼职刷单，都是诈骗",
+  "凡是宣称内幕消息、专家指导、稳赚不赔的投资理财，都是诈骗",
+  "凡是宣称无抵押低利率、放款前要先交各类费用的贷款，都是诈骗",
+  "凡是自称电商物流客服以退款理赔为由要求提供银行卡和验证码的，都是诈骗",
+  "凡是自称公检法以涉嫌违法为由要求转账到安全账户的，都是诈骗",
+  '凡是自称"领导"主动加 QQ/微信，先嘘寒问暖再要求转账的，都是诈骗',
+  "凡是发送不明链接让你输入银行卡 / 手机验证码 / 各种密码的，都是诈骗",
+  "凡是通过社交平台拉群加好友、让你点击链接下载 APP 进行投资 / 退费的，都是诈骗",
+];
+const CN = {1:"一",2:"二",3:"三",4:"四",5:"五",6:"六",7:"七",8:"八"};
+const KB = window.NJU_KB || {cases:[],version:"?"};
+const REPO = "hjjbh1314/nju-guardian";   // 上报 Issue 落到这个仓库
+document.getElementById("s-cases").textContent = KB.cases.length;
+document.getElementById("s-ver").textContent = "v"+KB.version;
+
+// 「我要上报」→ 打开预填的 GitHub 新案例 Issue（零服务器，复用 new_case 模板）
+function reportLink(text, matchedName){
+  const title = encodeURIComponent("[新案例上报] " + text.slice(0,24));
+  const body = encodeURIComponent(
+    "> 由 H5 现场上报。请补全公开来源后由维护者审核入库。\n\n" +
+    "## 可疑内容\n```\n" + text + "\n```\n\n" +
+    "## 检测时最相近的已知案例\n" + (matchedName || "（未匹配到，疑似新型）") + "\n\n" +
+    "## 公开来源（必填，否则不予入库）\n<!-- 政府/主流媒体/高校保卫处公开链接 -->\n"
+  );
+  return `https://github.com/${REPO}/issues/new?labels=knowledge-base&title=${title}&body=${body}`;
+}
+
+// 示例气泡：均为规则路强命中，保证现场点开即出卡片
+const SAMPLES = [
+  "辅导员让我先垫付800元班费周一返给我",
+  "我是公安局的你涉嫌洗钱请把钱转入安全账户配合调查",
+  "无抵押免征信秒放款但放款前要先交一笔保证金",
+  "群里老师免费分享内幕消息跟单稳赚不赔",
+];
+const chips = document.getElementById("chips");
+SAMPLES.forEach(s=>{
+  const b=document.createElement("button");b.className="chip";b.textContent=s.slice(0,12)+"…";
+  b.onclick=()=>{document.getElementById("inp").value=s;detect();};
+  chips.appendChild(b);
+});
+
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+// 规则路打分：与 demo/nju_guardian.py score_case 一致（kw×1.0 + pt×1.5）
+function scoreCase(text, c){
+  const t = text.toLowerCase();
+  const kw = (c.keywords||[]).filter(k=>t.includes(k.toLowerCase()));
+  const pt = [];
+  (c.patterns||[]).forEach(p=>{
+    try{ if(new RegExp(p,"i").test(text)) pt.push(p); }catch(e){}
+  });
+  return {c, kw, pt, rule: kw.length*1.0 + pt.length*1.5};
+}
+
+// 风险判定：移植 overall_risk 的规则路分支（无向量时）
+function overallRisk(top){
+  if(!top) return {label:"暂未匹配到诈骗模式", level:"low", conf:0, emoji:"🟢", color:"var(--low)"};
+  const rs = top.rule;
+  if(rs>=3.0) return {label:"高风险 · 强烈疑似诈骗", level:"high", conf:Math.min(.99,.6+.08*rs), emoji:"🔴", color:"var(--high)"};
+  if(rs>=1.5) return {label:"中等风险 · 多项可疑特征", level:"medium", conf:Math.min(.85,.4+.1*rs), emoji:"🟡", color:"var(--mid)"};
+  if(rs>=1.0) return {label:"低-中风险 · 少量可疑信号", level:"low-medium", conf:Math.min(.5,.2+.1*rs), emoji:"🟢", color:"var(--low)"};
+  return {label:"暂未匹配到诈骗模式", level:"low", conf:0, emoji:"🟢", color:"var(--low)"};
+}
+
+function highlight(text, kws){
+  let h = esc(text);
+  [...new Set(kws)].sort((a,b)=>b.length-a.length).forEach(k=>{
+    if(!k) return;
+    const re = new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi");
+    h = h.replace(re, m=>`<span class="hl">${m}</span>`);
+  });
+  return h;
+}
+
+function eightRefs(c){
+  const out=[];
+  (c.why_scam||[]).forEach(w=>{
+    const m = w.match(/八个凡是.*?第([一二三四五六七八12345678])条/);
+    if(m){
+      let n = "一二三四五六七八".indexOf(m[1]);
+      if(n<0) n = parseInt(m[1])-1;
+      if(n>=0 && n<8 && !out.includes(n)) out.push(n);
+    }
+  });
+  return out;
+}
+
+function detect(){
+  const text = document.getElementById("inp").value.trim();
+  const out = document.getElementById("out");
+  if(!text){ out.innerHTML=""; return; }
+  const scored = KB.cases.map(c=>scoreCase(text,c)).filter(m=>m.rule>=1.0)
+                  .sort((a,b)=>b.rule-a.rule).slice(0,3);
+  if(scored.length===0){
+    out.innerHTML = `<div class="none"><div class="big">🟢</div>
+      <p>未匹配到已知诈骗模式。<br>但仍请保持警惕——遇转账/索要验证码务必多方核实。</p>
+      <div class="emg">紧急：反诈专线 <b>96110</b> · 报警 <b>110</b> · 南大保卫处 <b>81686110</b></div>
+      <a class="report" href="${reportLink(text,"")}" target="_blank" rel="noopener">🚩 这也是诈骗？一键上报，帮案例库变强</a></div>`;
+    return;
+  }
+  const top = scored[0];
+  const r = overallRisk(top);
+  let html = `<div class="card">
+    <div class="top" style="background:${r.color}">
+      <span>${r.emoji} ${esc(r.label)}</span>
+      <span style="font-size:13px">置信度 ${Math.round(r.conf*100)}%</span>
+    </div>
+    <div class="body">
+      <p class="lbl" style="margin:0 0 8px">你的输入（已高亮命中词）：</p>
+      <div style="font-size:14px;background:#fafafd;border-radius:8px;padding:10px">${highlight(text, top.kw)}</div>`;
+
+  scored.forEach((m,i)=>{
+    const c=m.c;
+    const refs = eightRefs(c);
+    html += `<div class="sec" style="margin-top:14px;border-top:1px dashed var(--line);padding-top:12px">
+      <h3>${i===0?"📚 最可能：":"· 也可能："} ${esc(c.name)} <span style="font-weight:400;color:var(--sub);font-size:12px">（${esc(c.type)}）</span></h3>
+      <p class="meta">规则命中强度 ${m.rule.toFixed(1)} · 命中词 ${m.kw.length} 个${m.pt.length?` · 模式 ${m.pt.length} 条`:""}</p>`;
+    if(i===0){
+      html += `<div class="sec"><b>⚠️ 为什么可疑</b><ul>${(c.why_scam||[]).map(w=>`<li>${esc(w)}</li>`).join("")}</ul></div>`;
+      html += `<div class="sec"><b>✅ 怎么办</b><ul>${(c.advice||[]).map(a=>`<li>${esc(a)}</li>`).join("")}</ul></div>`;
+      refs.forEach(n=>{ html += `<div class="ref">🛡 国家反诈八个凡是·第${CN[n+1]}条：${esc(EIGHT[n])}</div>`; });
+      html += `<div class="emg">紧急：${(c.emergency||["96110"]).map(e=>esc(e)).join(" · ")} · 报警 <b>110</b></div>`;
+    }
+    html += `<p class="src">来源：${esc(c.source||"")}</p></div>`;
+  });
+  html += `<button class="share" id="shareBtn">📤 生成可转发"反诈战报"图</button>`;
+  html += `<a class="report" href="${reportLink(text, top.c.name)}" target="_blank" rel="noopener">🚩 遇到新变体？一键上报，帮案例库变强</a>`;
+  html += `</div></div>`;
+  out.innerHTML = html;
+  LAST = {text, top, risk:r};
+  const sb = document.getElementById("shareBtn");
+  if(sb) sb.onclick = ()=>makeReport();
+  out.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+let LAST = null;
+
+// ── 功能②：实时输入风险条（边打字边出）──
+const live = document.getElementById("live"), liveTxt = document.getElementById("live-txt");
+const liveDot = live.querySelector(".dot"), liveBar = live.querySelector(".bar i");
+const RISK_C = {high:"var(--high)", medium:"var(--mid)", "low-medium":"var(--low)", low:"var(--low)"};
+function liveScan(){
+  const text = document.getElementById("inp").value.trim();
+  if(text.length < 4){ live.classList.remove("on"); return; }
+  live.classList.add("on");
+  const scored = KB.cases.map(c=>scoreCase(text,c)).filter(m=>m.rule>=1.0).sort((a,b)=>b.rule-a.rule);
+  if(scored.length===0){
+    liveDot.style.background = "var(--low)"; liveBar.style.width="12%"; liveBar.style.background="var(--low)";
+    liveTxt.innerHTML = "暂未发现明显诈骗特征，保持警惕"; return;
+  }
+  const r = overallRisk(scored[0]);
+  const pct = Math.min(100, Math.round(r.conf*100));
+  const col = RISK_C[r.level] || "var(--mid)";
+  liveDot.style.background = col; liveBar.style.background = col;
+  liveBar.style.width = Math.max(pct,18) + "%";
+  liveTxt.innerHTML = `${r.emoji} <b>${r.label.split(" · ")[0]}</b> · 疑似「${scored[0].c.type}」 · 点下方查看详情`;
+}
+document.getElementById("inp").addEventListener("input", liveScan);
+
+// ── 功能①：生成可转发"反诈战报"图（canvas，纯前端）──
+function wrap(ctx, text, x, y, maxW, lh, max){
+  const chars=[...text]; let line="", n=0;
+  for(const ch of chars){
+    if(ctx.measureText(line+ch).width > maxW){ ctx.fillText(line,x,y); y+=lh; line=ch; n++;
+      if(max && n>=max-1){ // 最后一行截断
+        let rest=line; while(ctx.measureText(rest+"…").width>maxW) rest=rest.slice(0,-1);
+        ctx.fillText(rest+"…",x,y); return y+lh; } }
+    else line+=ch;
+  }
+  ctx.fillText(line,x,y); return y+lh;
+}
+function makeReport(){
+  if(!LAST) return;
+  const {text, top, risk} = LAST, c = top.c;
+  const W=640, H=940, P=44;
+  const cv=document.createElement("canvas"); cv.width=W; cv.height=H;
+  const x=cv.getContext("2d");
+  const COL={high:"#e5484d",medium:"#f5a623","low-medium":"#46a758",low:"#46a758"};
+  const accent=COL[risk.level]||"#f5a623";
+  // 背景
+  x.fillStyle="#fbfaf7"; x.fillRect(0,0,W,H);
+  // 顶部色带
+  x.fillStyle="#5B1F5D"; x.fillRect(0,0,W,118);
+  x.fillStyle="#fff"; x.font="700 30px 'PingFang SC',sans-serif"; x.textBaseline="alphabetic";
+  x.fillText("🛡 南大数智安全官", P, 58);
+  x.font="400 17px 'PingFang SC',sans-serif"; x.fillStyle="rgba(255,255,255,.85)";
+  x.fillText("反诈战报 · 转发提醒身边同学", P, 90);
+  // 风险标签
+  let y=170;
+  x.fillStyle=accent; x.beginPath(); x.arc(P+9,y-6,9,0,7); x.fill();
+  x.fillStyle="#1a1a2e"; x.font="800 30px 'PingFang SC',sans-serif";
+  x.fillText(risk.label.split(" · ")[0], P+30, y+2);
+  x.font="500 17px 'PingFang SC',sans-serif"; x.fillStyle="#6a6a7a";
+  x.fillText("置信度 "+Math.round(risk.conf*100)+"%", P+30, y+26);
+  // 可疑内容
+  y+=64; x.fillStyle=accent; x.fillRect(P,y-14,4,18);
+  x.fillStyle="#8a8a9a"; x.font="600 15px 'PingFang SC',sans-serif"; x.fillText("可疑内容", P+14, y);
+  y+=14; x.fillStyle="#2a2a3a"; x.font="400 18px 'PingFang SC',sans-serif";
+  y=wrap(x, "“"+text+"”", P, y+18, W-2*P, 28, 3);
+  // 命中
+  y+=24; x.fillStyle=accent; x.fillRect(P,y-14,4,18);
+  x.fillStyle="#8a8a9a"; x.font="600 15px 'PingFang SC',sans-serif"; x.fillText("识别为", P+14, y);
+  y+=14; x.fillStyle="#1a1a2e"; x.font="700 21px 'PingFang SC',sans-serif";
+  y=wrap(x, c.name+"（"+c.type+"）", P, y+22, W-2*P, 30, 2);
+  // 怎么办
+  y+=22; x.fillStyle=accent; x.fillRect(P,y-14,4,18);
+  x.fillStyle="#8a8a9a"; x.font="600 15px 'PingFang SC',sans-serif"; x.fillText("怎么办", P+14, y);
+  y+=18; x.font="400 17px 'PingFang SC',sans-serif"; x.fillStyle="#2a2a3a";
+  (c.advice||[]).slice(0,3).forEach(a=>{ x.fillStyle=accent; x.fillText("✓",P,y+17);
+    x.fillStyle="#2a2a3a"; y=wrap(x,a,P+26,y+17,W-2*P-26,26,2); y+=4; });
+  // 紧急条
+  y+=10; x.fillStyle="#fff5f5"; x.fillRect(P,y,W-2*P,52);
+  x.fillStyle="#e5484d"; x.font="700 18px 'PingFang SC',sans-serif";
+  x.fillText("紧急：96110 反诈专线 · 110 报警", P+16, y+32);
+  // 底部
+  x.fillStyle="#9a9aaa"; x.font="400 14px 'PingFang SC',sans-serif";
+  x.fillText("南大数智安全官 · 案例含公开来源 · 扫码体验更多", P, H-32);
+  // 输出
+  const url=cv.toDataURL("image/png");
+  document.getElementById("modal-img").src=url;
+  document.getElementById("modal-dl").href=url;
+  document.getElementById("modal").classList.add("on");
+}
+document.getElementById("modal-close").onclick=()=>document.getElementById("modal").classList.remove("on");
+
+// ── 功能③：截图识诈（OCR，纯前端）──
+// 上传聊天截图 → tesseract.js 本地识别文字 → 喂给检测引擎。
+// "演示样图"内置已知文本兜底，现场即使断网/识别不佳也必出结果。
+const SAMPLE_OCR_TEXT = "您好您的京东订单存在异常 需要为您办理理赔退款 请先下载会议软件并开启共享屏幕 以便核对您的银行卡流水";
+const ocrStatus = document.getElementById("ocr-status");
+let tessLoading = null;
+function loadTesseract(){
+  if (window.Tesseract) return Promise.resolve();
+  if (tessLoading) return tessLoading;
+  tessLoading = new Promise((res, rej)=>{
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+    s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+  return tessLoading;
+}
+function ocrSay(html, spin){
+  ocrStatus.className = "on";
+  ocrStatus.innerHTML = (spin ? '<span class="sp"></span>' : "") + html;
+}
+async function runOCR(src, fallbackText){
+  ocrSay("正在识别图片文字…首次需加载识别模型，请稍候", true);
+  try{
+    await loadTesseract();
+    const { data } = await window.Tesseract.recognize(src, "chi_sim+eng");
+    let text = (data.text || "").replace(/\s+/g, " ").trim();
+    if (text.length < 6 && fallbackText) text = fallbackText;   // 识别太少→兜底
+    if (!text){ ocrSay("没识别出文字，换张更清晰的截图试试", false); return; }
+    document.getElementById("inp").value = text;
+    ocrSay("已识别：" + text.slice(0, 40) + (text.length>40?"…":""), false);
+    liveScan(); detect();
+  }catch(e){
+    if (fallbackText){   // 断网/模型加载失败→用样图已知文本，保证演示
+      document.getElementById("inp").value = fallbackText;
+      ocrSay("（离线兜底）已载入样图文本", false);
+      liveScan(); detect();
+    } else {
+      ocrSay("识别服务加载失败（可能离线）。可改用『用演示样图』，或手动粘贴文字。", false);
+    }
+  }
+}
+document.getElementById("ocr-file").addEventListener("change", e=>{
+  const f = e.target.files[0]; if (f) runOCR(f, null);
+});
+document.getElementById("ocr-sample").onclick = ()=> runOCR("sample_chat.png", SAMPLE_OCR_TEXT);
+
+document.getElementById("go").onclick = detect;
+</script>
+</body>
+</html>
