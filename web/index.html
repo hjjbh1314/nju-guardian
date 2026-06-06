@@ -4,102 +4,123 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>南大数智安全官 · 反诈速查</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --brand:#7B287D; --brand2:#5B1F5D; --blue:#2563EB;
-    --high:#e5484d; --mid:#f5a623; --low:#46a758;
-    --ink:#1a1a2e; --sub:#6a6a7a; --line:#ececf3; --bg:#f6f6fb;
+    --paper:#F5F0E6; --paper-2:#EFE8DA; --page:#E9E1D2;
+    --ink:#1A1714; --sub:#6E665C; --hair:rgba(26,23,20,.14);
+    --vm:#C0392B;    /* 朱砂 */ --oc:#B07A3C;  /* 赭石 */
+    --high:#C0392B; --mid:#C0892E; --low:#6E8B5E;
+    --serif:"Noto Serif SC","Songti SC","STSong",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--bg);color:var(--ink);line-height:1.6}
-  .wrap{max-width:480px;margin:0 auto;min-height:100vh;background:#fff;display:flex;flex-direction:column}
-  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:20px 18px 22px}
-  header h1{margin:0;font-size:20px;font-weight:800;letter-spacing:.5px}
-  header p{margin:4px 0 0;font-size:12px;opacity:.85}
-  .stat{display:flex;gap:8px;margin-top:14px}
-  .stat div{flex:1;background:rgba(255,255,255,.15);border-radius:10px;padding:8px;text-align:center}
-  .stat b{display:block;font-size:18px}
-  .stat span{font-size:10px;opacity:.85}
-  main{flex:1;padding:16px 18px 24px}
-  .lbl{font-size:13px;color:var(--sub);margin:0 0 6px}
-  textarea{width:100%;min-height:96px;border:1.5px solid var(--line);border-radius:12px;padding:12px;
-    font-size:15px;font-family:inherit;resize:vertical;outline:none}
-  textarea:focus{border-color:var(--brand)}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 4px}
-  .chip{font-size:12px;background:#f0eaf3;color:var(--brand);border:none;border-radius:999px;
-    padding:6px 11px;cursor:pointer}
-  .chip:active{background:#e3d4ea}
-  .btn{width:100%;margin-top:14px;background:var(--brand);color:#fff;border:none;border-radius:12px;
-    padding:14px;font-size:16px;font-weight:700;cursor:pointer}
-  .btn:active{background:var(--brand2)}
-  #out{margin-top:18px}
-  .card{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px;
-    animation:fade .25s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .card .top{padding:12px 14px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}
-  .card .body{padding:12px 14px}
-  .card h3{margin:0 0 6px;font-size:15px}
+  body{margin:0;font-family:var(--sans);background:var(--page);color:var(--ink);line-height:1.7;
+    -webkit-font-smoothing:antialiased}
+  /* 宣纸纹理 */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+  .wrap{max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);
+    display:flex;flex-direction:column;box-shadow:0 0 60px -20px rgba(26,23,20,.25)}
+  /* 头部：宣纸底 + 宋体标题 + 朱砂细线，无色块 */
+  header{padding:26px 22px 18px;position:relative}
+  header .tick{display:block;width:38px;height:3px;background:var(--vm);margin-bottom:14px}
+  header h1{margin:0;font-family:var(--serif);font-weight:900;font-size:25px;letter-spacing:.02em}
+  header h1 .v{color:var(--vm)}
+  header p{margin:7px 0 0;font-size:12.5px;color:var(--sub)}
+  .seal{position:absolute;top:24px;right:22px;width:50px;height:50px;display:grid;place-items:center;
+    border:2px solid var(--vm);border-radius:7px;color:var(--vm);font-family:var(--serif);
+    font-weight:700;font-size:18px;transform:rotate(-5deg)}
+  .stat{display:flex;margin:18px 22px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .stat div{flex:1;padding:11px 4px;text-align:center}
+  .stat div+div{border-left:1px solid var(--hair)}
+  .stat b{display:block;font-family:var(--serif);font-weight:700;font-size:21px;color:var(--ink)}
+  .stat span{font-size:10.5px;color:var(--sub);letter-spacing:.05em}
+  main{flex:1;padding:20px 22px 26px}
+  .lbl{font-size:12.5px;color:var(--sub);margin:0 0 8px;display:flex;align-items:center;gap:7px}
+  .lbl::before{content:"";width:14px;height:2px;background:var(--vm)}
+  textarea{width:100%;min-height:100px;border:1px solid var(--hair);border-radius:4px;padding:13px;
+    font-size:15px;font-family:inherit;line-height:1.7;resize:vertical;outline:none;background:#FCFAF4;color:var(--ink)}
+  textarea:focus{border-color:var(--vm)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+  .chip{font-size:12px;background:transparent;color:var(--oc);border:1px solid var(--hair);border-radius:999px;
+    padding:6px 12px;cursor:pointer;font-family:var(--sans)}
+  .chip:active{background:var(--paper-2)}
+  .btn{width:100%;margin-top:16px;background:var(--vm);color:#fff;border:none;border-radius:5px;
+    padding:15px;font-size:16px;font-weight:700;letter-spacing:.08em;cursor:pointer;font-family:var(--sans)}
+  .btn:active{background:#9f2f23}
+  #out{margin-top:22px}
+  /* 风险卡片：去边框，靠顶部色条 + 细线分隔 + 大留白 */
+  .card{margin-bottom:16px;animation:fade .3s ease;border-top:3px solid var(--vm)}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .card .top{padding:14px 2px;font-family:var(--serif);font-weight:700;display:flex;
+    justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--hair)}
+  .card .top .lv{font-size:19px} .card .top .cf{font-size:13px;color:var(--sub);font-family:var(--sans)}
+  .card .body{padding:14px 2px}
+  .card h3{margin:0 0 6px;font-size:15.5px;font-family:var(--serif)}
   .meta{font-size:12px;color:var(--sub);margin:0 0 10px}
-  .sec{margin:10px 0}
-  .sec b{font-size:13px}
-  .sec ul{margin:5px 0 0;padding-left:18px;font-size:13px}
-  .sec li{margin:2px 0}
-  .hl{background:#fff3b0;border-radius:3px;padding:0 2px;font-weight:700}
-  .ref{background:#f6f6fb;border-left:3px solid var(--brand);border-radius:6px;padding:8px 10px;
-    font-size:12.5px;margin:8px 0;color:#3a3a4a}
-  .src{font-size:11px;color:#9a9aaa;margin-top:8px}
-  .emg{background:#fff5f5;border:1px solid #ffd9d9;border-radius:10px;padding:11px 13px;font-size:13px;
-    color:#b3261e;margin-top:6px}
-  .emg b{color:#e5484d}
-  .none{text-align:center;color:var(--sub);padding:30px 10px}
+  .sec{margin:14px 0}
+  .sec b{font-size:13px;color:var(--vm);font-weight:700;letter-spacing:.03em}
+  .sec ul{margin:7px 0 0;padding-left:0;list-style:none;font-size:13.5px}
+  .sec li{margin:5px 0;padding-left:16px;position:relative}
+  .sec li::before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;background:var(--oc);border-radius:50%}
+  .hl{background:linear-gradient(transparent 60%,rgba(192,57,43,.22) 0);font-weight:700}
+  .ref{border-left:2px solid var(--vm);padding:6px 0 6px 12px;font-size:12.5px;margin:10px 0;color:#4a4239}
+  .src{font-size:11px;color:#9a9183;margin-top:10px;font-style:italic}
+  .emg{border:1px solid rgba(192,57,43,.3);border-radius:4px;padding:11px 13px;font-size:13px;
+    color:#9f2f23;margin-top:8px;background:rgba(192,57,43,.05)}
+  .emg b{color:var(--vm);font-weight:700}
+  .none{text-align:center;color:var(--sub);padding:34px 10px}
   .none .big{font-size:40px}
-  .report{display:block;width:100%;margin-top:12px;background:#fff;color:var(--brand);
-    border:1.5px dashed var(--brand);border-radius:12px;padding:11px;font-size:13.5px;
+  .report{display:block;width:100%;margin-top:14px;background:transparent;color:var(--vm);
+    border:1px solid var(--vm);border-radius:5px;padding:12px;font-size:13.5px;
     font-weight:700;text-align:center;text-decoration:none}
-  .report:active{background:#f6eef8}
+  .report:active{background:rgba(192,57,43,.07)}
   /* 截图识诈 */
-  .ocr{display:flex;gap:8px;margin-top:10px}
+  .ocr{display:flex;gap:8px;margin-top:12px}
   .ocr-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;
-    background:#f0eaf3;color:var(--brand);border:1px solid #e3d4ea;border-radius:11px;
-    padding:11px;font-size:13.5px;font-weight:600;cursor:pointer}
-  .ocr-btn.ghost{background:#fff;color:var(--sub);border-color:var(--line);flex:0 0 auto}
-  .ocr-btn:active{background:#e3d4ea}
+    background:transparent;color:var(--ink);border:1px solid var(--hair);border-radius:5px;
+    padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+  .ocr-btn.ghost{color:var(--sub);flex:0 0 auto}
+  .ocr-btn:active{background:var(--paper-2)}
   #ocr-status{display:none;margin-top:8px;font-size:12.5px;color:var(--sub);
-    padding:8px 12px;background:#f7f7fb;border-radius:10px}
+    padding:9px 12px;background:var(--paper-2);border-radius:4px}
   #ocr-status.on{display:block}
-  #ocr-status .sp{display:inline-block;width:12px;height:12px;border:2px solid #d9c7e2;
-    border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite;
+  #ocr-status .sp{display:inline-block;width:12px;height:12px;border:2px solid var(--hair);
+    border-top-color:var(--vm);border-radius:50%;animation:spin .7s linear infinite;
     vertical-align:-2px;margin-right:6px}
   @keyframes spin{to{transform:rotate(360deg)}}
-  /* 实时风险条（边打字边出） */
-  #live{display:none;align-items:center;gap:8px;margin-top:10px;font-size:12.5px;color:var(--sub);
-    padding:8px 12px;background:#f7f7fb;border-radius:10px;transition:.2s}
+  /* 实时风险条 */
+  #live{display:none;align-items:center;gap:9px;margin-top:12px;font-size:12.5px;color:var(--sub);
+    padding:9px 13px;background:var(--paper-2);border-radius:4px;transition:.2s}
   #live.on{display:flex}
   #live .dot{width:9px;height:9px;border-radius:50%;background:var(--low);flex:none;transition:.25s}
-  #live .bar{flex:1;height:5px;border-radius:3px;background:#e7e7ef;overflow:hidden}
+  #live .bar{flex:1;height:4px;border-radius:2px;background:rgba(26,23,20,.1);overflow:hidden}
   #live .bar i{display:block;height:100%;width:0;background:var(--low);transition:width .25s,background .25s}
   #live b{color:var(--ink)}
   /* 战报图按钮 + 弹层 */
-  .share{display:block;width:100%;margin-top:10px;background:var(--brand2);color:#fff;border:none;
-    border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer}
-  #modal{display:none;position:fixed;inset:0;background:rgba(20,10,22,.82);z-index:50;
+  .share{display:block;width:100%;margin-top:10px;background:var(--ink);color:var(--paper);border:none;
+    border-radius:5px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+  #modal{display:none;position:fixed;inset:0;background:rgba(26,20,14,.85);z-index:50;
     align-items:center;justify-content:center;padding:18px}
   #modal.on{display:flex;flex-direction:column}
-  #modal img{max-width:100%;max-height:74vh;border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
-  #modal .tip{color:#fff;font-size:13px;margin:14px 0 8px;text-align:center;opacity:.9}
+  #modal img{max-width:100%;max-height:74vh;border-radius:6px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+  #modal .tip{color:var(--paper);font-size:13px;margin:14px 0 8px;text-align:center;opacity:.9}
   #modal .mbtns{display:flex;gap:10px}
-  #modal a,#modal button{background:#fff;color:var(--brand2);border:none;border-radius:10px;
+  #modal a,#modal button{background:var(--paper);color:var(--ink);border:none;border-radius:5px;
     padding:11px 18px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}
-  #modal .close{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
-  footer{padding:14px 18px;font-size:11px;color:#9a9aaa;border-top:1px solid var(--line);text-align:center}
-  .disc{font-size:11px;color:#9a9aaa;margin-top:10px;line-height:1.5}
+  #modal .close{background:transparent;color:var(--paper);border:1px solid rgba(245,240,230,.4)}
+  footer{padding:16px 22px;font-size:11px;color:#9a9183;border-top:1px solid var(--hair);text-align:center;line-height:1.6}
+  .disc{font-size:11px;color:#9a9183;margin-top:12px;line-height:1.6}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>🛡 南大数智安全官</h1>
+    <span class="tick"></span><span class="seal">防诈</span>
+    <h1>南大数智<span class="v">安全官</span></h1>
     <p>把可疑短信 / 聊天 / 链接粘进来，立即识别校园诈骗</p>
     <div class="stat">
       <div><b id="s-cases">–</b><span>诈骗类型</span></div>
@@ -240,10 +261,10 @@ function detect(){
   }
   const top = scored[0];
   const r = overallRisk(top);
-  let html = `<div class="card">
-    <div class="top" style="background:${r.color}">
-      <span>${r.emoji} ${esc(r.label)}</span>
-      <span style="font-size:13px">置信度 ${Math.round(r.conf*100)}%</span>
+  let html = `<div class="card" style="border-top-color:${r.color}">
+    <div class="top">
+      <span class="lv" style="color:${r.color}">${r.emoji} ${esc(r.label)}</span>
+      <span class="cf">置信度 ${Math.round(r.conf*100)}%</span>
     </div>
     <div class="body">
       <p class="lbl" style="margin:0 0 8px">你的输入（已高亮命中词）：</p>
@@ -252,7 +273,7 @@ function detect(){
   scored.forEach((m,i)=>{
     const c=m.c;
     const refs = eightRefs(c);
-    html += `<div class="sec" style="margin-top:14px;border-top:1px dashed var(--line);padding-top:12px">
+    html += `<div class="sec" style="margin-top:14px;border-top:1px dashed var(--hair);padding-top:12px">
       <h3>${i===0?"📚 最可能：":"· 也可能："} ${esc(c.name)} <span style="font-weight:400;color:var(--sub);font-size:12px">（${esc(c.type)}）</span></h3>
       <p class="meta">规则命中强度 ${m.rule.toFixed(1)} · 命中词 ${m.kw.length} 个${m.pt.length?` · 模式 ${m.pt.length} 条`:""}</p>`;
     if(i===0){
@@ -314,42 +335,45 @@ function makeReport(){
   const W=640, H=940, P=44;
   const cv=document.createElement("canvas"); cv.width=W; cv.height=H;
   const x=cv.getContext("2d");
-  const COL={high:"#e5484d",medium:"#f5a623","low-medium":"#46a758",low:"#46a758"};
-  const accent=COL[risk.level]||"#f5a623";
-  // 背景
-  x.fillStyle="#fbfaf7"; x.fillRect(0,0,W,H);
-  // 顶部色带
-  x.fillStyle="#5B1F5D"; x.fillRect(0,0,W,118);
-  x.fillStyle="#fff"; x.font="700 30px 'PingFang SC',sans-serif"; x.textBaseline="alphabetic";
-  x.fillText("🛡 南大数智安全官", P, 58);
-  x.font="400 17px 'PingFang SC',sans-serif"; x.fillStyle="rgba(255,255,255,.85)";
-  x.fillText("反诈战报 · 转发提醒身边同学", P, 90);
+  const COL={high:"#C0392B",medium:"#C0892E","low-medium":"#6E8B5E",low:"#6E8B5E"};
+  const accent=COL[risk.level]||"#C0892E";
+  const INK="#1A1714", SUB="#8a8175", SERIF="'Songti SC','STSong',serif";
+  // 宣纸底
+  x.fillStyle="#F5F0E6"; x.fillRect(0,0,W,H);
+  // 顶部：宋体标题 + 朱砂细线，无色块
+  x.fillStyle="#C0392B"; x.fillRect(P,52,40,4);
+  x.fillStyle=INK; x.font=`900 32px ${SERIF}`; x.textBaseline="alphabetic";
+  x.fillText("南大数智安全官", P, 96);
+  x.font="400 16px 'PingFang SC',sans-serif"; x.fillStyle=SUB;
+  x.fillText("反诈战报 · 转发提醒身边同学", P, 122);
+  x.strokeStyle="rgba(26,23,20,.14)"; x.lineWidth=1; x.beginPath(); x.moveTo(P,144); x.lineTo(W-P,144); x.stroke();
   // 风险标签
-  let y=170;
-  x.fillStyle=accent; x.beginPath(); x.arc(P+9,y-6,9,0,7); x.fill();
-  x.fillStyle="#1a1a2e"; x.font="800 30px 'PingFang SC',sans-serif";
-  x.fillText(risk.label.split(" · ")[0], P+30, y+2);
-  x.font="500 17px 'PingFang SC',sans-serif"; x.fillStyle="#6a6a7a";
-  x.fillText("置信度 "+Math.round(risk.conf*100)+"%", P+30, y+26);
+  let y=192;
+  x.fillStyle=accent; x.beginPath(); x.arc(P+8,y-7,8,0,7); x.fill();
+  x.fillStyle=accent; x.font=`900 30px ${SERIF}`;
+  x.fillText(risk.label.split(" · ")[0], P+28, y+2);
+  x.font="500 16px 'PingFang SC',sans-serif"; x.fillStyle=SUB;
+  x.fillText("置信度 "+Math.round(risk.conf*100)+"%", P+28, y+26);
   // 可疑内容
-  y+=64; x.fillStyle=accent; x.fillRect(P,y-14,4,18);
-  x.fillStyle="#8a8a9a"; x.font="600 15px 'PingFang SC',sans-serif"; x.fillText("可疑内容", P+14, y);
-  y+=14; x.fillStyle="#2a2a3a"; x.font="400 18px 'PingFang SC',sans-serif";
+  y+=64; x.fillStyle=accent; x.fillRect(P,y-14,3,18);
+  x.fillStyle=SUB; x.font="600 14px 'PingFang SC',sans-serif"; x.fillText("可疑内容", P+13, y);
+  y+=14; x.fillStyle="#2a241e"; x.font="400 18px 'PingFang SC',sans-serif";
   y=wrap(x, "“"+text+"”", P, y+18, W-2*P, 28, 3);
   // 命中
-  y+=24; x.fillStyle=accent; x.fillRect(P,y-14,4,18);
-  x.fillStyle="#8a8a9a"; x.font="600 15px 'PingFang SC',sans-serif"; x.fillText("识别为", P+14, y);
-  y+=14; x.fillStyle="#1a1a2e"; x.font="700 21px 'PingFang SC',sans-serif";
+  y+=24; x.fillStyle=accent; x.fillRect(P,y-14,3,18);
+  x.fillStyle=SUB; x.font="600 14px 'PingFang SC',sans-serif"; x.fillText("识别为", P+13, y);
+  y+=14; x.fillStyle=INK; x.font=`700 21px ${SERIF}`;
   y=wrap(x, c.name+"（"+c.type+"）", P, y+22, W-2*P, 30, 2);
   // 怎么办
-  y+=22; x.fillStyle=accent; x.fillRect(P,y-14,4,18);
-  x.fillStyle="#8a8a9a"; x.font="600 15px 'PingFang SC',sans-serif"; x.fillText("怎么办", P+14, y);
-  y+=18; x.font="400 17px 'PingFang SC',sans-serif"; x.fillStyle="#2a2a3a";
-  (c.advice||[]).slice(0,3).forEach(a=>{ x.fillStyle=accent; x.fillText("✓",P,y+17);
-    x.fillStyle="#2a2a3a"; y=wrap(x,a,P+26,y+17,W-2*P-26,26,2); y+=4; });
+  y+=22; x.fillStyle=accent; x.fillRect(P,y-14,3,18);
+  x.fillStyle=SUB; x.font="600 14px 'PingFang SC',sans-serif"; x.fillText("怎么办", P+13, y);
+  y+=18; x.font="400 17px 'PingFang SC',sans-serif";
+  (c.advice||[]).slice(0,3).forEach(a=>{ x.fillStyle=accent; x.fillText("·",P+2,y+17);
+    x.fillStyle="#2a241e"; y=wrap(x,a,P+22,y+17,W-2*P-22,26,2); y+=4; });
   // 紧急条
-  y+=10; x.fillStyle="#fff5f5"; x.fillRect(P,y,W-2*P,52);
-  x.fillStyle="#e5484d"; x.font="700 18px 'PingFang SC',sans-serif";
+  y+=10; x.fillStyle="rgba(192,57,43,.06)"; x.fillRect(P,y,W-2*P,52);
+  x.fillStyle="#C0392B"; x.fillRect(P,y,3,52);
+  x.font="700 18px 'PingFang SC',sans-serif";
   x.fillText("紧急：96110 反诈专线 · 110 报警", P+16, y+32);
   // 底部
   x.fillStyle="#9a9aaa"; x.font="400 14px 'PingFang SC',sans-serif";
