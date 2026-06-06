@@ -57,9 +57,11 @@
   /* 风险卡片：去边框，靠顶部色条 + 细线分隔 + 大留白 */
   .card{margin-bottom:16px;animation:fade .3s ease;border-top:3px solid var(--vm)}
   @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .card .top{padding:14px 2px;font-family:var(--serif);font-weight:700;display:flex;
+  .card .top{padding:14px 2px;font-family:var(--serif);font-weight:700;display:flex;flex-wrap:wrap;gap:2px 10px;
     justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--hair)}
-  .card .top .lv{font-size:19px} .card .top .cf{font-size:13px;color:var(--sub);font-family:var(--sans)}
+  .card .top .lv{font-size:19px;min-width:0} .card .top .cf{font-size:13px;color:var(--sub);font-family:var(--sans);flex:none}
+  /* 防窄屏溢出：卡片文字一律可断行 */
+  #out,.card,.card .body,.sec,.sec li,.ref,.emg,.kbi{min-width:0;overflow-wrap:anywhere;word-break:break-word}
   .card .body{padding:14px 2px}
   .card h3{margin:0 0 6px;font-size:15.5px;font-family:var(--serif)}
   .meta{font-size:12px;color:var(--sub);margin:0 0 10px}
@@ -217,14 +219,51 @@ function scoreCase(text, c){
   return {c, kw, pt, rule: kw.length*1.0 + pt.length*1.5};
 }
 
-// 风险判定：移植 overall_risk 的规则路分支（无向量时）
-function overallRisk(top){
-  if(!top) return {label:"暂未匹配到诈骗模式", level:"low", conf:0, emoji:"🟢", color:"var(--low)"};
-  const rs = top.rule;
-  if(rs>=3.0) return {label:"高风险 · 强烈疑似诈骗", level:"high", conf:Math.min(.99,.6+.08*rs), emoji:"🔴", color:"var(--high)"};
-  if(rs>=1.5) return {label:"中等风险 · 多项可疑特征", level:"medium", conf:Math.min(.85,.4+.1*rs), emoji:"🟡", color:"var(--mid)"};
-  if(rs>=1.0) return {label:"低-中风险 · 少量可疑信号", level:"low-medium", conf:Math.min(.5,.2+.1*rs), emoji:"🟢", color:"var(--low)"};
-  return {label:"暂未匹配到诈骗模式", level:"low", conf:0, emoji:"🟢", color:"var(--low)"};
+// ── 第三路：行为红旗（反诈八个凡是要素），与 demo/fraud_signals.py 对齐 ──
+const SIGNALS = [
+  {id:"transfer",name:"要求转账 / 垫付资金",sev:3,pats:[/转账|汇款|打款|垫付|垫资|保证金|定金|押金|手续费|解冻费|激活费|清算账户|安全账户|先转|转入|充值/]},
+  {id:"credential",name:"索要验证码 / 银行卡 / 密码",sev:3,pats:[/验证码|动态码|短信码|银行卡号|卡号|支付密码|交易密码|开户行|cvv/i]},
+  {id:"remote",name:"诱导共享屏幕 / 远程控制",sev:3,pats:[/共享屏幕|屏幕共享|远程协助|远程控制|向日葵|todesk|teamviewer/i]},
+  {id:"secrecy",name:"要求保密 / 单独行动",sev:3,pats:[/不要(告诉|让|声张).{0,8}(家人|父母|老师|同学|朋友|警察|任何人)|保密|别声张|单独(操作|前往)/]},
+  {id:"impersonate",name:"冒充权威 / 熟人身份",sev:2,pats:[/公安|警官|检察院|法院|公检法|反诈中心|涉嫌(洗钱|犯罪)/,/(自称|冒充|我是).{0,4}(客服|领导|辅导员|老师|学长|班主任|快递)/]},
+  {id:"install",name:"诱导下载 App / 点不明链接",sev:2,pats:[/下载.{0,5}(app|软件|应用|客户端)|点击?.{0,6}链接|扫码下载|安装.{0,5}(app|软件)|https?:\/\//i]},
+  {id:"toogood",name:"承诺超额 / 稳赚回报",sev:2,pats:[/稳赚|稳定.{0,2}收益|高额(返利|收益|回报)|返利|返佣|内幕|必过|包过|日入|轻松赚|高回报|秒到账|低价转让|翻倍|空投/]},
+  {id:"offplatform",name:"诱导脱离平台私下交易",sev:2,pats:[/私下交易|加(我)?(微信|qq)|脱离平台|不(要|走)平台|平台外|走线下/i]},
+  {id:"urgency",name:"制造紧迫 / 恐吓",sev:1,pats:[/立即|马上|尽快|限时|否则|冻结|涉案|通缉|逾期|影响征信|不然就|最后(期限|机会)/]},
+];
+function extractSignals(text){
+  const out=[];
+  for(const s of SIGNALS){ for(const p of s.pats){ try{ if(p.test(text)){out.push(s);break;} }catch(e){} } }
+  return out;
+}
+function behaviorAssess(hits){
+  if(!hits.length) return {sev:0,level:null};
+  const sev=hits.reduce((a,h)=>a+h.sev,0), strong=hits.filter(h=>h.sev>=3).length;
+  const level=(strong>=2||sev>=6)?"high":(hits.length>=2||sev>=3)?"medium":"low-medium";
+  return {sev,level};
+}
+const RISKMETA={high:{emoji:"🔴",color:"var(--high)"},medium:{emoji:"🟡",color:"var(--mid)"},"low-medium":{emoji:"🟢",color:"var(--low)"}};
+const RANK={"low-medium":1,medium:2,high:3};
+function sigSection(hits){
+  if(!hits.length) return "";
+  return `<div class="sec"><b>🚩 诈骗行为特征（对应反诈八个凡是）</b><ul>${hits.map(h=>`<li>${esc(h.name)}</li>`).join("")}</ul></div>`;
+}
+
+// 风险判定：规则路 + 行为红旗融合，取更高等级（行为可在案例未命中时抬升风险）
+function overallRisk(top, beh){
+  let level=null, conf=0, label=null;
+  if(top){ const rs=top.rule;
+    if(rs>=3.0){level="high";label="高风险 · 强烈疑似诈骗";conf=Math.min(.99,.6+.08*rs);}
+    else if(rs>=1.5){level="medium";label="中等风险 · 多项可疑特征";conf=Math.min(.85,.4+.1*rs);}
+    else if(rs>=1.0){level="low-medium";label="低-中风险 · 少量可疑信号";conf=Math.min(.5,.2+.1*rs);}
+  }
+  if(beh&&beh.level&&(!level||RANK[beh.level]>RANK[level])){
+    level=beh.level;
+    label=level==="high"?"高风险 · 多项诈骗行为特征":level==="medium"?"中等风险 · 命中诈骗行为特征":"低-中风险 · 少量诈骗行为";
+    conf=Math.max(conf, level==="high"?.9:level==="medium"?.75:.5);
+  }
+  if(!level) return {label:"暂未匹配到诈骗模式",level:"low",conf:0,emoji:"🟢",color:"var(--low)"};
+  const m=RISKMETA[level]; return {label,level,conf,emoji:m.emoji,color:m.color};
 }
 
 function highlight(text, kws){
@@ -254,9 +293,28 @@ function detect(){
   const text = document.getElementById("inp").value.trim();
   const out = document.getElementById("out");
   if(!text){ out.innerHTML=""; return; }
+  const sigHits = extractSignals(text);          // 第三路：行为红旗
+  const beh = behaviorAssess(sigHits);
   const scored = KB.cases.map(c=>scoreCase(text,c)).filter(m=>m.rule>=1.0)
                   .sort((a,b)=>b.rule-a.rule).slice(0,3);
   if(scored.length===0){
+    // 案例库未命中——但若行为红旗触发，仍按行为研判给出风险（对未知骗局的泛化）
+    if(beh.level){
+      const r = overallRisk(null, beh);
+      out.innerHTML = `<div class="card" style="border-top-color:${r.color}">
+        <div class="top"><span class="lv" style="color:${r.color}">${r.emoji} ${esc(r.label)}</span><span class="cf">置信度 ${Math.round(r.conf*100)}%</span></div>
+        <div class="body">
+          <p class="lbl" style="margin:0 0 8px">你的输入：</p>
+          <div style="font-size:14px;background:#fafafd;border-radius:8px;padding:10px">${esc(text)}</div>
+          <p class="meta" style="margin-top:12px">案例库暂无完全匹配，但识别到下列<b style="color:var(--ink)">诈骗行为特征</b>——这类未知变体同样要警惕：</p>
+          ${sigSection(sigHits)}
+          <div class="sec"><b>✅ 怎么办</b><ul><li>立即停止操作，不转账、不提供验证码</li><li>通过官方渠道或当面与本人核实</li><li>已操作立即拨打 96110 / 南大保卫处 81686110</li></ul></div>
+          <div class="emg">紧急：反诈专线 <b>96110</b> · 报警 <b>110</b> · 南大保卫处 <b>81686110</b></div>
+          <a class="report" href="${reportLink(text,"")}" target="_blank" rel="noopener">🚩 这也是诈骗？一键上报，帮案例库变强</a>
+        </div></div>`;
+      out.scrollIntoView({behavior:"smooth", block:"nearest"});
+      return;
+    }
     out.innerHTML = `<div class="none"><div class="big">🟢</div>
       <p>未匹配到已知诈骗模式。<br>但仍请保持警惕——遇转账/索要验证码务必多方核实。</p>
       <div class="emg">紧急：反诈专线 <b>96110</b> · 报警 <b>110</b> · 南大保卫处 <b>81686110</b></div>
@@ -264,7 +322,7 @@ function detect(){
     return;
   }
   const top = scored[0];
-  const r = overallRisk(top);
+  const r = overallRisk(top, beh);
   let html = `<div class="card" style="border-top-color:${r.color}">
     <div class="top">
       <span class="lv" style="color:${r.color}">${r.emoji} ${esc(r.label)}</span>
@@ -273,6 +331,7 @@ function detect(){
     <div class="body">
       <p class="lbl" style="margin:0 0 8px">你的输入（已高亮命中词）：</p>
       <div style="font-size:14px;background:#fafafd;border-radius:8px;padding:10px">${highlight(text, top.kw)}</div>`;
+  html += sigSection(sigHits);   // 第三路：诈骗行为特征（八个凡是）
 
   scored.forEach((m,i)=>{
     const c=m.c;
