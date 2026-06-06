@@ -17,23 +17,25 @@
     --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{overflow-x:hidden}
   body{margin:0;font-family:var(--sans);background:var(--page);color:var(--ink);line-height:1.7;
     -webkit-font-smoothing:antialiased}
   /* 宣纸纹理 */
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.5;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
-  .wrap{max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);
+  .wrap{width:100%;max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);overflow-x:hidden;
     display:flex;flex-direction:column;box-shadow:0 0 60px -20px rgba(26,23,20,.25)}
   /* 头部：宣纸底 + 宋体标题 + 朱砂细线，无色块 */
-  header{padding:26px 22px 18px;position:relative}
+  header{padding:26px 22px 18px}
   header .tick{display:block;width:38px;height:3px;background:var(--vm);margin-bottom:14px}
   header h1{margin:0;font-family:var(--serif);font-weight:900;font-size:25px;letter-spacing:.02em}
   header h1 .v{color:var(--vm)}
-  header p{margin:7px 0 0;font-size:12.5px;color:var(--sub)}
-  .seal{position:absolute;top:24px;right:22px;width:50px;height:50px;display:grid;place-items:center;
-    border:2px solid var(--vm);border-radius:7px;color:var(--vm);font-family:var(--serif);
-    font-weight:700;font-size:18px;transform:rotate(-5deg)}
-  .stat{display:flex;margin:18px 22px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  header p{margin:9px 0 0;font-size:12.5px;color:var(--sub)}
+  /* 印章：内联小徽，跟在标题后，绝不贴边被切 */
+  .seal{display:inline-block;margin-left:11px;padding:2px 7px;vertical-align:4px;
+    border:1.5px solid var(--vm);border-radius:5px;color:var(--vm);font-family:var(--serif);
+    font-weight:700;font-size:13px;transform:rotate(-4deg)}
+  .stat{display:flex;margin:18px 0 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
   .stat div{flex:1;padding:11px 4px;text-align:center}
   .stat div+div{border-left:1px solid var(--hair)}
   .stat b{display:block;font-family:var(--serif);font-weight:700;font-size:21px;color:var(--ink)}
@@ -80,9 +82,10 @@
   .report:active{background:rgba(192,57,43,.07)}
   /* 截图识诈 */
   .ocr{display:flex;gap:8px;margin-top:12px}
-  .ocr-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  .ocr-btn{flex:1;min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;
     background:transparent;color:var(--ink);border:1px solid var(--hair);border-radius:5px;
-    padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+    padding:11px 8px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ocr-btn.ghost{color:var(--sub);flex:0 0 auto}
   .ocr-btn:active{background:var(--paper-2)}
   #ocr-status{display:none;margin-top:8px;font-size:12.5px;color:var(--sub);
@@ -97,8 +100,9 @@
     padding:9px 13px;background:var(--paper-2);border-radius:4px;transition:.2s}
   #live.on{display:flex}
   #live .dot{width:9px;height:9px;border-radius:50%;background:var(--low);flex:none;transition:.25s}
-  #live .bar{flex:1;height:4px;border-radius:2px;background:rgba(26,23,20,.1);overflow:hidden}
+  #live .bar{flex:0 0 48px;height:4px;border-radius:2px;background:rgba(26,23,20,.1);overflow:hidden}
   #live .bar i{display:block;height:100%;width:0;background:var(--low);transition:width .25s,background .25s}
+  #live #live-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   #live b{color:var(--ink)}
   /* 战报图按钮 + 弹层 */
   .share{display:block;width:100%;margin-top:10px;background:var(--ink);color:var(--paper);border:none;
@@ -119,8 +123,8 @@
 <body>
 <div class="wrap">
   <header>
-    <span class="tick"></span><span class="seal">防诈</span>
-    <h1>南大数智<span class="v">安全官</span></h1>
+    <span class="tick"></span>
+    <h1>南大数智<span class="v">安全官</span><span class="seal">防诈</span></h1>
     <p>把可疑短信 / 聊天 / 链接粘进来，立即识别校园诈骗</p>
     <div class="stat">
       <div><b id="s-cases">–</b><span>诈骗类型</span></div>
