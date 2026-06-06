@@ -89,11 +89,12 @@ h2{font-family:var(--serif);font-weight:700;line-height:1.12}
 .metric .s{font-size:12.5px;color:var(--ochre);margin-top:3px}
 
 ul.flow{list-style:none}
-ul.flow li{font-family:var(--serif);font-size:21px;padding:14px 0;border-bottom:1px solid var(--hair);
-  display:flex;align-items:baseline;gap:18px}
-ul.flow li .i{font-family:var(--fig);color:var(--vermilion);font-size:18px;font-weight:600;min-width:30px}
-ul.flow li b{font-weight:700}
-ul.flow li span{font-family:var(--sans);font-weight:300;font-size:15px;color:var(--ink-soft);margin-left:auto;max-width:46%}
+ul.flow li{font-family:var(--serif);font-size:21px;padding:15px 0;border-bottom:1px solid var(--hair);
+  display:grid;grid-template-columns:36px 1fr;column-gap:18px;row-gap:5px;align-items:baseline}
+ul.flow li .i{grid-column:1;grid-row:1;font-family:var(--fig);color:var(--vermilion);font-size:18px;font-weight:600}
+ul.flow li b{grid-column:2;grid-row:1;font-weight:700}
+ul.flow li span{grid-column:2;grid-row:2;font-family:var(--sans);font-weight:300;font-size:15px;
+  color:var(--ink-soft);line-height:1.65}
 
 /* 流水线（横向，箭头连接，无方框） */
 .pipe{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
