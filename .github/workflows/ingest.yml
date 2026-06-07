@@ -1,0 +1,65 @@
+name: 案例库自动采集（采集→结构化→校验→开PR）
+
+# 触发方式：
+#  - 手动触发（workflow_dispatch）：答辩现场点一下，展示"系统自动采集→结构化→校验→开 PR"
+#  - 定时（schedule）：默认注释掉；按需取消注释即每周一自动跑一次，实现"后台收集、定期更新"
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "23 1 * * 1"   # 每周一 09:23(北京) 自动采集一轮
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 安装依赖
+        run: pip install requests beautifulsoup4
+
+      - name: 跑全链路（采集 → LLM 结构化 → 格式校验 → 去重 → 候选暂存）
+        env:
+          # 配了密钥就走真实 LLM 结构化；没配则离线示范，CI 一样绿
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: bash ingest/demo.sh
+
+      - name: 记录本次自动运行（供审核与留痕）
+        run: |
+          mkdir -p ingest/auto_collected
+          {
+            echo "# 最近一次自动采集运行"
+            echo
+            echo "- 触发方式：${{ github.event_name }}"
+            echo "- 运行号：#${{ github.run_number }}"
+            echo "- 提交：${{ github.sha }}"
+            echo "- 链路：公开来源采集 → LLM 结构化为 12 字段 → validate_kb 校验 → 跨案例去重 → 候选暂存（ingest/candidates/）"
+            echo "- 候选默认仅暂存，**由人工核验公开来源后合并入库**（可审计、不污染）"
+          } > ingest/auto_collected/last_run.md
+
+      - name: 有变更则自动开 PR（候选待人工审核入库）
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(ingest): 自动采集运行 #${{ github.run_number }}"
+          branch: auto/ingest-run
+          delete-branch: false
+          title: "🤖 自动采集：新一轮候选案例，待人工审核入库"
+          body: |
+            本 PR 由「案例库自动采集」workflow 自动生成。
+
+            已完成：**采集 → 结构化 → 格式校验 → 去重**。
+            请维护者核验公开来源后，再把候选合并进 `demo/knowledge_base.json`。
+
+            > 体现"会自己长大"的活系统：能力是自动的，**入库这一关刻意保留人工**——可审计、不污染。
+          add-paths: |
+            ingest/auto_collected/
+            web/kb.js
+            assets/kb_stats.svg

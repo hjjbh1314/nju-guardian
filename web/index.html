@@ -574,7 +574,7 @@ document.getElementById("modal-close").onclick=()=>document.getElementById("moda
 // ── 功能③：截图识诈（OCR，纯前端）──
 // 上传聊天截图 → tesseract.js 本地识别文字 → 喂给检测引擎。
 // 「演示样图」内置已知文本兜底，现场即使断网/识别不佳也必出结果。
-const SAMPLE_OCR_TEXT = "您好您的京东订单存在异常 需要为您办理理赔退款 请先下载会议软件并开启共享屏幕 以便核对您的银行卡流水";
+const SAMPLE_OCR_TEXT = "您的账户涉嫌异常交易，需立即配合核查 请下载会议软件开启共享屏幕 按我操作并报出短信验证码";
 const ocrStatus = document.getElementById("ocr-status");
 let tessLoading = null;
 function loadTesseract(){
