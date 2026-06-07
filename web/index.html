@@ -86,6 +86,21 @@
     color:var(--paper);padding:11px 18px;border-radius:7px;font-size:13px;z-index:60;opacity:0;
     transition:.28s;pointer-events:none;max-width:88%;text-align:center;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
   #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  .agentbtn{display:block;width:100%;margin-top:10px;background:#2b2723;color:var(--paper);border:none;border-radius:6px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+  .agentbtn:active{background:#1A1714}
+  #agent{display:none;margin-top:14px;border:1px solid var(--hair);border-radius:8px;background:#FCFAF4;padding:13px}
+  #agent.on{display:block}
+  #agent .ahead{font-family:var(--serif);font-weight:700;font-size:14px;color:var(--ink)}
+  #agent .ahead span{font-weight:400;color:var(--sub);font-size:11.5px}
+  #agent .alog{max-height:320px;overflow-y:auto;margin-top:10px}
+  #agent .amsg{margin:8px 0;padding:9px 12px;border-radius:9px;font-size:13.5px;line-height:1.66;overflow-wrap:anywhere}
+  #agent .amsg.u{background:var(--paper-2);color:var(--ink)}
+  #agent .amsg.a{background:#fff;border:1px solid var(--hair);white-space:pre-wrap;color:#2a2520}
+  #agent .amsg.sys{background:transparent;color:var(--sub);font-size:12px;padding:4px 2px}
+  #agent .arow{display:flex;gap:8px;margin-top:10px}
+  #agent .arow input{flex:1;min-width:0;border:1px solid var(--hair);border-radius:6px;padding:10px;font-size:14px;background:#fff;font-family:inherit;color:var(--ink)}
+  #agent .arow input:focus{outline:none;border-color:var(--vm)}
+  #agent .arow button{flex:none;background:var(--vm);color:#fff;border:none;border-radius:6px;padding:0 16px;font-weight:700;font-family:var(--sans);cursor:pointer}
   /* 截图识诈 */
   .ocr{display:flex;gap:8px;margin-top:12px}
   .ocr-btn{flex:1;min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;
@@ -150,6 +165,11 @@
     <div id="live"><span class="dot"></span><span class="bar"><i></i></span><span id="live-txt"></span></div>
     <button class="btn" id="go">🔍 立即检测</button>
     <div id="out"></div>
+    <div id="agent">
+      <div class="ahead">🤖 AI 深度研判 <span>· DeepSeek · 可多轮追问</span></div>
+      <div class="alog" id="alog"></div>
+      <div class="arow"><input id="aq" placeholder="继续追问，如：对方又发来一个链接…" autocomplete="off"><button id="asend">发送</button></div>
+    </div>
     <p class="disc">⚠️ 本页为<b>离线规则版</b>（关键词+正则，浏览器本地运行、不上传任何内容）。完整版在此之上叠加 <b>BGE-zh 语义向量召回</b>，覆盖「换个说法」的诈骗变体。</p>
   </main>
   <footer>
@@ -181,7 +201,8 @@ const EIGHT = [
 ];
 const CN = {1:"一",2:"二",3:"三",4:"四",5:"五",6:"六",7:"七",8:"八"};
 const KB = window.NJU_KB || {cases:[],version:"?"};
-const REPO = "hjjbh1314/nju-guardian";   // 上报 Issue 落到这个仓库
+const REPO = "hjjbh1314/nju-guardian";
+const AGENT_PROXY_URL = "";   // 部署 infra/agent-proxy 后填入 Worker 地址；留空则 AI 研判按钮提示未配置
 document.getElementById("s-cases").textContent = KB.cases.length;
 document.getElementById("s-ver").textContent = "v"+KB.version;
 
@@ -213,6 +234,52 @@ function doReport(){
   toast(copied ? "✓ 已复制上报内容，可粘贴到班级群 / 发南大保卫处 81686110"
               : "请长按结果文字手动复制后转发反诈小组");
 }
+
+// ── AI 深度研判（调用 infra/agent-proxy 部署的 Worker，多轮）──
+let agentMsgs = [];
+function renderAgent(){
+  const log = document.getElementById("alog");
+  log.innerHTML = agentMsgs.map(m=>{
+    const cls = m.role==="user"?"u":m.role==="assistant"?"a":"sys";
+    const tag = m.role==="user"?"🙋 ":m.role==="assistant"?"🤖 ":"";
+    return `<div class="amsg ${cls}">${tag}${esc(m.content)}</div>`;
+  }).join("");
+  log.scrollTop = log.scrollHeight;
+}
+async function callAgent(){
+  agentMsgs.push({role:"sys",content:"正在研判…"}); renderAgent();
+  const send = agentMsgs.filter(m=>m.role==="user"||m.role==="assistant");
+  try{
+    const res = await fetch(AGENT_PROXY_URL, {method:"POST",headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({messages:send, context: window.__agentCtx||""})});
+    const data = await res.json();
+    agentMsgs = agentMsgs.filter(m=>m.role!=="sys");
+    agentMsgs.push(data && data.reply ? {role:"assistant",content:data.reply}
+                                      : {role:"sys",content:"研判失败："+((data&&data.error)||"请重试")});
+  }catch(e){
+    agentMsgs = agentMsgs.filter(m=>m.role!=="sys");
+    agentMsgs.push({role:"sys",content:"网络错误，请稍后重试"});
+  }
+  renderAgent();
+}
+function openAgent(){
+  if(!AGENT_PROXY_URL){ toast("AI 深度研判未配置：请部署 infra/agent-proxy 后在 index.html 填入地址"); return; }
+  const r = window.__rep || {text:""};
+  document.getElementById("agent").classList.add("on");
+  if(!agentMsgs.length){
+    agentMsgs = [{role:"user", content: r.text || "请帮我研判这条信息"}];
+    renderAgent(); callAgent();
+  }
+  document.getElementById("agent").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+(function(){
+  const sb=document.getElementById("asend"), q=document.getElementById("aq");
+  if(sb) sb.onclick=()=>{
+    const v=q.value.trim(); if(!v) return;
+    q.value=""; agentMsgs.push({role:"user",content:v}); renderAgent(); callAgent();
+  };
+  if(q) q.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); if(sb) sb.click(); }});
+})();
 
 // 示例气泡：均为规则路强命中，保证现场点开即出卡片
 const SAMPLES = [
@@ -315,15 +382,18 @@ function detect(){
   const text = document.getElementById("inp").value.trim();
   const out = document.getElementById("out");
   if(!text){ out.innerHTML=""; return; }
+  agentMsgs = []; { const ag=document.getElementById("agent"); if(ag){ag.classList.remove("on"); const lg=document.getElementById("alog"); if(lg) lg.innerHTML="";} }
   const sigHits = extractSignals(text);          // 第三路：行为红旗
   const beh = behaviorAssess(sigHits);
   window.__rep = {text, matched:""};
+  window.__agentCtx = "";
   const scored = KB.cases.map(c=>scoreCase(text,c)).filter(m=>m.rule>=1.0)
                   .sort((a,b)=>b.rule-a.rule).slice(0,3);
   if(scored.length===0){
     // 案例库未命中——但若行为红旗触发，仍按行为研判给出风险（对未知骗局的泛化）
     if(beh.level){
       const r = overallRisk(null, beh);
+      window.__agentCtx = "端侧研判 → 风险:"+r.label+"；命中行为红旗:"+sigHits.map(h=>h.name).join("、");
       out.innerHTML = `<div class="card" style="border-top-color:${r.color}">
         <div class="top"><span class="lv" style="color:${r.color}">${r.emoji} ${esc(r.label)}</span><span class="cf">置信度 ${Math.round(r.conf*100)}%</span></div>
         <div class="body">
@@ -333,7 +403,7 @@ function detect(){
           ${sigSection(sigHits)}
           <div class="sec"><b>✅ 怎么办</b><ul><li>立即停止操作，不转账、不提供验证码</li><li>通过官方渠道或当面与本人核实</li><li>已操作立即拨打 96110 / 南大保卫处 81686110</li></ul></div>
           <div class="emg">紧急：反诈专线 <b>96110</b> · 报警 <b>110</b> · 南大保卫处 <b>81686110</b></div>
-          <button class="report" onclick="doReport()">🚩 一键上报这条（复制内容，转发提醒）</button>
+          <button class="agentbtn" onclick="openAgent()">🤖 AI 深度研判 · 追问</button><button class="report" onclick="doReport()">🚩 一键上报这条（复制内容，转发提醒）</button>
         </div></div>`;
       out.scrollIntoView({behavior:"smooth", block:"nearest"});
       return;
@@ -341,7 +411,7 @@ function detect(){
     out.innerHTML = `<div class="none"><div class="big">🟢</div>
       <p>未匹配到已知诈骗模式。<br>但仍请保持警惕——遇转账/索要验证码务必多方核实。</p>
       <div class="emg">紧急：反诈专线 <b>96110</b> · 报警 <b>110</b> · 南大保卫处 <b>81686110</b></div>
-      <button class="report" onclick="doReport()">🚩 一键上报这条（复制内容，转发提醒）</button></div>`;
+      <button class="agentbtn" onclick="openAgent()">🤖 AI 深度研判 · 追问</button><button class="report" onclick="doReport()">🚩 一键上报这条（复制内容，转发提醒）</button></div>`;
     return;
   }
   const top = scored[0];
@@ -371,11 +441,12 @@ function detect(){
     html += `<p class="src">来源：${esc(c.source||"")}</p></div>`;
   });
   html += `<button class="share" id="shareBtn">📤 生成可转发「反诈战报」图</button>`;
-  html += `<button class="report" onclick="doReport()">🚩 一键上报这条（复制内容，转发提醒）</button>`;
+  html += `<button class="agentbtn" onclick="openAgent()">🤖 AI 深度研判 · 追问</button><button class="report" onclick="doReport()">🚩 一键上报这条（复制内容，转发提醒）</button>`;
   html += `</div></div>`;
   out.innerHTML = html;
   LAST = {text, top, risk:r};
   window.__rep = {text, matched: top.c.name};
+  window.__agentCtx = "端侧研判 → 风险:"+r.label+"；最可能类型:"+top.c.name+"（"+top.c.type+"）；命中行为红旗:"+(sigHits.map(h=>h.name).join("、")||"无");
   const sb = document.getElementById("shareBtn");
   if(sb) sb.onclick = ()=>makeReport();
   out.scrollIntoView({behavior:"smooth", block:"nearest"});
