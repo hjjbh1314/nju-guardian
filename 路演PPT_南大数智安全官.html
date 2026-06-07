@@ -175,7 +175,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 1.5 现实钩子：南开 220 万 -->
-<section class="slide" data-note="先讲一件最近的真实案件——就发生在今年6月初（可现场说成'上个月'/'最近'，按路演当天调整）。南开大学一名学生，在闲鱼上买一台拍立得相机，被'误扣款—退款—开共享屏幕—刷流水验证'这套话术一步步诱导，分 <b>22 次</b>转账，被骗 <b>220 万元</b>，是天津近半年单笔金额最高的电诈案。我想说的是两点：第一，诈骗就在我们身边、就在校园里；第二——<b>同样这套话术输入我们的系统，会被当场识别为'高危·共享屏幕诈骗'，并提示立即挂断、停止共享</b>。这就是我们想解决的问题。">
+<section class="slide" data-note="先讲一件最近的真实案件——就发生在今年6月初（可现场说成「上个月」/「最近」，按路演当天调整）。南开大学一名学生，在闲鱼上买一台拍立得相机，被「误扣款—退款—开共享屏幕—刷流水验证」这套话术一步步诱导，分 <b>22 次</b>转账，被骗 <b>220 万元</b>，是天津近半年单笔金额最高的电诈案。我想说的是两点：第一，诈骗就在我们身边、就在校园里；第二——<b>同样这套话术输入我们的系统，会被当场识别为「高危·共享屏幕诈骗」，并提示立即挂断、停止共享</b>。这就是我们想解决的问题。">
   <div class="stagger" style="height:100%;display:flex;flex-direction:column;justify-content:center">
     <span class="kicker">现实 · 真实案件</span>
     <div style="display:flex;align-items:center;gap:54px;margin:24px 0">
@@ -216,7 +216,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 4 产品是什么 -->
-<section class="slide" data-note="先看产品本身。用户把可疑内容粘进来，我们立即返回一张<b>风险卡片</b>：三级风险评级加置信度、命中信号高亮、匹配到的诈骗案例、对齐国家反诈'八个凡是'、最后是三步行动建议，每条都带<b>公开来源</b>。不是冷冰冰的'是/否'，而是讲清楚'为什么可疑、该怎么办'。">
+<section class="slide" data-note="先看产品本身。用户把可疑内容粘进来，我们立即返回一张<b>风险卡片</b>：三级风险评级加置信度、命中信号高亮、匹配到的诈骗案例、对齐国家反诈「反诈预警要点」、最后是三步行动建议，每条都带<b>公开来源</b>。不是冷冰冰的「是/否」，而是讲清楚「为什么可疑、该怎么办」。">
   <div class="two">
     <div class="stagger">
       <span class="kicker">03 — 产品</span>
@@ -224,7 +224,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
       <ul class="flow">
         <li><span class="i">◷</span><b>三级风险评级 + 置信度</b></li>
         <li><span class="i">◎</span><b>命中信号高亮</b><span>关键词 / 正则 / 语义</span></li>
-        <li><span class="i">▤</span><b>匹配案例 + 八个凡是</b></li>
+        <li><span class="i">▤</span><b>匹配案例 + 反诈预警要点</b></li>
         <li><span class="i">✓</span><b>三步行动建议 + 公开来源</b></li>
       </ul>
     </div>
@@ -252,7 +252,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 6 技术内核 双路引擎 -->
-<section class="slide" data-note="技术内核是分层研判架构。底座是端侧的三路融合引擎，毫秒级、可离线：第一路关键词加正则，可解释、强命中即定高危；第二路 BGE 中文向量做语义召回，覆盖『换个说法』的变体；第三路是我们这次新增的行为红旗——从输入里抽取转账、索要验证码、诱导共享屏幕、冒充身份等通用诈骗行为，每个对应反诈八个凡是。它的价值是泛化：哪怕案例库里没有这种骗局，只要行为像诈骗，就能预警。三路加权融合：综合分等于规则强度加 2.5 倍语义相似度，再叠加行为红旗权重，阈值门控召回，缺模型自动降级 TF-IDF。难例再升级到上层的 LLM Agent——目前接 DeepSeek，多轮追问、调用案例库工具、给出处置方案。简单情形端侧秒判，复杂情形才上大模型，这是我们刻意的分层设计，而不是无脑调大模型。">
+<section class="slide" data-note="技术内核是分层研判架构。底座是端侧的三路融合引擎，毫秒级、可离线：第一路关键词加正则，可解释、强命中即定高危；第二路 BGE 中文向量做语义召回，覆盖『换个说法』的变体；第三路是我们这次新增的行为红旗——从输入里抽取转账、索要验证码、诱导共享屏幕、冒充身份等通用诈骗行为，每个对应反诈预警要点。它的价值是泛化：哪怕案例库里没有这种骗局，只要行为像诈骗，就能预警。三路加权融合：综合分等于规则强度加 2.5 倍语义相似度，再叠加行为红旗权重，阈值门控召回，缺模型自动降级 TF-IDF。难例再升级到上层的 LLM Agent——目前接 DeepSeek，多轮追问、调用案例库工具、给出处置方案。简单情形端侧秒判，复杂情形才上大模型，这是我们刻意的分层设计，而不是无脑调大模型。">
   <div class="stagger">
     <span class="kicker">05 — 技术内核</span>
     <h2 style="font-size:42px;margin:12px 0 16px">分层研判：<span class="vm">三路引擎 ＋ LLM Agent</span></h2>
@@ -270,7 +270,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
         <ul class="mini" style="font-size:14px">
           <li><b style="color:var(--ochre)">规则路</b>　关键词 + 正则，强命中即定高危</li>
           <li><b style="color:var(--vermilion)">语义路</b>　BGE-zh 向量，覆盖「换个说法」变体</li>
-          <li><b style="color:var(--vm)">行为红旗</b>　抽八个凡是要素（转账/验证码/共享屏幕/冒充…）——<b style="color:var(--ink)">库中无此类型也能预警</b></li>
+          <li><b style="color:var(--vm)">行为红旗</b>　抽反诈红线要素（转账/验证码/共享屏幕/冒充…）——<b style="color:var(--ink)">库中无此类型也能预警</b></li>
         </ul>
       </div>
       <div class="hair-v"></div>
@@ -284,15 +284,15 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
       </div>
     </div>
     <hr class="hair" style="margin:18px 0 12px">
-    <p class="serif" style="font-size:15px;color:var(--ink-soft)">综合分 ＝ 规则 <span class="vm">＋ 2.5×</span> 语义 <span class="vm">＋</span> 行为红旗加权　·　阈值门控　·　缺模型自动降级 TF-IDF　·　简单端侧秒判、复杂才上大模型</p>
+    <p class="serif" style="font-size:15px;color:var(--ink-soft)">风险定级 ＝ <span class="vm">取高</span>（规则 ＋ 2.5× 语义 的案例研判　/　行为红旗研判）；红旗按 <span class="vm">强 3 · 中 2 · 弱 1</span> 计分，≥2 个强信号或累计 ≥6 即判高危　·　缺模型自动降级 TF-IDF</p>
   </div>
 </section>
 
 <!-- 7 量化效果 -->
-<section class="slide" data-note="效果我们<b>量化</b>过，不是自说自话。在 30 条<b>口语化</b>的真实样本上：纯规则路 Top-3 召回 80%；叠加语义向量后，<b>达到 100%</b>，Top-1 也从 70% 提到 87%。漏掉的那 6 条，全是'换个说法'的杀猪盘、AI 换脸——这就是双路融合的价值，用数据说话。">
+<section class="slide" data-note="效果我们<b>量化</b>过，不是自说自话。在 30 条<b>口语化</b>的真实样本上：纯规则路 Top-3 召回 80%；叠加语义向量后，<b>达到 100%</b>，Top-1 也从 70% 提到 87%。漏掉的那 6 条，全是「换个说法」的杀猪盘、AI 换脸——这就是双路融合的价值，用数据说话。">
   <div class="stagger">
     <span class="kicker">06 — 量化效果</span>
-    <h2 style="font-size:44px;margin:14px 0 8px">不止说准，<span class="vm">我们量化了准</span></h2>
+    <h2 style="font-size:44px;margin:14px 0 8px">效果，<span class="vm">用数据说话</span></h2>
     <p class="body" style="font-size:14px;margin-bottom:30px">30 条口语化校园诈骗样本 · Top-3 召回率</p>
     <div class="compare">
       <div class="dim">
@@ -350,11 +350,11 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 10 案例库一览 -->
-<section class="slide" data-note="这是当前案例库的全景，<b>这张图是从知识库自动生成的</b>——库一长大，图就更新。目前 50 类校园高发诈骗，覆盖国家反诈'八个凡是'，风险分级清晰。它不是一份死文档，是系统的实时切片。">
+<section class="slide" data-note="这是当前案例库的全景，<b>这张图是从知识库自动生成的</b>——库一长大，图就更新。目前 50 类校园高发诈骗，覆盖国家反诈「反诈预警要点」，风险分级清晰。它不是一份死文档，是系统的实时切片。">
   <div class="stagger">
     <span class="kicker">09 — 案例库</span>
     <h2 style="font-size:44px;margin:14px 0 10px">已覆盖 <span class="vm">50 类</span>校园高发诈骗</h2>
-    <p class="body" style="font-size:14.5px;margin-bottom:18px">统一 12 字段结构化（关键词 / 正则 / 话术 / 手法 / 处置 / 公开来源）　·　对齐反诈八个凡是　·　高 / 中 / 低风险分级　·　随采集流水线持续增长</p>
+    <p class="body" style="font-size:14.5px;margin-bottom:18px">统一 12 字段结构化（关键词 / 正则 / 话术 / 手法 / 处置 / 公开来源）　·　对齐反诈预警要点　·　高 / 中 / 低风险分级　·　随采集流水线持续增长</p>
     <hr class="hair" style="margin:0 0 18px">
     <div class="kbgrid">
       <span class="kbi">刷单返利</span><span class="kbi">虚假投资理财</span><span class="kbi">虚假网贷</span><span class="kbi">冒充电商客服</span><span class="kbi">冒充公检法</span><span class="kbi">虚假征信</span><span class="kbi">虚假购物</span><span class="kbi">冒充熟人 / 老师</span><span class="kbi">网游虚假交易</span><span class="kbi">婚恋杀猪盘</span><span class="kbi">兼职押金陷阱</span><span class="kbi">奖助学金诈骗</span><span class="kbi">钓鱼链接 / 陌生 App</span><span class="kbi">校园贷美容贷</span><span class="kbi">虚假彩票赌博</span><span class="kbi">AI 换脸拟声</span><span class="kbi">论文学术诈骗</span><span class="kbi">留学中介诈骗</span><span class="kbi">实习内推诈骗</span><span class="kbi">兼职打字员</span><span class="kbi">二手交易</span><span class="kbi">教务系统钓鱼</span><span class="kbi">火车票退票</span><span class="kbi">校外租房中介</span><span class="kbi">ETC 认证</span><span class="kbi">银行积分兑换</span><span class="kbi">交通违章短信</span><span class="kbi">退订话费宽带</span><span class="kbi">共享屏幕</span><span class="kbi">出借银行卡</span><span class="kbi">征信修复</span><span class="kbi">验证码代收</span><span class="kbi">短视频私信引流</span><span class="kbi">数字货币元宇宙</span><span class="kbi">假冒反诈 App</span><span class="kbi">心理咨询陷阱</span><span class="kbi">算命塔罗</span><span class="kbi">公益慈善诈骗</span><span class="kbi">志愿者招募</span><span class="kbi">粉丝群打投</span><span class="kbi">股票投顾</span><span class="kbi">注销借呗花呗</span><span class="kbi">ATM 机异常</span><span class="kbi">收款码替换</span><span class="kbi">明星见面会</span><span class="kbi">限量球鞋盲盒</span><span class="kbi">健康码异常</span><span class="kbi">二次诈骗清退</span><span class="kbi">假冒招行支付宝</span><span class="kbi">AA 抢红包</span>
@@ -363,7 +363,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 11 反馈闭环 -->
-<section class="slide" data-note="冷启动的<b>根本解法</b>是闭环。H5 上每张卡片都有'一键上报'——同学遇到新型诈骗，点一下就生成一条带来源的待审案例，进入刚才那条流水线。<b>用的人越多，库越全</b>。现场每一位扫码的观众，都可能成为案例的来源。">
+<section class="slide" data-note="冷启动的<b>根本解法</b>是闭环。H5 上每张卡片都有「一键上报」——同学遇到新型诈骗，点一下就生成一条带来源的待审案例，进入刚才那条流水线。<b>用的人越多，库越全</b>。现场每一位扫码的观众，都可能成为案例的来源。">
   <div class="stagger" style="text-align:center;align-items:center;display:flex;flex-direction:column;justify-content:center;height:100%">
     <span class="kicker">10 — 反馈闭环</span>
     <h2 style="font-size:50px;margin:22px 0 28px">用的人越多，<span class="vm">库越全</span></h2>

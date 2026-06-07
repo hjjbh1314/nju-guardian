@@ -9,12 +9,12 @@ v0.2.1 更新（2026-05-07）：
 - 每条 case 强制 source 字段，引用国家反诈中心、央视、新华社等公开材料
 
 v0.2 更新（2026-05-06）：
-- 输出格式重做为"对话卡片"形态（风险标签 + 命中分析 + 八个凡是匹配 + 三步建议）
+- 输出格式重做为"对话卡片"形态（风险标签 + 命中分析 + 反诈预警要点匹配 + 三步建议）
 - 命中关键词在原文中高亮显示
 - 新增「知识库浏览」Tab，可视化全部 50 类案例
 - 新增「示例对话」Tab，路演时直接放映三条标杆问答
 - Hero 区加入知识库统计与紧急联系条
-- 八个凡是匹配独立模块（基于 case 来源中提到的"八个凡是·第N条"）
+- 反诈预警要点匹配独立模块（基于 case 来源中提到的"反诈预警要点·第N条"）
 
 运行：
     pip install -r requirements.txt
@@ -60,16 +60,16 @@ EMERGENCY_TIPS = (
     "96110 反诈劝阻 · 12381 涉诈短信预警 · 110 报警"
 )
 
-# 国家反诈八个凡是（与 KB 案例 "八个凡是·第 N 条" 引用对齐）
+# 国家反诈预警要点（与 KB 案例 "反诈预警要点·第 N 条" 引用对齐）
 EIGHT_RULES = [
-    "凡是要求垫付资金做任务的兼职刷单，都是诈骗",
-    "凡是宣称内幕消息、专家指导、稳赚不赔的投资理财，都是诈骗",
-    "凡是宣称无抵押低利率、放款前要先交各类费用的贷款，都是诈骗",
-    "凡是自称电商物流客服以退款理赔为由要求提供银行卡和验证码的，都是诈骗",
-    "凡是自称公检法以涉嫌违法为由要求转账到安全账户的，都是诈骗",
-    '凡是自称"领导"主动加 QQ/微信，先嘘寒问暖再要求转账的，都是诈骗',
-    "凡是发送不明链接让你输入银行卡 / 手机验证码 / 各种密码的，都是诈骗",
-    "凡是通过社交平台拉群加好友、让你点击链接下载 APP 进行投资 / 退费的，都是诈骗",
+    "要求垫付资金做任务的兼职刷单，都是诈骗",
+    "宣称内幕消息、专家指导、稳赚不赔的投资理财，都是诈骗",
+    "宣称无抵押低利率、放款前要先交各类费用的贷款，都是诈骗",
+    "自称电商物流客服以退款理赔为由要求提供银行卡和验证码的，都是诈骗",
+    "自称公检法以涉嫌违法为由要求转账到安全账户的，都是诈骗",
+    '自称"领导"主动加 QQ/微信，先嘘寒问暖再要求转账的，都是诈骗',
+    "发送不明链接让你输入银行卡 / 手机验证码 / 各种密码的，都是诈骗",
+    "通过社交平台拉群加好友、让你点击链接下载 APP 进行投资 / 退费的，都是诈骗",
 ]
 
 
@@ -184,12 +184,12 @@ def overall_risk(matches: list[Match]) -> tuple[str, str, float, str]:
 
 
 def extract_eight_rules_refs(matches: list[Match]) -> list[tuple[int, str]]:
-    """从 case.why_scam 字段里抽出引用的"八个凡是·第N条"，去重后返回 (index, text)"""
+    """从 case.why_scam 字段里抽出引用的"反诈预警要点·第N条"，去重后返回 (index, text)"""
     refs: list[tuple[int, str]] = []
     seen: set[int] = set()
     for m in matches:
         for line in m.case.get("why_scam", []):
-            mat = re.search(r"八个凡是.*?第([一二三四五六七八12345678])条", line)
+            mat = re.search(r"反诈预警要点.*?第([一二三四五六七八12345678])条", line)
             if not mat:
                 continue
             cn_to_int = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8,
@@ -293,12 +293,12 @@ def render_report(text: str, matches: list[Match]) -> str:
         parts.append(EMERGENCY_TIPS)
         return "\n".join(parts)
 
-    # 八个凡是引用（独立模块）
+    # 反诈预警要点引用（独立模块）
     refs = extract_eight_rules_refs(matches)
     if refs:
         parts.append("---")
         parts.append("")
-        parts.append("**国家反诈八个凡是 · 命中条目**")
+        parts.append("**国家反诈预警要点 · 命中条目**")
         parts.append("")
         for idx, txt in refs:
             parts.append(f"> **第 {idx} 条** · {txt}")
@@ -355,11 +355,11 @@ def make_share_card(text: str, matches: list[Match]) -> str:
         lines.append("📌 三步行动建议：")
         for i, a in enumerate(c.get("advice", [])[:3], 1):
             lines.append(f"  {i}. {a}")
-        # 八个凡是引用
+        # 反诈预警要点引用
         refs = extract_eight_rules_refs(matches)
         if refs:
             lines.append("")
-            lines.append("🛡 触发反诈八个凡是：")
+            lines.append("🛡 触发反诈预警要点：")
             for idx, txt in refs[:2]:
                 lines.append(f"  · 第 {idx} 条：{txt}")
     else:
@@ -423,7 +423,7 @@ def make_html_report(text: str, matches: list[Match], llm_text: str = "") -> str
     refs_html = ""
     if refs:
         items = "".join(f"<li><b>第 {idx} 条</b> · {esc(txt)}</li>" for idx, txt in refs)
-        refs_html = f"<section><h2>国家反诈八个凡是 · 命中条目</h2><ul>{items}</ul></section>"
+        refs_html = f"<section><h2>国家反诈预警要点 · 命中条目</h2><ul>{items}</ul></section>"
 
     llm_html = ""
     if llm_text and not llm_text.startswith("_未启用"):
