@@ -249,12 +249,21 @@ function doReport(){
 
 // ── AI 深度研判（调用 infra/agent-proxy 部署的 Worker，多轮）──
 let agentMsgs = [];
+function fmtAgent(t){           // 把模型返回的 Markdown 清成干净显示
+  let h = esc(t);
+  h = h.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");   // **粗体** → 加粗
+  h = h.replace(/(^|\n)\s*#{1,6}\s*/g, "$1");      // 去标题井号
+  h = h.replace(/(^|\n)\s*[-*]\s+/g, "$1· ");      // 列表符统一为 ·
+  h = h.replace(/\*/g, "");                          // 去残留星号
+  return h;
+}
 function renderAgent(){
   const log = document.getElementById("alog");
   log.innerHTML = agentMsgs.map(m=>{
     const cls = m.role==="user"?"u":m.role==="assistant"?"a":"sys";
     const tag = m.role==="user"?"🙋 ":m.role==="assistant"?"🤖 ":"";
-    return `<div class="amsg ${cls}">${tag}${esc(m.content)}</div>`;
+    const body = m.role==="assistant" ? fmtAgent(m.content) : esc(m.content);
+    return `<div class="amsg ${cls}">${tag}${body}</div>`;
   }).join("");
   log.scrollTop = log.scrollHeight;
 }
@@ -563,7 +572,7 @@ document.getElementById("modal-close").onclick=()=>document.getElementById("moda
 // ── 功能③：截图识诈（OCR，纯前端）──
 // 上传聊天截图 → tesseract.js 本地识别文字 → 喂给检测引擎。
 // 「演示样图」内置已知文本兜底，现场即使断网/识别不佳也必出结果。
-const SAMPLE_OCR_TEXT = "您的账户涉嫌异常交易，需立即配合审查 请下载会议软件并共享屏幕 按我的指示操作并报出短信验证码，否则一切后果自行承担";
+const SAMPLE_OCR_TEXT = "您的账户涉嫌异常交易，需立即配合审查。请下载会议软件并共享屏幕，按我的指示操作并报出短信验证码，否则一切后果自行承担。";
 const ocrStatus = document.getElementById("ocr-status");
 let tessLoading = null;
 function loadTesseract(){

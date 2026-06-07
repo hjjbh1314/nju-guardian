@@ -252,6 +252,26 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
   </div>
 </section>
 
+<!-- 现场演示（不扫码也能看完整流程） -->
+<section class="slide" data-note="怕大家来不及扫码，这里直接走一遍：左边把可疑内容粘进去——比如冒充辅导员、银行客服诱导共享屏幕这类；点检测，右边立刻出一张风险研判卡片——风险等级、命中的诈骗行为特征、为什么可疑、三步怎么办，还附公开来源。整个检测在手机本地完成、秒级响应、不上传。">
+  <div class="stagger" style="height:100%;display:flex;flex-direction:column;justify-content:center">
+    <span class="kicker">现场演示 · 不扫码也能看</span>
+    <h2 style="font-size:40px;margin:10px 0 4px">粘进去，<span class="vm">秒出一张风险研判卡片</span></h2>
+    <p class="body" style="font-size:14px;margin-bottom:8px">端侧本地检测 · 三路融合（规则 ⊕ 语义 ⊕ 行为红旗）· 秒级响应</p>
+    <div style="display:flex;gap:48px;align-items:center;justify-content:center;margin-top:6px">
+      <div style="text-align:center">
+        <img src="assets/h5_home.png" alt="粘贴界面" style="height:430px;border-radius:16px;box-shadow:0 24px 60px -24px rgba(26,23,20,.55)">
+        <p class="body" style="font-size:14px;margin-top:12px">① 粘贴可疑短信 / 聊天 / 链接</p>
+      </div>
+      <div style="font-family:var(--fig);font-size:44px;color:var(--ochre)">→</div>
+      <div style="text-align:center">
+        <img src="assets/h5_preview.png" alt="风险研判卡片" style="height:430px;border-radius:16px;box-shadow:0 24px 60px -24px rgba(26,23,20,.55)">
+        <p class="body" style="font-size:14px;margin-top:12px">② 秒出风险卡片：等级 · 行为特征 · 为什么 · 怎么办 · 来源</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- 6 技术内核 双路引擎 -->
 <section class="slide" data-note="技术内核是分层研判架构。底座是端侧的三路融合引擎，毫秒级、可离线：第一路关键词加正则，可解释、强命中即定高危；第二路 BGE 中文向量做语义召回，覆盖『换个说法』的变体；第三路是我们这次新增的行为红旗——从输入里抽取转账、索要验证码、诱导共享屏幕、冒充身份等通用诈骗行为，每个对应反诈预警要点。它的价值是泛化：哪怕案例库里没有这种骗局，只要行为像诈骗，就能预警。三路加权融合：综合分等于规则强度加 2.5 倍语义相似度，再叠加行为红旗权重，阈值门控召回，缺模型自动降级 TF-IDF。难例再升级到上层的 LLM Agent——目前接 DeepSeek，多轮追问、调用案例库工具、给出处置方案。简单情形端侧秒判，复杂情形才上大模型，这是我们刻意的分层设计，而不是无脑调大模型。">
   <div class="stagger">
@@ -388,7 +408,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
     <div class="metrics">
       <div class="metric"><div class="n">50<span class="u">类</span></div><div class="l">公开来源案例</div><div class="s">CC BY 4.0</div></div>
       <div class="metric"><div class="n">12<span class="u">字段</span></div><div class="l">统一 Schema 治理</div><div class="s">CI 校验把关</div></div>
-      <div class="metric"><div class="n">100<span class="u">%</span></div><div class="l">双路 Top-3 召回</div><div class="s">含回归闸门</div></div>
+      <div class="metric"><div class="n">100<span class="u">%</span></div><div class="l">三路融合 · Top-3 召回</div><div class="s">含回归闸门</div></div>
     </div>
     <hr class="hair" style="margin:32px 0 16px">
     <p class="body" style="font-size:15px">开源 MIT · 来源白名单 · 必须公开可核验 · 不收匿名自述与群截图 · 自动化测试与持续集成</p>
@@ -396,19 +416,19 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 12.5 市场与价值规模 -->
-<section class="slide" data-note="这件事到底值多少钱，我们算给评委看。先看单位价值：校园电诈个案，我们按保守口径取人均损失 1 万元——极端个案像南开那位同学就是 220 万。再看规模：全国本科在校生 2086 万（教育部 2024），按保守的 1% 年遭遇率，就是约 20.9 万人会遇到诈骗；我们这套系统对校园高发类型识别拦截率按 60% 算，一年能拦下约 12.5 万起。两者相乘——每年可挽回损失约 12.5 亿元。而我们的成本：端侧检测零服务器、开源复制零边际成本、大模型只在难例时按需调用，一个月也就几百块。投入和挽回，量级完全不在一个数量级上。这些都是保守假设，只为算清价值量级；受害者 65.5% 是 18 到 35 岁的年轻人（国家反诈中心），校园就是主战场。">
+<section class="slide" data-note="这件事值多少钱，我们用公开数据算。先看人群：电诈受害者 65.5% 是 18 到 35 岁的年轻人（国家反诈中心），不是大家以为的老年人；全国高等教育在学 4846 万、本科在校生 2086 万（教育部 2024 公报），这就是我们最契合的盘子。再看金额，全部有来源：全国电诈案均损失约 3.8 万元一起——这是公安部数据，2015 年立案 59 万起、损失 222 亿元算出来的；受电信诈骗危害的大学生占 68%（中国信通院报告）；2023 年全国紧急拦截涉诈资金 3288 亿元（国家反诈中心），这是这个市场的资金量级。所以逻辑很清楚：每帮一位同学拦下一起，就按案均挽回约 3.8 万元；我们覆盖 2086 万本科生，端侧零服务器、开源零边际成本复制，社会价值随规模线性放大。这些金额都不是我们拍的，是官方公开数据。">
   <div class="stagger">
-    <span class="kicker">12 — 市场与价值测算</span>
-    <h2 style="font-size:42px;margin:12px 0 4px">拦下一起，<span class="vm">就挽回一笔真金白银</span></h2>
-    <p class="body" style="font-size:14px;margin-bottom:20px">把"识别不出 → 受骗"变成"当场识别 → 不受骗"；用单位价值 × 可拦截规模，算清社会价值</p>
+    <span class="kicker">12 — 市场与价值</span>
+    <h2 style="font-size:42px;margin:12px 0 4px">刚需 × <span class="vm">千万级人群</span> × 真金白银</h2>
+    <p class="body" style="font-size:14px;margin-bottom:18px">年轻人是电诈主战场，校园是刚需；每拦下一起，就按案均挽回一笔真钱</p>
     <div class="metrics">
-      <div class="metric"><div class="n">¥1<span class="u">万</span></div><div class="l">校园电诈个案均损（保守）</div><div class="s">极端个案如南开达 220 万</div></div>
-      <div class="metric"><div class="n">12.5<span class="u">万起</span></div><div class="l">每年可识别 / 拦截</div><div class="s">2086万 × 1% 遭遇 × 60% 拦截</div></div>
-      <div class="metric"><div class="n">12.5<span class="u">亿</span></div><div class="l" style="color:var(--vermilion);font-weight:700">每年可挽回损失</div><div class="s">个案均损 × 拦截起数</div></div>
+      <div class="metric"><div class="n">65.5<span class="u">%</span></div><div class="l">电诈受害者为 18–35 岁</div><div class="s">国家反诈中心</div></div>
+      <div class="metric"><div class="n">4846<span class="u">万</span></div><div class="l">全国高等教育在学（TAM）</div><div class="s">教育部 2024 公报</div></div>
+      <div class="metric"><div class="n">2086<span class="u">万</span></div><div class="l">全国本科在校生（SAM）</div><div class="s">教育部 2024 公报</div></div>
     </div>
-    <hr class="hair" style="margin:24px 0 16px">
-    <p class="serif" style="font-size:17px">我们的成本：端侧检测<span class="vm">零服务器</span> · 开源复制<span class="vm">零边际成本</span>（南大试点 → 在宁高校 → 全国）· 大模型按需调用（月约 ¥百）</p>
-    <p class="body" style="font-size:12.5px;margin-top:10px">测算口径：本科在校生 2086 万（教育部 2024 公报）；遭遇率 1%、拦截率 60%、个案均损 ¥1 万为保守假设，仅作价值量级估算 · 电诈受害者 65.5% 为 18–35 岁（国家反诈中心）</p>
+    <hr class="hair" style="margin:22px 0 14px">
+    <p class="serif" style="font-size:18px">全国电诈<span class="vm">案均损失 ¥3.8 万 / 起</span><span style="font-size:13px;color:var(--ink-soft)">（公安部：2015 年 59 万起、损失 222 亿元）</span>　·　大学生受害占 <b>68%</b><span style="font-size:13px;color:var(--ink-soft)">（中国信通院）</span>　·　2023 年全国紧急拦截涉诈资金 <b>3288 亿元</b><span style="font-size:13px;color:var(--ink-soft)">（国家反诈中心）</span></p>
+    <p class="body" style="font-size:14.5px;margin-top:12px">价值逻辑：<b style="color:var(--ink)">拦下一起 ≈ 挽回 ¥3.8 万</b>（官方案均）；覆盖 2086 万本科生，端侧<span class="vm">零服务器</span>、开源<span class="vm">零边际成本</span>复制 —— 社会价值随规模线性放大。</p>
   </div>
 </section>
 
