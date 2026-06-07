@@ -202,7 +202,7 @@ const EIGHT = [
 const CN = {1:"一",2:"二",3:"三",4:"四",5:"五",6:"六",7:"七",8:"八"};
 const KB = window.NJU_KB || {cases:[],version:"?"};
 const REPO = "hjjbh1314/nju-guardian";
-const AGENT_PROXY_URL = "";   // 部署 infra/agent-proxy 后填入 Worker 地址；留空则 AI 研判按钮提示未配置
+const AGENT_PROXY_URL = "https://nju-guardian-agent.haiwennju.workers.dev";   // LLM 深度研判代理（密钥存 Cloudflare Secret）
 document.getElementById("s-cases").textContent = KB.cases.length;
 document.getElementById("s-ver").textContent = "v"+KB.version;
 
