@@ -225,7 +225,7 @@ function copyReport(r){
     try{ const ta=document.createElement("textarea"); ta.value=s; ta.style.position="fixed"; ta.style.opacity="0";
       document.body.appendChild(ta); ta.select(); copied=document.execCommand("copy"); document.body.removeChild(ta); }catch(e){}
   }
-  toast(copied ? "已复制上报内容，可粘贴发给反诈小组 / 南大保卫处 81686110"
+  toast(copied ? "✓ 上报成功 · 内容已复制，可转发反诈小组 / 南大保卫处 81686110"
               : "请长按结果文字手动复制后转发");
 }
 // 一键上报：优先提交后台收集（服务端建 Issue → 审核入库流水线）；未配置或失败则退回复制
@@ -234,14 +234,17 @@ function doReport(){
   if(!r.text){ toast("没有可上报的内容"); return; }
   if(!AGENT_PROXY_URL){ copyReport(r); return; }
   toast("正在上报…");
+  const ctrl = new AbortController();
+  const timer = setTimeout(()=>ctrl.abort(), 8000);   // 8秒兜底，绝不卡在"正在上报…"
   fetch(AGENT_PROXY_URL.replace(/\/$/,"") + "/report", {method:"POST",headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({text:r.text, matched:r.matched})})
+    body: JSON.stringify({text:r.text, matched:r.matched}), signal:ctrl.signal})
    .then(async res=>{
+     clearTimeout(timer);
      let j={}; try{ j=await res.json(); }catch(e){}
-     if(res.ok && j.ok){ toast("✓ 已上报，维护者审核后纳入案例库"); }
+     if(res.ok && j.ok){ toast("✓ 上报成功 · 维护者审核后纳入案例库"); }
      else { copyReport(r); }   // 后台未配置/失败 → 退回本地复制，绝不让用户白点
    })
-   .catch(()=>copyReport(r));
+   .catch(()=>{ clearTimeout(timer); copyReport(r); });
 }
 
 // ── AI 深度研判（调用 infra/agent-proxy 部署的 Worker，多轮）──
@@ -258,36 +261,22 @@ function renderAgent(){
 async function callAgent(){
   agentMsgs.push({role:"sys",content:"正在研判…"}); renderAgent();
   const send = agentMsgs.filter(m=>m.role==="user"||m.role==="assistant");
+  const ctrl = new AbortController();
+  const timer = setTimeout(()=>ctrl.abort(), 30000);   // 30秒超时，绝不卡死
   try{
     const res = await fetch(AGENT_PROXY_URL, {method:"POST",headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({messages:send, context: window.__agentCtx||""})});
-    if(!res.ok || !res.body){
-      let err="请重试"; try{ const j=await res.json(); err=j.error||err; }catch(e){}
-      agentMsgs = agentMsgs.filter(m=>m.role!=="sys");
-      agentMsgs.push({role:"sys",content:"研判失败："+err}); renderAgent(); return;
-    }
-    // 流式读取 SSE：边生成边渲染
+      body: JSON.stringify({messages:send, context: window.__agentCtx||""}), signal:ctrl.signal});
+    clearTimeout(timer);
+    let j={}; try{ j = await res.json(); }catch(e){}
     agentMsgs = agentMsgs.filter(m=>m.role!=="sys");
-    agentMsgs.push({role:"assistant",content:""});
-    const idx = agentMsgs.length-1;
-    const reader = res.body.getReader(), dec = new TextDecoder();
-    let buf="", acc="";
-    while(true){
-      const {done,value} = await reader.read(); if(done) break;
-      buf += dec.decode(value,{stream:true});
-      const parts = buf.split("\n"); buf = parts.pop();
-      for(const line of parts){
-        const ln = line.trim(); if(!ln.startsWith("data:")) continue;
-        const d = ln.slice(5).trim(); if(d==="[DONE]" || !d) continue;
-        try{ const j=JSON.parse(d); const t=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content;
-          if(t){ acc+=t; agentMsgs[idx].content=acc; renderAgent(); } }catch(e){}
-      }
-    }
-    if(!acc){ agentMsgs[idx].content="（模型无回复，请重试）"; renderAgent(); }
+    if(res.ok && j && j.reply){ agentMsgs.push({role:"assistant",content:j.reply}); }
+    else { agentMsgs.push({role:"sys",content:"研判失败：" + ((j&&j.error)||"请重试")}); }
   }catch(e){
+    clearTimeout(timer);
     agentMsgs = agentMsgs.filter(m=>m.role!=="sys");
-    agentMsgs.push({role:"sys",content:"网络错误，请稍后重试"}); renderAgent();
+    agentMsgs.push({role:"sys",content: (e&&e.name==="AbortError") ? "研判超时，请重试" : "网络错误，请重试"});
   }
+  renderAgent();
 }
 function openAgent(){
   if(!AGENT_PROXY_URL){ toast("AI 深度研判未配置：请部署 infra/agent-proxy 后在 index.html 填入地址"); return; }

@@ -68,7 +68,7 @@ async function handleChat(request, env) {
         messages: [{ role: "system", content: sys }, ...clean],
         max_tokens: 600,
         temperature: 0.3,
-        stream: true,           // 关键：流式，边生成边吐
+        stream: false,
       }),
     });
   } catch (e) {
@@ -78,10 +78,10 @@ async function handleChat(request, env) {
     const t = await up.text().catch(() => "");
     return json({ error: "上游模型返回错误", detail: t.slice(0, 200) }, 502);
   }
-  // 把 DeepSeek 的 SSE 流原样转给前端
-  return new Response(up.body, {
-    headers: { "Content-Type": "text/event-stream; charset=utf-8", "Cache-Control": "no-cache", ...CORS },
-  });
+  const data = await up.json().catch(() => null);
+  const reply = data && data.choices && data.choices[0] && data.choices[0].message
+    ? data.choices[0].message.content : "（模型无回复，请重试）";
+  return json({ reply });
 }
 
 // ── 现场上报：服务端建 GitHub Issue → 进审核入库流水线 ──
