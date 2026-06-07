@@ -10,7 +10,7 @@
 <text x="380" y="137" font-size="12" fill="#6a6a7a" text-anchor="middle">案例总数</text>
 <rect x="505" y="80" width="223" height="66" rx="10" fill="#EFE8DA" stroke="#E3DCCB"/>
 <text x="617" y="118" font-size="30" font-weight="800" fill="#C0392B" text-anchor="middle">7/8</text>
-<text x="617" y="137" font-size="12" fill="#6a6a7a" text-anchor="middle">八个凡是覆盖</text>
+<text x="617" y="137" font-size="12" fill="#6a6a7a" text-anchor="middle">反诈要点覆盖</text>
 <text x="32" y="182" font-size="14" font-weight="700" fill="#1A1714">风险等级分布</text>
 <text x="32" y="213" font-size="12" fill="#4a4a5a">高危 high</text>
 <rect x="210" y="198" width="470" height="20" rx="5" fill="#E3DCCB"/>

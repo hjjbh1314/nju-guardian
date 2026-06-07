@@ -104,16 +104,16 @@ def test_rule_only_detection():
 
 
 def test_eight_rules_coverage():
-    """八个凡是引用应至少覆盖 5 条（避免 KB 漂移导致八个凡是覆盖不足）。"""
+    """反诈预警要点引用应至少覆盖 5 条（避免 KB 漂移导致反诈要点覆盖不足）。"""
     kb = load_kb()
     eight_rules_hits = set()
     for c in kb["cases"]:
         for w in c.get("why_scam", []):
-            m = re.search(r"八个凡是.*?第([一二三四五六七八12345678])条", w)
+            m = re.search(r"反诈预警要点.*?第([一二三四五六七八12345678])条", w)
             if m:
                 eight_rules_hits.add(m.group(1))
     assert len(eight_rules_hits) >= 5, \
-        f"八个凡是覆盖不足（仅 {len(eight_rules_hits)} 条）"
+        f"反诈要点覆盖不足（仅 {len(eight_rules_hits)} 条）"
 
 
 def test_emergency_phones():
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     tests = [
         ("KB schema 完整性", test_kb_schema),
         ("规则路 12/12 检测", test_rule_only_detection),
-        ("八个凡是覆盖度", test_eight_rules_coverage),
+        ("反诈要点覆盖度", test_eight_rules_coverage),
         ("紧急电话齐全", test_emergency_phones),
     ]
     failed = 0

@@ -3,7 +3,7 @@
 案例库统计图生成器 · NJU Guardian
 ===================================
 
-从 demo/knowledge_base.json 自动生成一张 SVG 概览图（总数 / 风险分布 / 八个凡是覆盖 /
+从 demo/knowledge_base.json 自动生成一张 SVG 概览图（总数 / 风险分布 / 反诈要点覆盖 /
 类型数），写到 assets/kb_stats.svg，供 README 嵌入。
 
 妙处：案例库长大后重跑一次，图就自动更新——直观体现"会自己长大"。纯标准库，无需 matplotlib。
@@ -51,7 +51,7 @@ def load_stats() -> dict:
     eight = set()
     for c in cases:
         for w in c.get("why_scam", []):
-            m = re.search(r"八个凡是.*?第([一二三四五六七八12345678])条", w)
+            m = re.search(r"反诈预警要点.*?第([一二三四五六七八12345678])条", w)
             if m:
                 eight.add(m.group(1))
     return {
@@ -84,7 +84,7 @@ def build_svg(s: dict) -> str:
                  f'v{esc(s["version"])} · 更新 {esc(s["updated"])} · 自动生成自 knowledge_base.json</text>')
 
     # 顶部三个大数字
-    cards = [("案例类型", s["types"]), ("案例总数", s["total"]), ("八个凡是覆盖", f'{s["eight"]}/8')]
+    cards = [("案例类型", s["types"]), ("案例总数", s["total"]), ("反诈要点覆盖", f'{s["eight"]}/8')]
     cw = (W - 2 * pad - 2 * 14) / 3
     for i, (label, val) in enumerate(cards):
         cx = pad + i * (cw + 14)
@@ -124,7 +124,7 @@ def main() -> int:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(build_svg(s), encoding="utf-8")
     print(f"✅ 生成 {OUT}")
-    print(f"   总数 {s['total']} · 类型 {s['types']} · 八个凡是 {s['eight']}/8 · "
+    print(f"   总数 {s['total']} · 类型 {s['types']} · 反诈预警要点 {s['eight']}/8 · "
           f"风险 {dict(s['risk'])}")
     return 0
 

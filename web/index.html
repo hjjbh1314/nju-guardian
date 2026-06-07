@@ -146,7 +146,7 @@
     <div id="live"><span class="dot"></span><span class="bar"><i></i></span><span id="live-txt"></span></div>
     <button class="btn" id="go">🔍 立即检测</button>
     <div id="out"></div>
-    <p class="disc">⚠️ 本页为<b>离线规则版</b>（关键词+正则，浏览器本地运行、不上传任何内容）。完整版在此之上叠加 <b>BGE-zh 语义向量召回</b>，覆盖"换个说法"的诈骗变体。</p>
+    <p class="disc">⚠️ 本页为<b>离线规则版</b>（关键词+正则，浏览器本地运行、不上传任何内容）。完整版在此之上叠加 <b>BGE-zh 语义向量召回</b>，覆盖「换个说法」的诈骗变体。</p>
   </main>
   <footer>
     南大数智安全官 · OpenClaw 应用创新大赛 · 案例均含公开来源 · 紧急拨 96110 / 南大保卫处 81686110
@@ -154,7 +154,7 @@
 </div>
 
 <div id="modal">
-  <img id="modal-img" alt="反诈战报">
+  <img id="modal-img" alt=「反诈战报」>
   <p class="tip">长按图片保存 / 转发到班群，提醒同学</p>
   <div class="mbtns">
     <a id="modal-dl" download="反诈战报.png">⬇️ 保存图片</a>
@@ -165,14 +165,14 @@
 <script src="kb.js"></script>
 <script>
 const EIGHT = [
-  "凡是要求垫付资金做任务的兼职刷单，都是诈骗",
-  "凡是宣称内幕消息、专家指导、稳赚不赔的投资理财，都是诈骗",
-  "凡是宣称无抵押低利率、放款前要先交各类费用的贷款，都是诈骗",
-  "凡是自称电商物流客服以退款理赔为由要求提供银行卡和验证码的，都是诈骗",
-  "凡是自称公检法以涉嫌违法为由要求转账到安全账户的，都是诈骗",
-  '凡是自称"领导"主动加 QQ/微信，先嘘寒问暖再要求转账的，都是诈骗',
-  "凡是发送不明链接让你输入银行卡 / 手机验证码 / 各种密码的，都是诈骗",
-  "凡是通过社交平台拉群加好友、让你点击链接下载 APP 进行投资 / 退费的，都是诈骗",
+  "要求垫付资金做任务的兼职刷单，都是诈骗",
+  "宣称内幕消息、专家指导、稳赚不赔的投资理财，都是诈骗",
+  "宣称无抵押低利率、放款前要先交各类费用的贷款，都是诈骗",
+  "自称电商物流客服以退款理赔为由要求提供银行卡和验证码的，都是诈骗",
+  "自称公检法以涉嫌违法为由要求转账到安全账户的，都是诈骗",
+  '自称「领导」主动加 QQ/微信，先嘘寒问暖再要求转账的，都是诈骗',
+  "发送不明链接让你输入银行卡 / 手机验证码 / 各种密码的，都是诈骗",
+  "通过社交平台拉群加好友、让你点击链接下载 APP 进行投资 / 退费的，都是诈骗",
 ];
 const CN = {1:"一",2:"二",3:"三",4:"四",5:"五",6:"六",7:"七",8:"八"};
 const KB = window.NJU_KB || {cases:[],version:"?"};
@@ -219,7 +219,7 @@ function scoreCase(text, c){
   return {c, kw, pt, rule: kw.length*1.0 + pt.length*1.5};
 }
 
-// ── 第三路：行为红旗（反诈八个凡是要素），与 demo/fraud_signals.py 对齐 ──
+// ── 第三路：行为红旗（反诈红线要素），与 demo/fraud_signals.py 对齐 ──
 const SIGNALS = [
   {id:"transfer",name:"要求转账 / 垫付资金",sev:3,pats:[/转账|汇款|打款|垫付|垫资|保证金|定金|押金|手续费|解冻费|激活费|清算账户|安全账户|先转|转入|转到|转给|把钱转|充值/]},
   {id:"credential",name:"索要验证码 / 银行卡 / 密码",sev:3,pats:[/验证码|动态码|短信码|银行卡号|卡号|支付密码|交易密码|开户行|cvv/i]},
@@ -246,7 +246,7 @@ const RISKMETA={high:{emoji:"🔴",color:"var(--high)"},medium:{emoji:"🟡",col
 const RANK={"low-medium":1,medium:2,high:3};
 function sigSection(hits){
   if(!hits.length) return "";
-  return `<div class="sec"><b>🚩 诈骗行为特征（对应反诈八个凡是）</b><ul>${hits.map(h=>`<li>${esc(h.name)}</li>`).join("")}</ul></div>`;
+  return `<div class="sec"><b>🚩 诈骗行为特征（对应反诈预警要点）</b><ul>${hits.map(h=>`<li>${esc(h.name)}</li>`).join("")}</ul></div>`;
 }
 
 // 风险判定：规则路 + 行为红旗融合，取更高等级（行为可在案例未命中时抬升风险）
@@ -279,7 +279,7 @@ function highlight(text, kws){
 function eightRefs(c){
   const out=[];
   (c.why_scam||[]).forEach(w=>{
-    const m = w.match(/八个凡是.*?第([一二三四五六七八12345678])条/);
+    const m = w.match(/反诈预警要点.*?第([一二三四五六七八12345678])条/);
     if(m){
       let n = "一二三四五六七八".indexOf(m[1]);
       if(n<0) n = parseInt(m[1])-1;
@@ -331,7 +331,7 @@ function detect(){
     <div class="body">
       <p class="lbl" style="margin:0 0 8px">你的输入（已高亮命中词）：</p>
       <div style="font-size:14px;background:#fafafd;border-radius:8px;padding:10px">${highlight(text, top.kw)}</div>`;
-  html += sigSection(sigHits);   // 第三路：诈骗行为特征（八个凡是）
+  html += sigSection(sigHits);   // 第三路：诈骗行为特征（反诈预警要点）
 
   scored.forEach((m,i)=>{
     const c=m.c;
@@ -342,12 +342,12 @@ function detect(){
     if(i===0){
       html += `<div class="sec"><b>⚠️ 为什么可疑</b><ul>${(c.why_scam||[]).map(w=>`<li>${esc(w)}</li>`).join("")}</ul></div>`;
       html += `<div class="sec"><b>✅ 怎么办</b><ul>${(c.advice||[]).map(a=>`<li>${esc(a)}</li>`).join("")}</ul></div>`;
-      refs.forEach(n=>{ html += `<div class="ref">🛡 国家反诈八个凡是·第${CN[n+1]}条：${esc(EIGHT[n])}</div>`; });
+      refs.forEach(n=>{ html += `<div class="ref">🛡 国家反诈预警要点·第${CN[n+1]}条：${esc(EIGHT[n])}</div>`; });
       html += `<div class="emg">紧急：${(c.emergency||["96110"]).map(e=>esc(e)).join(" · ")} · 报警 <b>110</b></div>`;
     }
     html += `<p class="src">来源：${esc(c.source||"")}</p></div>`;
   });
-  html += `<button class="share" id="shareBtn">📤 生成可转发"反诈战报"图</button>`;
+  html += `<button class="share" id="shareBtn">📤 生成可转发「反诈战报」图</button>`;
   html += `<a class="report" href="${reportLink(text, top.c.name)}" target="_blank" rel="noopener">🚩 遇到新变体？一键上报，帮案例库变强</a>`;
   html += `</div></div>`;
   out.innerHTML = html;
@@ -380,7 +380,7 @@ function liveScan(){
 }
 document.getElementById("inp").addEventListener("input", liveScan);
 
-// ── 功能①：生成可转发"反诈战报"图（canvas，纯前端）──
+// ── 功能①：生成可转发「反诈战报」图（canvas，纯前端）──
 function wrap(ctx, text, x, y, maxW, lh, max){
   const chars=[...text]; let line="", n=0;
   for(const ch of chars){
@@ -451,7 +451,7 @@ document.getElementById("modal-close").onclick=()=>document.getElementById("moda
 
 // ── 功能③：截图识诈（OCR，纯前端）──
 // 上传聊天截图 → tesseract.js 本地识别文字 → 喂给检测引擎。
-// "演示样图"内置已知文本兜底，现场即使断网/识别不佳也必出结果。
+// 「演示样图」内置已知文本兜底，现场即使断网/识别不佳也必出结果。
 const SAMPLE_OCR_TEXT = "您好您的京东订单存在异常 需要为您办理理赔退款 请先下载会议软件并开启共享屏幕 以便核对您的银行卡流水";
 const ocrStatus = document.getElementById("ocr-status");
 let tessLoading = null;
