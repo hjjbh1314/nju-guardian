@@ -1,0 +1,6 @@
+# Cloudflare Worker 部署配置（供 Git 连接 / `npx wrangler deploy` 使用）
+# 让 wrangler 知道：部署哪个入口文件、Worker 叫什么名。
+# 密钥 DEEPSEEK_API_KEY 不写在这里——在 Cloudflare 后台用 Secret 设置（绝不进仓库）。
+name = "nju-guardian-agent"
+main = "infra/agent-proxy/worker.js"
+compatibility_date = "2026-01-01"

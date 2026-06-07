@@ -11,7 +11,18 @@
 
 ---
 
-## 方式 A：网页后台部署（无需命令行，推荐）
+## 方式 C：连接 GitHub 仓库自动部署（你正在用的方式）
+
+如果你在 Cloudflare 后台「Import a repository」连了 `hjjbh1314/nju-guardian`、Deploy 命令用 `npx wrangler deploy`：
+- 仓库根目录已放了 `wrangler.toml`（指定入口 `infra/agent-proxy/worker.js` 和 Worker 名 `nju-guardian-agent`），Root directory 保持 `/` 即可。
+- **务必单独设密钥**：该 Worker → Settings → Variables and Secrets → 加 Secret `DEEPSEEK_API_KEY`（Git 自动部署不会带密钥，缺了会返回 500）。
+- 之后每次 push 到 main 会自动重新部署。
+
+> 验证是否部署成功：点 **Visit** 用浏览器打开 Worker 地址（GET 请求），应返回 `{"error":"仅支持 POST"}`——看到这个就说明我们的代码已生效。
+
+---
+
+## 方式 A：网页后台部署（无需命令行）
 
 1. 注册 / 登录 [dash.cloudflare.com](https://dash.cloudflare.com) → 左侧 **Workers & Pages** → **Create** → **Create Worker**。
 2. 给它起个名（如 `nju-guardian-agent`）→ **Deploy** → 再点 **Edit code**。
