@@ -396,24 +396,19 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 12.5 市场与价值规模 -->
-<section class="slide" data-note="这件事值得做多大？三个数说话。第一，电信网络诈骗的受害者里，<b>18 到 35 岁占 65.5%</b>（国家反诈中心数据）——年轻人、学生才是主战场，不是大家以为的老年人。第二，全国高等教育在学规模 <b>4846 万人</b>（教育部 2024 公报），其中本科在校生 <b>2086 万</b>——这是我们最契合的校园人群，全员都是反诈刚需。第三，落地路径：以南京大学为试点，向在宁高校、江苏、全国复制。关键是，我们这套系统是<b>开源 + 自增长</b>的——复制到一所新高校几乎零边际成本，只要把它的校园场景案例喂进同一条流水线。刚需 × 千万级人群 × 零成本复制，社会价值的天花板很高。">
+<section class="slide" data-note="这件事到底值多少钱，我们算给评委看。先看单位价值：校园电诈个案，我们按保守口径取人均损失 1 万元——极端个案像南开那位同学就是 220 万。再看规模：全国本科在校生 2086 万（教育部 2024），按保守的 1% 年遭遇率，就是约 20.9 万人会遇到诈骗；我们这套系统对校园高发类型识别拦截率按 60% 算，一年能拦下约 12.5 万起。两者相乘——每年可挽回损失约 12.5 亿元。而我们的成本：端侧检测零服务器、开源复制零边际成本、大模型只在难例时按需调用，一个月也就几百块。投入和挽回，量级完全不在一个数量级上。这些都是保守假设，只为算清价值量级；受害者 65.5% 是 18 到 35 岁的年轻人（国家反诈中心），校园就是主战场。">
   <div class="stagger">
-    <span class="kicker">12 — 市场与价值规模</span>
-    <h2 style="font-size:44px;margin:14px 0 6px">刚需 × <span class="vm">千万级人群</span> × 零成本复制</h2>
-    <p class="body" style="font-size:14px;margin-bottom:26px">反诈是刚性需求，校园是高发主场，开源自增长让覆盖近乎零边际成本</p>
+    <span class="kicker">12 — 市场与价值测算</span>
+    <h2 style="font-size:42px;margin:12px 0 4px">拦下一起，<span class="vm">就挽回一笔真金白银</span></h2>
+    <p class="body" style="font-size:14px;margin-bottom:20px">把"识别不出 → 受骗"变成"当场识别 → 不受骗"；用单位价值 × 可拦截规模，算清社会价值</p>
     <div class="metrics">
-      <div class="metric"><div class="n">65.5<span class="u">%</span></div><div class="l">电诈受害者为 18–35 岁</div><div class="s">国家反诈中心</div></div>
-      <div class="metric"><div class="n">4846<span class="u">万</span></div><div class="l">全国高等教育在学人群（TAM）</div><div class="s">教育部 2024 公报</div></div>
-      <div class="metric"><div class="n">2086<span class="u">万</span></div><div class="l">全国本科在校生（SAM·最契合）</div><div class="s">教育部 2024 公报</div></div>
+      <div class="metric"><div class="n">¥1<span class="u">万</span></div><div class="l">校园电诈个案均损（保守）</div><div class="s">极端个案如南开达 220 万</div></div>
+      <div class="metric"><div class="n">12.5<span class="u">万起</span></div><div class="l">每年可识别 / 拦截</div><div class="s">2086万 × 1% 遭遇 × 60% 拦截</div></div>
+      <div class="metric"><div class="n">12.5<span class="u">亿</span></div><div class="l" style="color:var(--vermilion);font-weight:700">每年可挽回损失</div><div class="s">个案均损 × 拦截起数</div></div>
     </div>
-    <hr class="hair" style="margin:30px 0 18px">
-    <div class="pipe" style="font-size:17px">
-      <span class="step">南京大学试点</span><span class="arr">→</span>
-      <span class="step">在宁高校</span><span class="arr">→</span>
-      <span class="step">江苏</span><span class="arr">→</span>
-      <span class="step vm">全国可复制</span>
-      <span class="body" style="font-size:13px;margin-left:14px">开源 + 自增长 = 每复制一所，几乎零边际成本</span>
-    </div>
+    <hr class="hair" style="margin:24px 0 16px">
+    <p class="serif" style="font-size:17px">我们的成本：端侧检测<span class="vm">零服务器</span> · 开源复制<span class="vm">零边际成本</span>（南大试点 → 在宁高校 → 全国）· 大模型按需调用（月约 ¥百）</p>
+    <p class="body" style="font-size:12.5px;margin-top:10px">测算口径：本科在校生 2086 万（教育部 2024 公报）；遭遇率 1%、拦截率 60%、个案均损 ¥1 万为保守假设，仅作价值量级估算 · 电诈受害者 65.5% 为 18–35 岁（国家反诈中心）</p>
   </div>
 </section>
 
