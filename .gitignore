@@ -52,3 +52,10 @@ Demo方案_*.md
 # Claude Code 工作产物
 .claude/
 .cursor/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
