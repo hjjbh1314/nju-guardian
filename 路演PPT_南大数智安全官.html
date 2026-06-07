@@ -191,7 +191,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 2 痛点 -->
-<section class="slide" data-note="先说痛点。<b>国家反诈中心 App 很好，但它是通用的</b>——对冒充辅导员、奖助学金、保录留学这些<b>校园专属</b>场景，命中率低。而且同学们不爱翻图文手册，他们要的是『即时输入、即时研判』的工具。更现实的是：任何一个新案例库，一开始都面临<b>冷启动</b>——案例的覆盖广度与时效都不足。我们这次要重点解决的，正是这几个问题。">
+<section class="slide" data-note="先说痛点。<b>国家反诈中心 App 很好，但它是通用的</b>——对冒充辅导员、奖助学金、保录留学这些<b>校园专属</b>场景，命中率低。而且同学们不爱翻图文手册，他们要的是『即时输入、即时研判』的工具。更现实的是：任何一个新案例库，一开始案例的覆盖广度与时效都不足。这几点正是我们要解决的。">
   <div class="stagger">
     <span class="kicker">01 — 痛点</span>
     <h2 style="font-size:54px;margin:18px 0 6px">通用反诈，<span class="vm">接不住校园场景</span></h2>
@@ -200,7 +200,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
       <li><span class="i">壹</span><b>类型繁多，难以全记</b><span>高发诈骗类型数十种且持续翻新，仅凭个人记忆难以全面识别与防范</span></li>
       <li><span class="i">贰</span><b>校园场景命中率低</b><span>冒充辅导员、奖助学金、保录留学、二手交易等校园高发场景，通用工具难以精准识别</span></li>
       <li><span class="i">叁</span><b>传统宣教触达有限</b><span>图文手册阅读率偏低，学生更需要「即时输入、即时研判」的轻量工具</span></li>
-      <li><span class="i">肆</span><b>知识库冷启动</b><span>案例的覆盖广度与更新时效，是同类知识库普遍面临的瓶颈</span></li>
+      <li><span class="i">肆</span><b>案例覆盖与时效</b><span>案例的覆盖广度与更新时效，是同类知识库普遍面临的瓶颈</span></li>
     </ul>
   </div>
 </section>
@@ -241,7 +241,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
       <span class="kicker">04 — 现场体验</span>
       <h2 style="font-size:46px;margin:16px 0 20px">扫码<span class="vm">即用</span></h2>
       <hr class="hair" style="margin:0 0 22px">
-      <p class="body" style="font-size:17px;max-width:430px">纯前端、零服务器 H5。检测在手机浏览器<b style="color:var(--ink)">本地</b>完成，<b style="color:var(--vermilion)">输入不上传</b>。</p>
+      <p class="body" style="font-size:17px;max-width:500px">纯前端、零服务器 H5。检测在手机浏览器<b style="color:var(--ink)">本地</b>完成，<b style="color:var(--vermilion);white-space:nowrap">输入不上传</b>。</p>
       <p class="body" style="font-size:15px;margin-top:14px;max-width:430px">检测逻辑与完整版规则路一致 · 实测 <span class="serif vm">12/12</span> 命中对齐</p>
     </div>
     <div class="stagger" style="text-align:center">
@@ -284,7 +284,8 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
       </div>
     </div>
     <hr class="hair" style="margin:18px 0 12px">
-    <p class="serif" style="font-size:15px;color:var(--ink-soft)">风险定级 ＝ <span class="vm">取高</span>（规则 ＋ 2.5× 语义 的案例研判　/　行为红旗研判）；红旗按 <span class="vm">强 3 · 中 2 · 弱 1</span> 计分，≥2 个强信号或累计 ≥6 即判高危　·　缺模型自动降级 TF-IDF</p>
+    <p class="serif" style="font-size:17px">风险定级 ＝ <span class="vm">案例研判</span> 与 <span class="vm">行为研判</span> 取更高者　——　已知套路、未知变体都不漏</p>
+    <p class="body" style="font-size:13px;margin-top:7px">案例研判：综合分 ＝ 规则 ＋ 2.5× 语义　·　行为研判：红旗 强3 / 中2 / 弱1 计分，≥2 强或累计 ≥6 判高危　·　缺模型自动降级 TF-IDF</p>
   </div>
 </section>
 
@@ -363,7 +364,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 11 反馈闭环 -->
-<section class="slide" data-note="冷启动的<b>根本解法</b>是闭环。H5 上每张卡片都有「一键上报」——同学遇到新型诈骗，点一下就生成一条带来源的待审案例，进入刚才那条流水线。<b>用的人越多，库越全</b>。现场每一位扫码的观众，都可能成为案例的来源。">
+<section class="slide" data-note="让案例库越用越全的<b>根本解法</b>是闭环。H5 上每张卡片都有「一键上报」——同学遇到新型诈骗，点一下就生成一条带来源的待审案例，进入刚才那条流水线。<b>用的人越多，库越全</b>。现场每一位扫码的观众，都可能成为案例的来源。">
   <div class="stagger" style="text-align:center;align-items:center;display:flex;flex-direction:column;justify-content:center;height:100%">
     <span class="kicker">10 — 反馈闭环</span>
     <h2 style="font-size:50px;margin:22px 0 28px">用的人越多，<span class="vm">库越全</span></h2>
@@ -373,7 +374,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
       <span class="step">带来源的待审案例</span><span class="arr">→</span>
       <span class="step">人工审核入库</span>
     </div>
-    <p class="body" style="font-size:16px;margin-top:34px;max-width:760px">把现场每一位观众，都变成案例库的来源——这才是冷启动的根本解法。</p>
+    <p class="body" style="font-size:16px;margin-top:34px;max-width:760px">把现场每一位观众，都变成案例库的来源——它会越用越全、越用越准。</p>
   </div>
 </section>
 
@@ -428,10 +429,10 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 14 收尾 -->
-<section class="slide" data-note="总结一句话：初赛我们有 50 条案例；决赛我们交付的，是一套会<b>自己长大</b>的反诈知识系统——公开来源自动采集、格式自动校验、人工审核把关、现场扫码即用。<b>冷启动不再是问题，因为它每天都在变强</b>。谢谢大家，欢迎扫码体验、提出您遇到的骗术。">
+<section class="slide" data-note="总结一句话：我们交付的是一套会<b>自己长大</b>的反诈知识系统——公开来源自动采集、格式自动校验、人工审核把关、现场扫码即用，<b>用得越多、越护得住</b>。谢谢大家，欢迎扫码体验、提出您遇到的骗术。">
   <div class="stagger" style="height:100%;display:flex;flex-direction:column;justify-content:center">
     <span class="kicker">尾声</span>
-    <p class="quote" style="font-size:33px;margin:18px 0;max-width:1040px">冷启动不再是问题——<br>因为它<span class="vm">每天都在变强</span>。</p>
+    <p class="quote" style="font-size:33px;margin:18px 0;max-width:1040px">一套会<span class="vm">自己长大</span>的反诈系统——<br>用得越多，<span class="vm">越护得住</span>。</p>
     <hr class="hair" style="margin:8px 0 22px">
     <div style="display:flex;justify-content:space-between;align-items:flex-end">
       <div>
