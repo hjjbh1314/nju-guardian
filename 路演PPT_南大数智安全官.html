@@ -431,18 +431,24 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 市场·价值 -->
-<section class="slide" data-note="再看金额，全部取自官方公开数据：校园电诈个案均损失约 7500 元一起（浙江某高校 2018–2023 年公开通报 215 起、合计 162 万元）；受电信诈骗危害的大学生占 68%（中国信通院）；2023 年全国紧急拦截涉诈资金 3288 亿元（国家反诈中心），这是这个市场的资金量级。逻辑很清楚：每帮一位同学拦下一起，就按校园案均挽回约 7500 元；我们覆盖 2086 万本科生，端侧零服务器、开源零边际成本复制，社会价值随规模线性放大。这些金额都不是我们拍脑袋，是官方公开数据。">
+<section class="slide" data-note="市场规模我们用自上而下漏斗法算到底。受众：全国本科在校生 2086 万（教育部 2024 公报）；年发案率按保守的 0.5% 估，约 10 万人/年遭电诈损失；个案均损失 7500 元（浙江某高校 2018–2023 真实样本）——三者相乘，得到全国本科生每年电诈损失规模约 7.8 亿元，这就是我们要解决的痛点市场。再看我们能拿下多少：按覆盖率乘识别率综合 20% 的保守拦截率，每年可避免约 1.6 亿元损失。而成本侧：端侧检测零服务器、开源复制零边际成本，大模型按需调用，年运营成本不到 10 万元。一句话：用十万元级的成本，撬动亿元级的社会价值，而且每复制一所高校几乎零新增成本。发案率和拦截率是保守假设，其余都是公开数据。">
   <div class="stagger">
-    <span class="kicker">12 — 市场 · 价值</span>
-    <h2 style="font-size:44px;margin:12px 0 4px">拦下一起，挽回一笔<span class="vm">真金白银</span></h2>
-    <p class="body" style="font-size:14px;margin-bottom:24px">金额全部取自官方公开数据，非估算</p>
+    <span class="kicker">12 — 市场 · 价值测算</span>
+    <h2 style="font-size:40px;margin:10px 0 2px">一笔<span class="vm">算得清</span>的账</h2>
+    <p class="body" style="font-size:13.5px;margin-bottom:18px">自上而下漏斗测算 · 公开数据为据，关键假设从严</p>
+    <p class="serif" style="font-size:23px;line-height:1.5">
+      <b>2086 万</b><span style="font-size:13px;color:var(--ink-soft)"> 本科生</span>
+      <span style="color:var(--ochre)"> ×</span> <b>0.5%</b><span style="font-size:13px;color:var(--ink-soft)"> 年发案</span>
+      <span style="color:var(--ochre)"> ×</span> <b>¥7500</b><span style="font-size:13px;color:var(--ink-soft)"> 案均损失</span>
+      <span style="color:var(--ochre)"> ＝</span> <b class="vm">¥7.8 亿 / 年</b><span style="font-size:13px;color:var(--ink-soft)"> 大学生电诈损失规模</span>
+    </p>
+    <hr class="hair" style="margin:18px 0 16px">
     <div class="metrics">
-      <div class="metric"><div class="n">7500<span class="u">元</span></div><div class="l">校园电诈个案均损失 / 起</div><div class="s">浙江高校 2018–2023：215 起 / 162 万元</div></div>
-      <div class="metric"><div class="n">68<span class="u">%</span></div><div class="l">受电诈危害的大学生</div><div class="s">中国信通院</div></div>
-      <div class="metric"><div class="n">3288<span class="u">亿</span></div><div class="l">2023 全国紧急拦截涉诈资金</div><div class="s">国家反诈中心</div></div>
+      <div class="metric"><div class="n vm" style="color:var(--vermilion)">1.6<span class="u">亿/年</span></div><div class="l">可避免损失（我们的价值）</div><div class="s">按综合拦截率 20%（覆盖 × 识别，保守）</div></div>
+      <div class="metric"><div class="n">&lt;10<span class="u">万/年</span></div><div class="l">运营成本</div><div class="s">端侧零服务器 · 开源零边际 · LLM 按需</div></div>
+      <div class="metric"><div class="n">≈0<span class="u"></span></div><div class="l">每复制一所高校的新增成本</div><div class="s">开源 + 自增长，社会价值线性放大</div></div>
     </div>
-    <hr class="hair" style="margin:22px 0 14px">
-    <p class="body" style="font-size:14.5px">拦下一起 ≈ 挽回约 ¥7500（校园案均）；覆盖 2086 万本科生，端侧零服务器、开源零边际成本复制 —— 社会价值随规模线性放大。</p>
+    <p class="body" style="font-size:12px;margin-top:14px;color:var(--ink-soft)">数据来源：本科生 2086 万（教育部 2024 公报）· 案均 ¥7500（浙江高校 2018–2023：215 起 / 162 万元）· 年发案率 0.5%、拦截率 20% 为保守假设，仅作量级测算</p>
   </div>
 </section>
 
