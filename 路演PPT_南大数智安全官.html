@@ -222,10 +222,10 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
       <span class="kicker">03 — 产品</span>
       <h2 style="font-size:46px;margin:16px 0 22px">粘进去，<span class="vm">出一张风险卡片</span></h2>
       <ul class="flow">
-        <li><span class="i">◷</span><b>三级风险评级 + 置信度</b></li>
-        <li><span class="i">◎</span><b>命中信号高亮</b><span>关键词 / 正则 / 语义</span></li>
-        <li><span class="i">▤</span><b>匹配案例 + 反诈预警要点</b></li>
-        <li><span class="i">✓</span><b>三步行动建议 + 公开来源</b></li>
+        <li><span class="i">01</span><b>三级风险评级 + 置信度</b></li>
+        <li><span class="i">02</span><b>命中信号高亮</b><span>关键词 / 正则 / 语义</span></li>
+        <li><span class="i">03</span><b>匹配案例 + 反诈预警要点</b></li>
+        <li><span class="i">04</span><b>三步行动建议 + 公开来源</b></li>
       </ul>
     </div>
     <div class="stagger" style="text-align:center">
@@ -329,7 +329,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
       </div>
     </div>
     <hr class="hair" style="margin:26px 0 14px">
-    <p class="serif" style="font-size:17px">未知骗局预警覆盖（库中无对应类型）　双路 <span style="color:var(--ink-soft)">70%</span> <span class="vm">→</span> 三路（＋行为红旗）<span class="vm" style="font-weight:700">100%</span>，净增 <span class="vm" style="font-weight:700">+30%</span></p>
+    <p class="serif" style="font-size:17px">未知骗局预警覆盖（库中无对应类型）　双路 <span style="color:var(--ink-soft)">70%</span> → 三路（＋行为红旗）<span class="vm" style="font-weight:700">100%</span>，净增 <span class="vm" style="font-weight:700">+30%</span></p>
     <p class="body" style="font-size:13px;margin-top:8px">两项均 CI 内置回归闸门，改库即自动复测 · <span class="serif">python demo/tests/eval.py</span></p>
   </div>
 </section>
@@ -365,9 +365,9 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
     <span class="kicker">08 — 格式治理</span>
     <h2 style="font-size:46px;margin:14px 0 30px">入库前，<span class="vm">先过一道闸门</span></h2>
     <ul class="flow" style="max-width:900px">
-      <li><span class="i">▦</span><b>12 字段统一 Schema</b><span>单一真相源，人读 / 机校验 / 录入模板都对齐它</span></li>
-      <li><span class="i">⚙</span><b>独立校验器</b><span>正则可编译 · 关键词非单字 · 来源可核验 · 跨案例去重</span></li>
-      <li><span class="i">✓</span><b>接入 CI</b><span>不合规即失败，进不了库；曾当场拦下 7 个错误正则</span></li>
+      <li><span class="i">01</span><b>12 字段统一 Schema</b><span>单一真相源，人读 / 机校验 / 录入模板都对齐它</span></li>
+      <li><span class="i">02</span><b>独立校验器</b><span>正则可编译 · 关键词非单字 · 来源可核验 · 跨案例去重</span></li>
+      <li><span class="i">03</span><b>接入 CI</b><span>不合规即失败，进不了库；曾当场拦下 7 个错误正则</span></li>
     </ul>
   </div>
 </section>
@@ -416,19 +416,32 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 12.5 市场与价值规模 -->
-<section class="slide" data-note="这件事值多少钱，我们用公开数据算。先看人群：电诈受害者 65.5% 是 18 到 35 岁的年轻人（国家反诈中心），不是大家以为的老年人；全国高等教育在学 4846 万、本科在校生 2086 万（教育部 2024 公报），这就是我们最契合的盘子。再看金额，全部有来源：全国电诈案均损失约 3.8 万元一起——这是公安部数据，2015 年立案 59 万起、损失 222 亿元算出来的；受电信诈骗危害的大学生占 68%（中国信通院报告）；2023 年全国紧急拦截涉诈资金 3288 亿元（国家反诈中心），这是这个市场的资金量级。所以逻辑很清楚：每帮一位同学拦下一起，就按案均挽回约 3.8 万元；我们覆盖 2086 万本科生，端侧零服务器、开源零边际成本复制，社会价值随规模线性放大。这些金额都不是我们拍的，是官方公开数据。">
+<section class="slide" data-note="先看人群规模。电诈受害者里 65.5% 是 18 到 35 岁的年轻人（国家反诈中心），不是大家以为的老年人——校园才是主战场。全国高等教育在学 4846 万、本科在校生 2086 万（教育部 2024 公报），这就是我们最契合的盘子，全员反诈刚需。">
   <div class="stagger">
-    <span class="kicker">12 — 市场与价值</span>
-    <h2 style="font-size:42px;margin:12px 0 4px">刚需 × <span class="vm">千万级人群</span> × 真金白银</h2>
-    <p class="body" style="font-size:14px;margin-bottom:18px">年轻人是电诈主战场，校园是刚需；每拦下一起，就按案均挽回一笔真钱</p>
+    <span class="kicker">12 — 市场 · 人群</span>
+    <h2 style="font-size:44px;margin:12px 0 4px">刚需 × <span class="vm">千万级人群</span></h2>
+    <p class="body" style="font-size:14px;margin-bottom:24px">年轻人是电诈主战场，校园是反诈刚需</p>
     <div class="metrics">
       <div class="metric"><div class="n">65.5<span class="u">%</span></div><div class="l">电诈受害者为 18–35 岁</div><div class="s">国家反诈中心</div></div>
       <div class="metric"><div class="n">4846<span class="u">万</span></div><div class="l">全国高等教育在学（TAM）</div><div class="s">教育部 2024 公报</div></div>
       <div class="metric"><div class="n">2086<span class="u">万</span></div><div class="l">全国本科在校生（SAM）</div><div class="s">教育部 2024 公报</div></div>
     </div>
+  </div>
+</section>
+
+<!-- 市场·价值 -->
+<section class="slide" data-note="再看金额，全部取自官方公开数据：全国电诈案均损失约 3.8 万元一起，这是公安部数据——2015 年立案 59 万起、损失 222 亿元算出来的；受电信诈骗危害的大学生占 68%（中国信通院）；2023 年全国紧急拦截涉诈资金 3288 亿元（国家反诈中心），这是这个市场的资金量级。逻辑很清楚：每帮一位同学拦下一起，就按案均挽回约 3.8 万元；我们覆盖 2086 万本科生，端侧零服务器、开源零边际成本复制，社会价值随规模线性放大。这些金额都不是我们拍脑袋，是官方公开数据。">
+  <div class="stagger">
+    <span class="kicker">12 — 市场 · 价值</span>
+    <h2 style="font-size:44px;margin:12px 0 4px">拦下一起，挽回一笔<span class="vm">真金白银</span></h2>
+    <p class="body" style="font-size:14px;margin-bottom:24px">金额全部取自官方公开数据，非估算</p>
+    <div class="metrics">
+      <div class="metric"><div class="n">3.8<span class="u">万</span></div><div class="l">全国电诈案均损失 / 起</div><div class="s">公安部：2015 年 59 万起 · 222 亿元</div></div>
+      <div class="metric"><div class="n">68<span class="u">%</span></div><div class="l">受电诈危害的大学生</div><div class="s">中国信通院</div></div>
+      <div class="metric"><div class="n">3288<span class="u">亿</span></div><div class="l">2023 全国紧急拦截涉诈资金</div><div class="s">国家反诈中心</div></div>
+    </div>
     <hr class="hair" style="margin:22px 0 14px">
-    <p class="serif" style="font-size:18px">全国电诈<span class="vm">案均损失 ¥3.8 万 / 起</span><span style="font-size:13px;color:var(--ink-soft)">（公安部：2015 年 59 万起、损失 222 亿元）</span>　·　大学生受害占 <b>68%</b><span style="font-size:13px;color:var(--ink-soft)">（中国信通院）</span>　·　2023 年全国紧急拦截涉诈资金 <b>3288 亿元</b><span style="font-size:13px;color:var(--ink-soft)">（国家反诈中心）</span></p>
-    <p class="body" style="font-size:14.5px;margin-top:12px">价值逻辑：<b style="color:var(--ink)">拦下一起 ≈ 挽回 ¥3.8 万</b>（官方案均）；覆盖 2086 万本科生，端侧<span class="vm">零服务器</span>、开源<span class="vm">零边际成本</span>复制 —— 社会价值随规模线性放大。</p>
+    <p class="body" style="font-size:14.5px">拦下一起 ≈ 挽回 ¥3.8 万（官方案均）；覆盖 2086 万本科生，端侧零服务器、开源零边际成本复制 —— 社会价值随规模线性放大。</p>
   </div>
 </section>
 
@@ -449,14 +462,14 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 <section class="slide" data-note="总结一句话：我们交付的是一套会<b>自己长大</b>的反诈知识系统——公开来源自动采集、格式自动校验、人工审核把关、现场扫码即用，<b>用得越多、越护得住</b>。谢谢大家，欢迎扫码体验、提出您遇到的骗术。">
   <div class="stagger" style="height:100%;display:flex;flex-direction:column;justify-content:center">
     <span class="kicker">尾声</span>
-    <p class="quote" style="font-size:33px;margin:18px 0;max-width:1040px">一套会<span class="vm">自己长大</span>的反诈系统——<br>用得越多，<span class="vm">越护得住</span>。</p>
-    <hr class="hair" style="margin:8px 0 22px">
+    <p class="body" style="font-size:15px;color:var(--ink-soft);margin:10px 0 16px">一套会自己长大的反诈系统 · 用得越多，越护得住</p>
+    <h1 style="font-size:74px;line-height:1.08">南大数智<span class="vm">安全官</span></h1>
+    <p class="quote" style="font-size:34px;margin:14px 0 0">让校园诈骗，<span class="vm">无所遁形</span></p>
+    <hr class="hair" style="margin:26px 0 18px">
     <div style="display:flex;justify-content:space-between;align-items:flex-end">
       <div>
-        <h1 style="font-size:38px">南大数智<span class="vm">安全官</span></h1>
-        <p class="body" style="font-size:14px;margin-top:10px">让校园诈骗，无所遁形 · 紧急拨 96110 / 南大保卫处 81686110</p>
-        <hr class="hair" style="margin:16px 0 12px;max-width:360px">
-        <p class="serif" style="font-size:19px;font-weight:700">作者 <span style="font-weight:400;font-size:15px;color:var(--ink-soft)">· 南京大学商学院 · 经济学（拔尖计划）</span></p>
+        <p class="body" style="font-size:14px">紧急拨 96110 / 南大保卫处 81686110</p>
+        <p class="serif" style="font-size:18px;font-weight:700;margin-top:10px">作者 <span style="font-weight:400;font-size:15px;color:var(--ink-soft)">· 南京大学商学院 · 经济学（拔尖计划）</span></p>
         <p class="body" style="font-size:13px;margin-top:6px">开源 github.com/hjjbh1314/nju-guardian　·　体验 hjjbh1314.github.io/nju-guardian</p>
       </div>
       <div style="text-align:center">
