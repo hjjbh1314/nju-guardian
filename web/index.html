@@ -428,8 +428,12 @@ function detect(){
           ${sigSection(sigHits)}
           <div class="sec"><b>✅ 怎么办</b><ul><li>立即停止操作，不转账、不提供验证码</li><li>通过官方渠道或当面与本人核实</li><li>已操作立即拨打 96110 / 南大保卫处 81686110</li></ul></div>
           <div class="emg">紧急：反诈专线 <b>96110</b> · 报警 <b>110</b> · 南大保卫处 <b>81686110</b></div>
+          <button class="share" id="shareBtn">📤 生成可转发「反诈战报」图</button>
           <button class="agentbtn" onclick="openAgent()">🤖 AI 深度研判 · 追问</button><button class="report" onclick="doReport()">🚩 一键上报这条（复制内容，转发提醒）</button>
         </div></div>`;
+      LAST = {text, top:null, risk:r, sigs:sigHits};
+      const sb0 = document.getElementById("shareBtn");
+      if(sb0) sb0.onclick = ()=>makeReport();
       out.scrollIntoView({behavior:"smooth", block:"nearest"});
       return;
     }
@@ -514,7 +518,10 @@ function wrap(ctx, text, x, y, maxW, lh, max){
 }
 function makeReport(){
   if(!LAST) return;
-  const {text, top, risk} = LAST, c = top.c;
+  const {text, top, risk} = LAST;
+  const c = top ? top.c : null;                       // 行为兜底时无案例
+  const sigs = LAST.sigs || [];                        // 行为红旗（兜底用）
+  const GENERIC_ADVICE = ["立即停止操作，不转账、不提供验证码","通过官方渠道或当面与本人核实","已操作立即拨打 96110 / 南大保卫处 81686110"];
   const W=640, H=940, P=44;
   const cv=document.createElement("canvas"); cv.width=W; cv.height=H;
   const x=cv.getContext("2d");
@@ -542,16 +549,18 @@ function makeReport(){
   x.fillStyle=SUB; x.font="600 14px 'PingFang SC',sans-serif"; x.fillText("可疑内容", P+13, y);
   y+=14; x.fillStyle="#2a241e"; x.font="400 18px 'PingFang SC',sans-serif";
   y=wrap(x, "“"+text+"”", P, y+18, W-2*P, 28, 3);
-  // 命中
+  // 识别为（有案例→类型名；无案例→诈骗行为特征）
   y+=24; x.fillStyle=accent; x.fillRect(P,y-14,3,18);
-  x.fillStyle=SUB; x.font="600 14px 'PingFang SC',sans-serif"; x.fillText("识别为", P+13, y);
+  x.fillStyle=SUB; x.font="600 14px 'PingFang SC',sans-serif"; x.fillText(c?"识别为":"诈骗行为特征", P+13, y);
   y+=14; x.fillStyle=INK; x.font=`700 21px ${SERIF}`;
-  y=wrap(x, c.name+"（"+c.type+"）", P, y+22, W-2*P, 30, 2);
+  const idLine = c ? (c.name+"（"+c.type+"）")
+                   : (sigs.map(s=>s.name).slice(0,3).join(" · ") || "多项可疑特征");
+  y=wrap(x, idLine, P, y+22, W-2*P, 30, 2);
   // 怎么办
   y+=22; x.fillStyle=accent; x.fillRect(P,y-14,3,18);
   x.fillStyle=SUB; x.font="600 14px 'PingFang SC',sans-serif"; x.fillText("怎么办", P+13, y);
   y+=18; x.font="400 17px 'PingFang SC',sans-serif";
-  (c.advice||[]).slice(0,3).forEach(a=>{ x.fillStyle=accent; x.fillText("·",P+2,y+17);
+  ((c && c.advice && c.advice.length ? c.advice : GENERIC_ADVICE)).slice(0,3).forEach(a=>{ x.fillStyle=accent; x.fillText("·",P+2,y+17);
     x.fillStyle="#2a241e"; y=wrap(x,a,P+22,y+17,W-2*P-22,26,2); y+=4; });
   // 紧急条
   y+=10; x.fillStyle="rgba(192,57,43,.06)"; x.fillRect(P,y,W-2*P,52);
