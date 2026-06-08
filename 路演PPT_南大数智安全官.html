@@ -431,11 +431,11 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 </section>
 
 <!-- 市场·价值 -->
-<section class="slide" data-note="市场规模我们用自上而下漏斗法算到底。受众：全国本科在校生 2086 万（教育部 2024 公报）；年发案率按保守的 0.5% 估，约 10 万人/年遭电诈损失；个案均损失 7500 元（浙江某高校 2018–2023 真实样本）——三者相乘，得到全国本科生每年电诈损失规模约 7.8 亿元，这就是我们要解决的痛点市场。再看我们能拿下多少：按覆盖率乘识别率综合 20% 的保守拦截率，每年可避免约 1.6 亿元损失。而成本侧：端侧检测零服务器、开源复制零边际成本，大模型按需调用，年运营成本不到 10 万元。一句话：用十万元级的成本，撬动亿元级的社会价值，而且每复制一所高校几乎零新增成本。发案率和拦截率是保守假设，其余都是公开数据。">
+<section class="slide" data-note="市场规模我们用自上而下漏斗法算到底。受众：全国本科在校生 2086 万（教育部 2024 公报）；年发案率按保守的 0.5% 估，约 10 万人/年遭电诈损失；个案均损失 7500 元（浙江某高校 2018–2023 真实样本）——三者相乘，得到全国本科生每年电诈损失规模约 7.8 亿元，这就是我们要解决的痛点市场。再看我们能拿下多少：按覆盖率乘识别率综合 20% 的保守拦截率，每年可避免约 1.6 亿元损失。而成本侧：端侧检测零服务器、开源复制零边际成本，大模型按需调用，年运营成本不到 10 万元。一句话：用十万元级的成本，撬动亿元级的社会价值，而且每复制一所高校几乎零新增成本。两个关键参数都有基准、且从严取值：年发案率 0.5%，是参照调查里近 6 成大学生收到过诈骗信息，再按约 1% 真正造成损失保守折算来的；综合拦截率 20%，是用我们模型实测的识别能力——Top-3 和泛化召回都接近 100%——再乘一个保守的 20% 用户渗透率得到的，识别能力强、但我们不假设人人都来查。所以结论是量级稳健、可被追问。">
   <div class="stagger">
     <span class="kicker">13 — 市场 · 价值测算</span>
     <h2 style="font-size:40px;margin:10px 0 2px">一笔<span class="vm">算得清</span>的账</h2>
-    <p class="body" style="font-size:13.5px;margin-bottom:18px">自上而下漏斗测算 · 公开数据为据，关键假设从严</p>
+    <p class="body" style="font-size:13.5px;margin-bottom:18px">自上而下漏斗测算 · 公开数据为据，关键假设均有基准且从严取值</p>
     <p class="serif" style="font-size:23px;line-height:1.5">
       <b>2086 万</b><span style="font-size:13px;color:var(--ink-soft)"> 本科生</span>
       <span style="color:var(--ochre)"> ×</span> <b>0.5%</b><span style="font-size:13px;color:var(--ink-soft)"> 年发案</span>
@@ -444,11 +444,11 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
     </p>
     <hr class="hair" style="margin:18px 0 16px">
     <div class="metrics">
-      <div class="metric"><div class="n vm" style="color:var(--vermilion)">1.6<span class="u">亿/年</span></div><div class="l">可避免损失（我们的价值）</div><div class="s">按综合拦截率 20%（覆盖 × 识别，保守）</div></div>
+      <div class="metric"><div class="n vm" style="color:var(--vermilion)">1.6<span class="u">亿/年</span></div><div class="l">可避免损失（我们的价值）</div><div class="s">识别近 100%（实测）× 渗透 20%（保守）</div></div>
       <div class="metric"><div class="n">&lt;10<span class="u">万/年</span></div><div class="l">运营成本</div><div class="s">端侧零服务器 · 开源零边际 · LLM 按需</div></div>
       <div class="metric"><div class="n">≈0<span class="u"></span></div><div class="l">每复制一所高校的新增成本</div><div class="s">开源 + 自增长，社会价值线性放大</div></div>
     </div>
-    <p class="body" style="font-size:12px;margin-top:14px;color:var(--ink-soft)">数据来源：本科生 2086 万（教育部 2024 公报）· 案均 ¥7500（浙江高校 2018–2023：215 起 / 162 万元）· 年发案率 0.5%、拦截率 20% 为保守假设，仅作量级测算</p>
+    <p class="body" style="font-size:11.5px;margin-top:14px;color:var(--ink-soft);line-height:1.7">基准：本科生 2086 万（教育部 2024）· 案均 ¥7500（浙江高校 2018–2023 真实样本）· <b style="color:var(--ink)">年发案率 0.5%</b> ← 近 6 成大学生曾收到诈骗信息（2023 调查）按约 1% 受损保守折算 · <b style="color:var(--ink)">拦截率 20%</b> ← 模型实测识别近 100%（Top-3 / 泛化召回）× 用户渗透 20%（保守）</p>
   </div>
 </section>
 

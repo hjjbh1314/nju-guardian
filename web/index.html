@@ -155,7 +155,7 @@
   </header>
   <main>
     <p class="lbl">粘贴可疑内容：</p>
-    <textarea id="inp" placeholder="例：辅导员让我先垫付800班费周一返我 / 视频里同学声音怪怪的让我转账 / 您的快递丢失点链接理赔…"></textarea>
+    <textarea id="inp" placeholder="例：辅导员让我先垫付800元班费，周一返给我。/ 视频里同学声音怪怪的，让我马上转账。/ 您的快递丢失，请点链接办理理赔……"></textarea>
     <div class="chips" id="chips"></div>
     <div class="ocr">
       <label class="ocr-btn">📷 上传聊天截图识别<input type="file" id="ocr-file" accept="image/*" hidden></label>
@@ -308,10 +308,10 @@ function openAgent(){
 
 // 示例气泡：均为规则路强命中，保证现场点开即出卡片
 const SAMPLES = [
-  "辅导员让我先垫付800元班费周一返给我",
-  "我是公安局的你涉嫌洗钱请把钱转入安全账户配合调查",
-  "无抵押免征信秒放款但放款前要先交一笔保证金",
-  "群里老师免费分享内幕消息跟单稳赚不赔",
+  "辅导员让我先垫付800元班费，周一返给我。",
+  "我是公安局的，你涉嫌洗钱，请把钱转入安全账户配合调查。",
+  "无抵押、免征信、秒放款，但放款前要先交一笔保证金。",
+  "群里老师免费分享内幕消息，跟单稳赚不赔。",
 ];
 const chips = document.getElementById("chips");
 SAMPLES.forEach(s=>{
