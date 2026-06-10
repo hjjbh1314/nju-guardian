@@ -84,7 +84,34 @@ async function handleChat(request, env) {
   return json({ reply });
 }
 
-// ── 现场上报：服务端建 GitHub Issue → 进审核入库流水线 ──
+// AI 把上报的原始文本草拟成 case_schema 12 字段（来源由人工补，AI 不编造）
+const DRAFT_PROMPT = `你是反诈案例结构化助手。把用户给的一条可疑内容，整理成一个 JSON 案例草稿，字段严格如下：
+type(诈骗类型简称,如"冒充辅导员")、name(案例名)、risk_level("high"/"medium"/"low")、keywords(命中关键词数组,3-8个,每个≥2字)、patterns(正则字符串数组,可空)、script_examples(典型话术1-3条,可含原文)、steps(作案手法步骤2-4条)、why_scam(为什么是诈骗2-3条)、advice(处置建议3条,含"不转账"、"官方渠道核实"、"拨96110")、emergency(固定为 ["96110","南大保卫处 81686110"])、source(留空字符串 ""，必须由人工补真实公开来源，你不要编造)。
+只输出 JSON，不要任何解释或 Markdown 围栏。risk_level 按行为严重度判断。`;
+
+async function aiDraftCase(text, env) {
+  if (!env.DEEPSEEK_API_KEY) return null;
+  try {
+    const r = await fetch("https://api.deepseek.com/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${env.DEEPSEEK_API_KEY}` },
+      body: JSON.stringify({
+        model: env.MODEL || "deepseek-chat",
+        messages: [{ role: "system", content: DRAFT_PROMPT }, { role: "user", content: text.slice(0, 1500) }],
+        max_tokens: 900, temperature: 0.2, stream: false,
+      }),
+    });
+    if (!r.ok) return null;
+    const d = await r.json();
+    let c = (d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content || "").trim();
+    c = c.replace(/^```json/i, "").replace(/^```/, "").replace(/```$/, "").trim();
+    const obj = JSON.parse(c);          // 校验是合法 JSON
+    obj.source = "";                    // 强制来源留空，待人工补
+    return JSON.stringify(obj, null, 2);
+  } catch (e) { return null; }
+}
+
+// ── 现场上报：AI 草拟 12 字段 → 服务端建 GitHub Issue → 人工核验入库 ──
 async function handleReport(request, env) {
   let body;
   try { body = await request.json(); } catch { return json({ error: "请求体不是合法 JSON" }, 400); }
@@ -95,17 +122,21 @@ async function handleReport(request, env) {
 
   const repo = env.REPORT_REPO || "hjjbh1314/nju-guardian";
   const title = `[现场上报] ${text.slice(0, 24)}`;
+  const draft = await aiDraftCase(text, env);   // AI 自动草拟，失败则回退空骨架
   const skeleton = JSON.stringify({
     id: "", type: "", name: "", risk_level: "high｜medium｜low",
     keywords: [], patterns: [], script_examples: [], steps: [],
     why_scam: [], advice: [], emergency: ["96110", "南大保卫处 81686110"], source: ""
   }, null, 2);
+  const caseBlock = draft
+    ? `## AI 自动草拟（已据上报内容补全大部分字段，**待人工核验 + 补真实来源**）\n\`\`\`json\n${draft}\n\`\`\`\n`
+    : `## 整理成案例（按 case_schema 的 12 字段补全）\n\`\`\`json\n${skeleton}\n\`\`\`\n`;
   const issueBody =
-    `> 由 H5 现场一键上报，仅作待审核素材。**补全下方 12 字段并提 PR，合并前会自动过 \`validate_kb.py\` 格式校验，不合规进不了库。**\n\n` +
+    `> 由 H5 现场一键上报，仅作待审核素材。**核验下方草稿、补真实来源后提 PR，合并前会自动过 \`validate_kb.py\` 校验，不合规进不了库。**\n\n` +
     `## 原始可疑内容\n\`\`\`\n${text}\n\`\`\`\n\n` +
     `## 端侧研判最相近类型\n${matched || "（未匹配到，疑似新型）"}\n\n` +
-    `## 整理成案例（按 case_schema 的 12 字段补全）\n\`\`\`json\n${skeleton}\n\`\`\`\n\n` +
-    `## 公开来源（必填，否则不予入库）\n<!-- 政府/主流媒体/高校保卫处公开链接 -->\n`;
+    caseBlock + `\n` +
+    `## 公开来源（必填，AI 不会编造，需人工补政府/主流媒体/高校公开链接）\n<!-- 在此补来源后，把上方 source 字段一并填上 -->\n`;
 
   let r;
   try {
