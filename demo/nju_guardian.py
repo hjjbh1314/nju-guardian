@@ -859,7 +859,7 @@ def build_ui() -> gr.Blocks:
 - **技术栈**：Python 3 + Gradio + 双路召回引擎（关键词/正则 + BGE-zh 向量）+ 可选 LLM 增强
 - **知识库**：v{KB_VERSION}，{len(CASES)} 类结构化案例，每条带公开来源标注（CC BY 4.0）
 - **代码仓库**：决赛前公开 GitHub 链接
-- **联系方式**：***REMOVED***
+- **联系方式**：通过 GitHub Issue 提交
 
 ### 双路召回原理
 
