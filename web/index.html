@@ -86,6 +86,17 @@
     color:var(--paper);padding:11px 18px;border-radius:7px;font-size:13px;z-index:60;opacity:0;
     transition:.28s;pointer-events:none;max-width:88%;text-align:center;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
   #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  #reportbox{display:none;margin-top:14px;border:1px solid var(--hair);border-radius:8px;background:#FCFAF4;padding:13px}
+  #reportbox.on{display:block}
+  #reportbox .rbhead{font-family:var(--serif);font-weight:700;font-size:14px;color:var(--ink)}
+  #reportbox .rbq{font-size:12.5px;color:var(--sub);margin:12px 0 6px}
+  #reportbox .rbchips{display:flex;flex-wrap:wrap;gap:7px}
+  #reportbox .rbchip{font-size:12.5px;border:1px solid var(--hair);border-radius:999px;padding:6px 12px;cursor:pointer;color:var(--ink);background:#fff}
+  #reportbox .rbchip.sel{background:var(--vm);color:#fff;border-color:var(--vm)}
+  #reportbox textarea{width:100%;margin-top:12px;min-height:52px;border:1px solid var(--hair);border-radius:6px;padding:9px;font-size:13.5px;font-family:inherit;resize:vertical;background:#fff;color:var(--ink)}
+  #reportbox .rbrow{display:flex;gap:8px;margin-top:12px}
+  #reportbox .rbrow button{flex:1;border-radius:6px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);border:none;background:var(--vm);color:#fff}
+  #reportbox .rbrow .rb-ghost{background:transparent;color:var(--sub);border:1px solid var(--hair)}
   .agentbtn{display:block;width:100%;margin-top:10px;background:#2b2723;color:var(--paper);border:none;border-radius:6px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans)}
   .agentbtn:active{background:#1A1714}
   #agent{display:none;margin-top:14px;border:1px solid var(--hair);border-radius:8px;background:#FCFAF4;padding:13px}
@@ -165,6 +176,15 @@
     <div id="live"><span class="dot"></span><span class="bar"><i></i></span><span id="live-txt"></span></div>
     <button class="btn" id="go">🔍 立即检测</button>
     <div id="out"></div>
+    <div id="reportbox">
+      <div class="rbhead">🚩 上报这条 · 点几下更有用（选填，不填也能报）</div>
+      <div class="rbq">从哪收到</div>
+      <div class="rbchips" data-g="渠道"><span class="rbchip">短信</span><span class="rbchip">微信/QQ群</span><span class="rbchip">电话</span><span class="rbchip">陌生App</span><span class="rbchip">其它</span></div>
+      <div class="rbq">你的情况</div>
+      <div class="rbchips" data-g="情况"><span class="rbchip">只是收到</span><span class="rbchip">差点上当</span><span class="rbchip">已经损失</span></div>
+      <textarea id="rb-extra" placeholder="（可不填）对方自称谁、什么号、更多内容…"></textarea>
+      <div class="rbrow"><button id="rb-skip" class="rb-ghost">不填，直接报</button><button id="rb-submit">确认上报</button></div>
+    </div>
     <div id="agent">
       <div class="ahead">🤖 AI 深度研判 <span>· DeepSeek · 可多轮追问</span></div>
       <div class="alog" id="alog"></div>
@@ -228,24 +248,55 @@ function copyReport(r){
   toast(copied ? "✓ 上报成功 · 内容已复制，可转发反诈小组 / 南大保卫处 81686110"
               : "请长按结果文字手动复制后转发");
 }
-// 一键上报：优先提交后台收集（服务端建 Issue → 审核入库流水线）；未配置或失败则退回复制
-function doReport(){
+// 一键上报：先弹「现场补充框」(选填，快捷点选) → 确认后提交。缺信息只有上报者当场知道，事后难补。
+function doReport(){           // 结果卡按钮入口 → 打开补充框
   const r = window.__rep || {text:"", matched:""};
   if(!r.text){ toast("没有可上报的内容"); return; }
+  const box = document.getElementById("reportbox");
+  box.querySelectorAll(".rbchip").forEach(c=>c.classList.remove("sel"));
+  document.getElementById("rb-extra").value = "";
+  box.classList.add("on");
+  box.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+function collectExtra(){
+  const parts = [];
+  document.querySelectorAll("#reportbox .rbchips").forEach(g=>{
+    const sel = g.querySelector(".rbchip.sel");
+    if(sel) parts.push(g.getAttribute("data-g") + "：" + sel.textContent);
+  });
+  const t = document.getElementById("rb-extra").value.trim();
+  if(t) parts.push("补充：" + t);
+  return parts.join(" | ");
+}
+function submitReport(){
+  const r = window.__rep || {text:"", matched:""};
+  const extra = collectExtra();
+  document.getElementById("reportbox").classList.remove("on");
+  if(!r.text){ return; }
   if(!AGENT_PROXY_URL){ copyReport(r); return; }
   toast("正在上报…");
   const ctrl = new AbortController();
-  const timer = setTimeout(()=>ctrl.abort(), 8000);   // 8秒兜底，绝不卡在"正在上报…"
+  const timer = setTimeout(()=>ctrl.abort(), 10000);
   fetch(AGENT_PROXY_URL.replace(/\/$/,"") + "/report", {method:"POST",headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({text:r.text, matched:r.matched}), signal:ctrl.signal})
+    body: JSON.stringify({text:r.text, matched:r.matched, extra}), signal:ctrl.signal})
    .then(async res=>{
      clearTimeout(timer);
      let j={}; try{ j=await res.json(); }catch(e){}
      if(res.ok && j.ok){ toast("✓ 上报成功 · AI已自动整理，经人工审核+格式校验后入库"); }
-     else { copyReport(r); }   // 后台未配置/失败 → 退回本地复制，绝不让用户白点
+     else { copyReport(r); }
    })
    .catch(()=>{ clearTimeout(timer); copyReport(r); });
 }
+(function(){
+  document.querySelectorAll("#reportbox .rbchips").forEach(g=>{
+    g.querySelectorAll(".rbchip").forEach(c=>{
+      c.onclick = ()=>{ g.querySelectorAll(".rbchip").forEach(x=>{ if(x!==c) x.classList.remove("sel"); }); c.classList.toggle("sel"); };
+    });
+  });
+  const sk=document.getElementById("rb-skip"), sb=document.getElementById("rb-submit");
+  if(sk) sk.onclick = submitReport;
+  if(sb) sb.onclick = submitReport;
+})();
 
 // ── AI 深度研判（调用 infra/agent-proxy 部署的 Worker，多轮）──
 let agentMsgs = [];

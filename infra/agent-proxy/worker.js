@@ -117,12 +117,23 @@ async function handleReport(request, env) {
   try { body = await request.json(); } catch { return json({ error: "请求体不是合法 JSON" }, 400); }
   const text = String(body.text || "").trim().slice(0, 1500);
   const matched = String(body.matched || "").slice(0, 80);
+  const extra = String(body.extra || "").trim().slice(0, 800);   // 上报者现场补充（选填）
   if (!text) return json({ error: "上报内容为空" }, 400);
   if (!env.GITHUB_TOKEN) return json({ error: "未配置上报收集（GITHUB_TOKEN）" }, 501);
 
   const repo = env.REPORT_REPO || "hjjbh1314/nju-guardian";
   const title = `[现场上报] ${text.slice(0, 24)}`;
-  const draft = await aiDraftCase(text, env);   // AI 自动草拟，失败则回退空骨架
+  // 把现场补充一并喂给 AI，草拟更准
+  const draft = await aiDraftCase(text + (extra ? `\n[上报者现场补充] ${extra}` : ""), env);
+
+  // 待核验清单：标出"AI 推断需核验"与"信息缺失"，维护者一眼知道缺啥、能不能用
+  const checklist = [];
+  let sourceEmpty = true;
+  try { const o = JSON.parse(draft || "{}"); sourceEmpty = !o.source; } catch (e) {}
+  if (sourceEmpty) checklist.push("**公开来源缺失**（必填，AI 不编造）——需人工补政府/央媒/高校链接，否则进不了库");
+  checklist.push("AI 推断字段请核验：type / name / risk_level / keywords（可能不准）");
+  if (!extra) checklist.push("上报者**未现场补充**上下文（从哪收到 / 对方身份 / 是否损失）——这些事后难补，可信度需打折");
+
   const skeleton = JSON.stringify({
     id: "", type: "", name: "", risk_level: "high｜medium｜low",
     keywords: [], patterns: [], script_examples: [], steps: [],
@@ -134,8 +145,10 @@ async function handleReport(request, env) {
   const issueBody =
     `> 由 H5 现场一键上报，仅作待审核素材。**核验下方草稿、补真实来源后提 PR，合并前会自动过 \`validate_kb.py\` 校验，不合规进不了库。**\n\n` +
     `## 原始可疑内容\n\`\`\`\n${text}\n\`\`\`\n\n` +
+    (extra ? `## 上报者现场补充\n${extra}\n\n` : `## 上报者现场补充\n（未填）\n\n`) +
     `## 端侧研判最相近类型\n${matched || "（未匹配到，疑似新型）"}\n\n` +
     caseBlock + `\n` +
+    `## ⚠️ 待核验清单（AI 提示）\n${checklist.map(c => "- [ ] " + c).join("\n")}\n\n` +
     `## 公开来源（必填，AI 不会编造，需人工补政府/主流媒体/高校公开链接）\n<!-- 在此补来源后，把上方 source 字段一并填上 -->\n`;
 
   let r;
