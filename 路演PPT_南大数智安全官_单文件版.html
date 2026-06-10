@@ -387,25 +387,10 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
   </div>
 </section>
 
-<!-- 11 反馈闭环 -->
-<section class="slide" data-note="让案例库越用越全的<b>根本解法</b>是闭环。H5 上每张卡片都有「一键上报」——同学遇到新型诈骗，点一下就生成一条带来源的待审案例，进入刚才那条流水线。<b>用的人越多，库越全</b>。现场每一位扫码的观众，都可能成为案例的来源。">
-  <div class="stagger" style="text-align:center;align-items:center;display:flex;flex-direction:column;justify-content:center;height:100%">
-    <span class="kicker">10 — 反馈闭环</span>
-    <h2 style="font-size:50px;margin:22px 0 28px">用的人越多，<span class="vm">库越全</span></h2>
-    <div class="pipe" style="font-size:20px;justify-content:center">
-      <span class="step">同学遇到新骗术</span><span class="arr">→</span>
-      <span class="step human">H5 一键上报</span><span class="arr">→</span>
-      <span class="step">带来源的待审案例</span><span class="arr">→</span>
-      <span class="step">人工审核入库</span>
-    </div>
-    <p class="body" style="font-size:16px;margin-top:34px;max-width:760px">把现场每一位观众，都变成案例库的来源——它会越用越全、越用越准。</p>
-  </div>
-</section>
-
 <!-- 12 工程化 / 可信 -->
 <section class="slide" data-note="作为一个反诈项目，<b>可信</b>比花哨更重要。全程开源：MIT + 案例 CC BY 4.0；每条案例必须有公开可核验来源，不收匿名自述、不收群截图；CI 跑测试、校验、召回率闸门。我们追求的是一个<b>可追溯、可被检验</b>的系统。">
   <div class="stagger">
-    <span class="kicker">11 — 工程化与可信</span>
+    <span class="kicker">10 — 工程化与可信</span>
     <h2 style="font-size:46px;margin:14px 0 26px">反诈，<span class="vm">可信比花哨重要</span></h2>
     <div class="metrics">
       <div class="metric"><div class="n">50<span class="u">类</span></div><div class="l">公开来源案例</div><div class="s">CC BY 4.0</div></div>
@@ -420,7 +405,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 <!-- 12.5 市场与价值规模 -->
 <section class="slide" data-note="先看人群规模。电诈受害者里 65.5% 是 18 到 35 岁的年轻人（国家反诈中心），不是大家以为的老年人——校园才是主战场。全国高等教育在学 4846 万、本科在校生 2086 万（教育部 2024 公报），这就是我们最契合的盘子，全员反诈刚需。">
   <div class="stagger">
-    <span class="kicker">12 — 市场 · 人群</span>
+    <span class="kicker">11 — 市场 · 人群</span>
     <h2 style="font-size:44px;margin:12px 0 4px">刚需 × <span class="vm">千万级人群</span></h2>
     <p class="body" style="font-size:14px;margin-bottom:24px">年轻人是电诈主战场，校园是反诈刚需</p>
     <div class="metrics">
@@ -434,7 +419,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 <!-- 市场·价值 -->
 <section class="slide" data-note="市场规模我们用自上而下漏斗法算到底。受众：全国本科在校生 2086 万（教育部 2024 公报）；年发案率按保守的 0.5% 估，约 10 万人/年遭电诈损失；个案均损失 7500 元（浙江某高校 2018–2023 真实样本）——三者相乘，得到全国本科生每年电诈损失规模约 7.8 亿元，这就是我们要解决的痛点市场。再看我们能拿下多少：按覆盖率乘识别率综合 20% 的保守拦截率，每年可避免约 1.6 亿元损失。而成本侧：端侧检测零服务器、开源复制零边际成本，大模型按需调用，年运营成本不到 10 万元。一句话：用十万元级的成本，撬动亿元级的社会价值，而且每复制一所高校几乎零新增成本。两个关键参数都有基准、且从严取值：年发案率 0.5%，是参照调查里近 6 成大学生收到过诈骗信息，再按约 1% 真正造成损失保守折算来的；综合拦截率 20%，是用我们模型实测的识别能力——Top-3 和泛化召回都接近 100%——再乘一个保守的 20% 用户渗透率得到的，识别能力强、但我们不假设人人都来查。所以结论是量级稳健、可被追问。">
   <div class="stagger">
-    <span class="kicker">13 — 市场 · 价值测算</span>
+    <span class="kicker">12 — 市场 · 价值测算</span>
     <h2 style="font-size:40px;margin:10px 0 2px">一笔<span class="vm">算得清</span>的账</h2>
     <p class="body" style="font-size:13.5px;margin-bottom:18px">自上而下漏斗测算 · 公开数据为据，关键假设均有基准且从严取值</p>
     <p class="serif" style="font-size:23px;line-height:1.5">
@@ -460,7 +445,7 @@ ul.mini li::before{content:"";position:absolute;left:0;top:10px;width:4px;height
 <!-- 13 路线图 -->
 <section class="slide" data-note="路线图。当前是 H5，现场可扫码；下一步做<b>微信小程序</b>、争取<b>接入南大 App</b>，让同学随手就能查；采集流水线从手动触发走向<b>定期自动更新</b>。让它真正长在同学的手机里。">
   <div class="stagger">
-    <span class="kicker">14 — 路线图</span>
+    <span class="kicker">13 — 路线图</span>
     <h2 style="font-size:46px;margin:14px 0 52px">装进<span class="vm">每位同学的手机里</span></h2>
     <ul class="flow roadmap" style="max-width:920px">
       <li><span class="i">今</span><b>H5 现场扫码</b><span>纯前端、零服务器、已可用</span></li>
