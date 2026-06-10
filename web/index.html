@@ -241,7 +241,7 @@ function doReport(){
    .then(async res=>{
      clearTimeout(timer);
      let j={}; try{ j=await res.json(); }catch(e){}
-     if(res.ok && j.ok){ toast("✓ 上报成功 · 维护者审核后纳入案例库"); }
+     if(res.ok && j.ok){ toast("✓ 上报成功 · AI已自动整理，经人工审核+格式校验后入库"); }
      else { copyReport(r); }   // 后台未配置/失败 → 退回本地复制，绝不让用户白点
    })
    .catch(()=>{ clearTimeout(timer); copyReport(r); });
