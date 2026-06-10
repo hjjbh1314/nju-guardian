@@ -95,11 +95,17 @@ async function handleReport(request, env) {
 
   const repo = env.REPORT_REPO || "hjjbh1314/nju-guardian";
   const title = `[现场上报] ${text.slice(0, 24)}`;
+  const skeleton = JSON.stringify({
+    id: "", type: "", name: "", risk_level: "high｜medium｜low",
+    keywords: [], patterns: [], script_examples: [], steps: [],
+    why_scam: [], advice: [], emergency: ["96110", "南大保卫处 81686110"], source: ""
+  }, null, 2);
   const issueBody =
-    `> 由 H5 现场一键上报，待维护者补全公开来源后审核入库。\n\n` +
-    `## 可疑内容\n\`\`\`\n${text}\n\`\`\`\n\n` +
+    `> 由 H5 现场一键上报，仅作待审核素材。**补全下方 12 字段并提 PR，合并前会自动过 \`validate_kb.py\` 格式校验，不合规进不了库。**\n\n` +
+    `## 原始可疑内容\n\`\`\`\n${text}\n\`\`\`\n\n` +
     `## 端侧研判最相近类型\n${matched || "（未匹配到，疑似新型）"}\n\n` +
-    `## 公开来源（审核时补全，否则不予入库）\n<!-- 政府/主流媒体/高校保卫处公开链接 -->\n`;
+    `## 整理成案例（按 case_schema 的 12 字段补全）\n\`\`\`json\n${skeleton}\n\`\`\`\n\n` +
+    `## 公开来源（必填，否则不予入库）\n<!-- 政府/主流媒体/高校保卫处公开链接 -->\n`;
 
   let r;
   try {
